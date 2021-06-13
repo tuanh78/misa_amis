@@ -146,6 +146,11 @@ export default {
         }
         this.isShowLoading = false
       }
+      if (!this.departmentSearch || !this.fakeDepartments.length) {
+        this.$emit('addErrorDepartment')
+      } else {
+        this.$emit('removeErrorDepartment')
+      }
     }, 500),
     /**
      * Hàm thực hiện giá trị tìm kiếm thay đổi
@@ -252,21 +257,11 @@ export default {
     departmentSeleted (newValue, oldValue) {
       this.$emit('updateDepartment', newValue)
     },
-    // Theo dõi giá trị department được tìm kiếm
-    departmentSearch (newValue) {
-      if (!this.departmentSearch) {
-        this.$emit('addErrorDepartment')
-      } else {
+    departmentSearch (newValue, oldValue) {
+      if (this.fakeDepartments.length) {
         this.$emit('removeErrorDepartment')
       }
-    },
-    // Theo dõi danh sách phòng ban sao chép
-    fakeDepartments (newValue) {
-      if (!this.fakeDepartments.length) {
-        this.$emit('addErrorDepartment')
-      } else {
-        this.$emit('removeErrorDepartment')
-      }
+      this.$emit('updateDepartmentSearch', newValue)
     }
   }
 }

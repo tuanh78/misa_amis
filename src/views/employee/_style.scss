@@ -75,9 +75,20 @@
                 min-width: 200px;
                 cursor: pointer;
                 position: relative;
+                transition: border-color ;
+
+                &-active {
+                    border-color: #2ca01c;
+                }
+
                 &-detail-ctn {
                     padding: 6px 0 6px 12px;
                     width: calc(100% - 32px);
+                }
+
+                &-detail{
+                    outline: none;
+                    cursor: pointer;
                 }
 
                 .icon-arrow-down-ctn {
@@ -107,8 +118,6 @@
 
             .list-option-number-records {
                 position: absolute;
-                top: -164px;
-                left: 558px;
                 z-index: 9;
                 min-width: 200px;
                 transition: opacity .1s,transform .1s,width .2s ease;

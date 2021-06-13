@@ -104,7 +104,8 @@
                   Mã <span class="field-required">*</span>
                 </div>
                 <div class="input-code">
-                  <input v-model="employee.employeeCode" ref="employeeCode" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
+                  <input v-model="employee.employeeCode" ref="employeeCode" @mousemove="GetMousePosition" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
+                  <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống." :screenX="screenX" :screenY="screenY"></tool-tip>
                 </div>
               </div>
 
@@ -126,7 +127,7 @@
                 <div class="input-department">
                   <div class="input-department-ctn">
                     <!-- <input type="text" class="input-style-common department-custom" /> -->
-                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment"></v-autocomplete>
+                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartmentSearch="UpdateDepartmentSearch" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment"></v-autocomplete>
                   </div>
                 </div>
               </div>
@@ -294,6 +295,7 @@
 import VDatepicker from '../../../common/v-datepicker/v-datepicker'
 import VAutocomplete from '../../../common/v-autocomplete/v-autocomplete.vue'
 import PopupDuplicateCode from '../../../pages/employee/popup-duplicate-code/popup-duplicate-code.vue'
+import ToolTip from '../../../common/tool-tip/tool-tip.vue'
 import { HTTP } from '../../../../axios/http-common'
 import PopupError from '../popup-error/popup-error.vue'
 export default {
@@ -322,7 +324,10 @@ export default {
       isShowEmployeeCodeWarning: false,
       errorProperties: [],
       errorMessage: '',
-      isShowPopupError: false
+      isShowPopupError: false,
+      departmentSearch: '',
+      screenX: 0,
+      screenY: 0
 
     }
   },
@@ -344,7 +349,8 @@ export default {
     VDatepicker,
     VAutocomplete,
     PopupDuplicateCode,
-    PopupError
+    PopupError,
+    ToolTip
   },
   methods: {
     /**
@@ -397,18 +403,22 @@ export default {
       if (this.errorProperties.length > 0) {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
-            this.errorMessage = 'Mã không được để trống'
+            this.errorMessage = 'Mã không được để trống.'
             this.isShowPopupError = true
             return false
           }
           if (element === 'employeeName') {
             this.isShowPopupError = true
-            this.errorMessage = 'Tên không được để trống'
+            this.errorMessage = 'Tên không được để trống.'
             return false
           }
           if (element === 'departmentId') {
             this.isShowPopupError = true
-            this.errorMessage = 'Đơn vị không được để trống'
+            if (!this.departmentSearch) {
+              this.errorMessage = 'Đơn vị không được để trống.'
+            } else {
+              this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+            }
             return false
           }
         })
@@ -495,6 +505,23 @@ export default {
       if (index > -1) {
         this.errorProperties.splice(index, 1)
       }
+    },
+    /**
+     * Hàm cập nhật giá trị department search
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    UpdateDepartmentSearch (departmentSearch) {
+      this.departmentSearch = departmentSearch
+    },
+    /**
+     * Hàm lấy tọa độ của chuột khi di chuyển
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    GetMousePosition (event) {
+      this.screenX = event.screenX
+      this.screenY = event.screenY
     }
   }
 }

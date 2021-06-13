@@ -174,18 +174,18 @@
         <span>Tổng số: <span class="text-bold">{{ totalEmployees }}</span> bản ghi</span>
       </div>
       <div class="right-pagination">
-        <div class="total-record">
+        <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" ref="numberRecords" @click="isActiveTotalRecord = true" v-click-outside="CloseOptionsNumberRecords">
           <div class="total-record-detail-ctn">
-            <span class="total-record-detail">{{ pageSize }} bản ghi trên 1 trang</span>
+            <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="MoveDownOption" @keydown.38="MoveUpOption" @keydown.enter="ReloadPageWithPageSize"/>
           </div>
-          <div class="icon-arrow-down-ctn" @click="isShowOptionsNumberRecords = !isShowOptionsNumberRecords" v-click-outside="CloseOptionsNumberRecords">
+          <div class="icon-arrow-down-ctn" @click="ToggleDropDownOption">
             <div class="icon-common-medium icon-arrow-down"></div>
           </div>
         </div>
         <!-- Selectbox số bản ghi trên trang -->
-        <div class="list-option-number-records" v-if="isShowOptionsNumberRecords">
+        <div class="list-option-number-records" :style="{top: screenY - 692 + 'px', left: screenX - 198 + 'px'}" v-if="isShowOptionsNumberRecords">
             <ul class="list-options">
-              <li :class="['item-option', {'item-selected': item === pageSize}]" v-for="(item, index) in numberRecords" :key="index" @click="ChangeNumberRecords(item)">
+              <li :class="['item-option', {'item-selected': item === pageSize}]" v-for="(item, index) in numberRecords" :key="index" @click="ChangeNumberRecords(item, index)">
                 <span>{{ item }} bản ghi trên 1 trang</span>
               </li>
             </ul>
@@ -230,6 +230,7 @@ export default {
       isShowPopupDelete: false, // Biến hiển thị Popup cảnh báo xóa nhân viên
       isShowNoContent: false, // Biến hiển thị thông báo bảng không có dữ liệu
       isShowOptionsNumberRecords: false, // Biến hiển thị dropdown số lượng bản ghi trên trang
+      isActiveTotalRecord: true, // Biến xác định Selectedbox số lượng bản ghi trên trang được chọn hay không
       screenX: 0, // Vị trí con trỏ chuột theo trục X
       screenY: 0, // Vị trí con trỏ chuột theo trục Y
       employees: null, // Biến lưu trữ danh sách nhân viên
@@ -244,7 +245,8 @@ export default {
       messageDelete: null, // Thông báo xóa
       totalEmployees: 0, // Tổng số nhân viên
       totalPages: 0, // Tổng số trang
-      numberRecords: [...CONSTANTS.NUMBER_RECORDS] // Các số lượng bản ghi có thể trên một trang
+      numberRecords: [...CONSTANTS.NUMBER_RECORDS], // Các số lượng bản ghi có thể trên một trang
+      indexOptionSelected: 0
     }
   },
   components: {
@@ -261,7 +263,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/6/2021
      */
-    HTTP.get('employees/total-record')
+    HTTP.get('employees/numbers-record')
       .then((result) => {
         this.totalEmployees = result.data
         this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
@@ -477,7 +479,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ChangeNumberRecords (pageSize) {
+    ChangeNumberRecords (pageSize, index) {
+      this.indexOptionSelected = index
       this.pageSize = pageSize
       this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
       this.ReloadPage()
@@ -489,6 +492,53 @@ export default {
      */
     CloseOptionsNumberRecords () {
       this.isShowOptionsNumberRecords = false
+      this.isActiveTotalRecord = false
+    },
+    /**
+     * Hàm ẩn hiện dropdown số lượng bản ghi trên trang
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ToggleDropDownOption () {
+      this.$refs.inputNumberRecord.focus()
+      this.isShowOptionsNumberRecords = !this.isShowOptionsNumberRecords
+      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+    },
+    /**
+     * Hàm di chuyển lựa chọn xuống dưới của sô lượng bản ghi trên một trang
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    MoveDownOption () {
+      this.isShowOptionsNumberRecords = true
+      this.indexOptionSelected = this.indexOptionSelected + 1
+      if (this.indexOptionSelected === this.numberRecords.length) {
+        this.indexOptionSelected = 0
+      }
+      this.pageSize = this.numberRecords[this.indexOptionSelected]
+      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+    },
+    /**
+     * Hàm di chuyển lựa chọn xuống lên của sô lượng bản ghi trên một trang
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    MoveUpOption () {
+      this.isShowOptionsNumberRecords = true
+      this.indexOptionSelected = this.indexOptionSelected - 1
+      if (this.indexOptionSelected < 0) {
+        this.indexOptionSelected = this.numberRecords.length - 1
+      }
+      this.pageSize = this.numberRecords[this.indexOptionSelected]
+      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+    },
+    ReloadPageWithPageSize () {
+      this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+      this.isShowOptionsNumberRecords = false
+      this.ReloadPage()
     }
   }
 }

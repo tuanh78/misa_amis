@@ -214,6 +214,16 @@
                 .employee-code {
                     width: 40%;
                     padding-right: 6px;
+
+                    .input-code {
+                        position: relative;
+
+                        &:hover {
+                            .tool-tip {
+                                display: block;
+                            }
+                        }
+                    }
                 }
 
                 .employee-name {
