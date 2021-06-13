@@ -169,12 +169,18 @@
 <script>
 export default {
   props: {
+    // Biến hiển thị Logo
     isShowLogo: {
       type: Boolean,
       default: true
     }
   },
   methods: {
+    /**
+     * Hàm hiển thị Logo
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ShowLogo () {
       this.$emit('showLogo')
     }

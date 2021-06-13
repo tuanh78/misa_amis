@@ -23,11 +23,17 @@
 <script>
 export default {
   props: {
+    // Thông báo lỗi
     errorMessage: {
       type: String
     }
   },
   methods: {
+    /**
+     * Hàm đóng Popup
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopup () {
       this.$emit('closePopup')
     }

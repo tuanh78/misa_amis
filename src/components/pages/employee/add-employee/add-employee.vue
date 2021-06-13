@@ -299,6 +299,7 @@ import PopupError from '../popup-error/popup-error.vue'
 export default {
   data () {
     return {
+      // Biến lưu trữ giá trị của nhân viên
       employee: {
         employeeCode: this.latestEmployeeCode,
         employeeName: null,
@@ -326,14 +327,17 @@ export default {
     }
   },
   props: {
+    // Danh sách phòng ban
     departments: {
       type: Array
     },
+    // Mã nhân viên mới
     latestEmployeeCode: {
       type: String
     }
   },
   mounted () {
+    // Focus vào ô mã nhân viên khi hiện Popup
     this.$refs.employeeCode.focus()
   },
   components: {
@@ -343,18 +347,43 @@ export default {
     PopupError
   },
   methods: {
+    /**
+     * Hàm ẩn Popup thêm nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupAddEmployee () {
       this.$emit('closePopupAddEmployee')
     },
+    /**
+     * Hàm cập nhật ngày sinh
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateDateOfBirth (dateOfBirth) {
       this.employee.dateOfBirth = dateOfBirth
     },
+    /**
+     * Hàm cập nhật ngày cấp
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateIdentityDate (identityDate) {
       this.employee.identityDate = identityDate
     },
+    /**
+     * Hàm cập nhật phòng ban
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateDepartment (departmentId) {
       this.employee.departmentId = departmentId
     },
+    /**
+     * Hàm lưu nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     SaveEmployee () {
       if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
         this.errorProperties.push('employeeCode')
@@ -400,9 +429,19 @@ export default {
           })
       }
     },
+    /**
+     * Hàm đóng Popup cảnh báo trùng mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupWarning () {
       this.isShowEmployeeCodeWarning = false
     },
+    /**
+     * Hàm kiểm tra giá trị của mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     CheckValueEmployeeCode () {
       if (!this.employee.employeeCode) {
         this.errorProperties.push('employeeCode')
@@ -413,6 +452,11 @@ export default {
         }
       }
     },
+    /**
+     * Hàm kiểm tra giá trị của tên nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     CheckValueEmployeeName () {
       if (!this.employee.employeeName) {
         this.errorProperties.push('employeeName')
@@ -423,14 +467,29 @@ export default {
         }
       }
     },
+    /**
+     * Hàm đóng Popup thông báo lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupError () {
       this.isShowPopupError = false
     },
+    /**
+     * Hàm thêm phòng ban vào danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     AddErrorDepartment () {
       if (!this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
     },
+    /**
+     * Hàm xóa phòng ban khỏi danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     RemoveErrorDepartment () {
       const index = this.errorProperties.indexOf('departmentId')
       if (index > -1) {

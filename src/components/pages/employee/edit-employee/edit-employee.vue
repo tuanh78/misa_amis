@@ -300,18 +300,20 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      employee: this.employeeEdit,
-      isShowEmployeeCodeWarning: false,
-      errorProperties: [],
-      errorMessage: '',
-      isShowPopupError: false
+      employee: this.employeeEdit, // Biến lưu giá trị nhân viên cần sửa
+      isShowEmployeeCodeWarning: false, // Biến hiển thị thông báo mã nhân viên bị trùng
+      errorProperties: [], // Biến lưu trữ các trường bị lỗi
+      errorMessage: '', // Thông báo lỗi
+      isShowPopupError: false // Biến hiển thị thông báo lỗi
 
     }
   },
   mounted () {
+    // Focus vào ô mã nhân viên khi Popup hiển thị
     this.$refs.employeeCode.focus()
   },
   props: {
+    // Nhân viên cần sửa
     employeeEdit: {
       type: Object,
       default () {
@@ -335,9 +337,6 @@ export default {
           email: null
         }
       }
-    },
-    editMode: {
-      type: String
     }
   },
   components: {
@@ -347,18 +346,43 @@ export default {
     PopupError
   },
   methods: {
+    /**
+     * Hàm đóng Popup sửa nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupEditEmployee () {
       this.$emit('closePopupEditEmployee')
     },
+    /**
+     * Hàm cập nhật ngày sinh
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateDateOfBirth (dateOfBirth) {
       this.employee.dateOfBirth = dateOfBirth
     },
+    /**
+     * Hàm cập nhật ngày cấp
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateIdentityDate (identityDate) {
       this.employee.identityDate = identityDate
     },
+    /**
+     * Hàm cập nhật phòng ban
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     UpdateDepartment (departmentId) {
       this.employee.departmentId = departmentId
     },
+    /**
+     * Hàm lưu nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     SaveEmployee () {
       if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
         this.errorProperties.push('employeeCode')
@@ -404,9 +428,19 @@ export default {
           })
       }
     },
+    /**
+     * Hàm đóng Popup cảnh báo trùng mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupWarning () {
       this.isShowEmployeeCodeWarning = false
     },
+    /**
+     * Hàm kiểm tra giá trị của mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     CheckValueEmployeeCode () {
       if (!this.employee.employeeCode) {
         this.errorProperties.push('employeeCode')
@@ -417,6 +451,11 @@ export default {
         }
       }
     },
+    /**
+     * Hàm kiểm tra giá trị của tên nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     CheckValueEmployeeName () {
       if (!this.employee.employeeName) {
         this.errorProperties.push('employeeName')
@@ -427,12 +466,25 @@ export default {
         }
       }
     },
+    /**
+     * Hàm đóng Popup thông báo lỗi
+     */
     ClosePopupError () {
       this.isShowPopupError = false
     },
+    /**
+     * Hàm thêm lỗi phòng ban vào danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     AddErrorDepartment () {
       this.errorProperties.push('departmentId')
     },
+    /**
+     * Hàm xóa lỗi phòng ban khỏi danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     RemoveErrorDepartment () {
       const index = this.errorProperties.indexOf('departmentId')
       if (index > -1) {

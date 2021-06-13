@@ -75,10 +75,8 @@
 import { HTTP } from '../../../axios/http-common'
 var debounce = require('lodash.debounce')
 export default {
-  /*
-
-  */
   created () {
+    // Lấy danh sách phòng ban
     HTTP.get('departments')
       .then((result) => {
         this.departments = result.data
@@ -90,34 +88,47 @@ export default {
   },
   data () {
     return {
-      departments: [],
-      fakeDepartments: [],
-      isShowDepartmentList: false,
-      departmentInputActive: false,
-      departmentSearch: this.departmentName,
-      isShowLoading: false,
-      departmentSeleted: this.departmentId,
-      indexOptionSelected: 0
+      departments: [], // Biến lưu trữ danh sách phòng ban
+      fakeDepartments: [], // Biến lưu trữ phòng ban dùng để thay đổi khi tìm kiếm
+      isShowDepartmentList: false, // Biến hiển thị danh sách phòng ban
+      departmentInputActive: false, // Biến highlight input phòng ban đang được focus
+      departmentSearch: this.departmentName, // Biến lưu giá trị phòng ban cần tìm kiếm
+      isShowLoading: false, // Biến hiển thị trạng thái Loading khi tìm kiếm
+      departmentSeleted: this.departmentId, // Biến lưu Id phòng ban đang được chọn
+      indexOptionSelected: 0 // Vị trí của phòng ban đang được chọn
     }
   },
   props: {
+    // Các thuộc tính lỗi
     errorProperties: {
       type: Array
     },
+    // Tên phòng ban
     departmentName: {
       type: String,
       default: ''
     },
+    // Id của phòng ban
     departmentId: {
       type: String,
       default: ''
     }
   },
   methods: {
+    /**
+     * Hàm ẩn danh sách phòng ban
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     HiddenDropdownOption () {
       this.departmentInputActive = false
       this.isShowDepartmentList = false
     },
+    /**
+     * Hàm lọc danh sách phòng ban
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     FilterDepartment: debounce(function () {
       if (this.departmentSearch === '') {
         this.fakeDepartments = [...this.departments]
@@ -136,10 +147,20 @@ export default {
         this.isShowLoading = false
       }
     }, 500),
+    /**
+     * Hàm thực hiện giá trị tìm kiếm thay đổi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     InputChangedValue () {
       this.isShowLoading = true
       this.isShowDepartmentList = true
     },
+    /**
+     * Hàm di chuyển lựa chọn phòng ban xuống dưới
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     MoveDownOption () {
       this.isShowDepartmentList = true
       const options = [...this.$el.querySelectorAll('.option-item')]
@@ -162,6 +183,11 @@ export default {
         }
       })
     },
+    /**
+     * Hàm di chuyển lựa chọn phòng ban lên trên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     MoveUpOption () {
       this.isShowDepartmentList = true
       const options = [...this.$el.querySelectorAll('.option-item')]
@@ -185,19 +211,34 @@ export default {
         }
       })
     },
+    /**
+     * Hàm chọn phòng bạn khi click chuột
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     SelectedDepartment (index, department) {
       this.indexOptionSelected = index
       this.departmentSeleted = department.departmentId
       this.departmentSearch = department.departmentName
       this.isShowDepartmentList = false
     },
-    HiddenDepartmentList () {
-      console.log('ok')
-    },
+    // HiddenDepartmentList () {
+    //   console.log('ok')
+    // },
+    /**
+     * Reset lại phòng ban được chọn
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ResetDepartmentSelected () {
       this.isShowDepartmentList = !this.isShowDepartmentList
       this.departmentSearch = this.fakeDepartments[this.indexOptionSelected].departmentName
     },
+    /**
+     * Thay đổi lại giá trị phòng ban được chọn khi tìm kiếm rỗng
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ChangeValueOption () {
       if (!this.departmentSearch) {
         this.departmentSeleted = this.fakeDepartments[0].departmentId
@@ -207,9 +248,11 @@ export default {
     }
   },
   watch: {
+    // Theo dõi biến lưu giá trị Id phòng ban được chọn
     departmentSeleted (newValue, oldValue) {
       this.$emit('updateDepartment', newValue)
     },
+    // Theo dõi giá trị department được tìm kiếm
     departmentSearch (newValue) {
       if (!this.departmentSearch) {
         this.$emit('addErrorDepartment')
@@ -217,6 +260,7 @@ export default {
         this.$emit('removeErrorDepartment')
       }
     },
+    // Theo dõi danh sách phòng ban sao chép
     fakeDepartments (newValue) {
       if (!this.fakeDepartments.length) {
         this.$emit('addErrorDepartment')

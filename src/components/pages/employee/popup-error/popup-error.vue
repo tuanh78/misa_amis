@@ -21,12 +21,18 @@
 <script>
 export default {
   props: {
+    // Thông báo lỗi
     errorMessage: {
       type: String,
       default: 'Mã không được để trống.'
     }
   },
   methods: {
+    /**
+     * Hàm đóng Popup lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopupError () {
       this.$emit('closePopupError')
     }

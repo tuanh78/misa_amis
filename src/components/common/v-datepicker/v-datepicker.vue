@@ -23,9 +23,9 @@ import moment from 'moment'
 export default {
   components: { DatePick },
   data: () => ({
-    date: '',
-    weekDays: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
-    dateFormat: CONSTANTS.DATE_FORMAT,
+    date: '', // Biến lưu giá trị của ngày được chọn
+    weekDays: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], // Biến lưu giá trị hiển thị ngày
+    dateFormat: CONSTANTS.DATE_FORMAT, // Định dạng hiển thị ngày tháng năm
     months: [
       'Tháng 1',
       'Tháng 2',
@@ -39,10 +39,11 @@ export default {
       'Tháng 10',
       'Tháng 11',
       'Tháng 12'
-    ],
-    focusInput: false
+    ], // Biến lưu trữ giá trị hiển thị của tháng
+    focusInput: false // Biến xác định input được focus
   }),
   props: {
+    // Giá trị ngày tháng năm
     dateOfBirth: {
       type: String,
       default: moment().format('YYYY-MM-DD')
@@ -52,15 +53,24 @@ export default {
     this.date = this.dateOfBirth
   },
   methods: {
+    /**
+     * Hàm không cho chọn ngày ở tương lai
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     isFutureDate (date) {
       const currentDate = new Date()
       return date > currentDate
     },
+    /**
+     * Hàm thay đổi focus input
+     */
     ChangeBorderColor () {
       this.focusInput = false
     }
   },
   watch: {
+    // Theo dõi biến date
     date (newValue, oldValue) {
       this.$emit('updateValue', newValue)
     }

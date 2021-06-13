@@ -18,12 +18,14 @@
 <script>
 export default {
   props: {
+    // Tổng số lượng trang
     totalPages: {
       type: Number,
       default: 1
     }
   },
   methods: {
+    // Hàm Load trang mới
     clickCallback (pageNum) {
       this.$emit('loadPage', pageNum)
     }

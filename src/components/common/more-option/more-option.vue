@@ -17,16 +17,23 @@
 <script>
 export default {
   props: {
+    // Vị trí chuột ở trục X
     screenX: {
       type: Number,
       default: 0
     },
+    // Vị trí chuột ở trục Y
     screenY: {
       type: Number,
       default: 0
     }
   },
   methods: {
+    /**
+     * Hàm hiển thị thông báo xóa
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ShowPopupDelete () {
       this.$emit('showPopupDelete')
     }

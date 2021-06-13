@@ -52,12 +52,18 @@
 <script>
 export default {
   props: {
+    // Biến hiển thị icon đóng mở sidebar
     isShowThreeStripes: {
       type: Boolean,
       default: true
     }
   },
   methods: {
+    /**
+     * Hàm ẩn Logo
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     HiddenLogo () {
       this.$emit('hiddenLogo')
     }

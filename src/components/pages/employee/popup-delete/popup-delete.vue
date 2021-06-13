@@ -26,14 +26,25 @@
 <script>
 export default {
   props: {
+    // Thông báo xóa
     messageDelete: {
       type: String
     }
   },
   methods: {
+    /**
+     * Hàm đóng Popup
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     ClosePopup () {
       this.$emit('closePopup')
     },
+    /**
+     * Hàm xóa nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     DeleteEmployee () {
       this.$emit('deleteEmployee')
     }

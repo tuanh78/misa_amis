@@ -22,13 +22,15 @@ export default {
   },
   data () {
     return {
-      isShowLogo: true
+      isShowLogo: true // Biến để hiển thị Logo hay không
     }
   },
   methods: {
+    // Hàm ẩn Logo
     HiddenLogo () {
       this.isShowLogo = false
     },
+    // Hàm hiện Logo
     ShowLogo () {
       this.isShowLogo = true
     }
@@ -61,23 +63,26 @@ body {
   color: #111;
 }
 
+// Kích thước của icon lớn
 .icon-common-large {
     background: url('./assets/img/Sprites.64af8f61.svg') no-repeat;
     width: 24px;
     height: 24px;
 }
-
+// Kích thước của icon vừa
 .icon-common-medium {
     background: url('./assets/img/Sprites.64af8f61.svg') no-repeat;
     width: 16px;
     height: 16px;
 }
-
+// Kích thước của icon nhỏ
 .icon-common-small {
     background: url('./assets/img/Sprites.64af8f61.svg') no-repeat;
     width: 14px;
     height: 14px;
 }
+
+// Font của trang web
 
 @font-face {
   font-family: 'noto-sans';
