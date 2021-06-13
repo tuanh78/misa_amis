@@ -1,0 +1,27 @@
+.more-option {
+    position: absolute;
+    top: 286px;
+    left: 950px;
+    z-index: 10;
+
+    .dropdown-menu {
+        background: #fff;
+        padding: 2px 1px;
+        border-radius: 2px;
+        border: 1px solid #babec5;
+        position: relative;
+    }
+
+    li:hover {
+        .option-item {
+            background-color: #e8e9ec;
+            color: #08bf1e;
+        }
+    }
+    .option-item {
+        padding: 5px 10px;
+        display: block;
+        text-decoration: none;
+        color: #111;
+    }
+}

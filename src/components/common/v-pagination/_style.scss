@@ -1,0 +1,43 @@
+.pagination {
+    display: flex;
+}
+
+.page-link {
+    padding: 0 .5rem;
+    height: 21.33px;
+    display: block;
+    border: 1px solid $color-white;
+}
+
+.prev-li {
+    display: flex;
+    align-items: center;
+}
+
+.prev-link {
+    margin-right: 13px;
+    height: 19.33px;
+    display: block;
+}
+
+
+.next-li {
+    display: flex;
+    align-items: center;
+}
+
+.next-link {
+    margin-left: 13px;
+    height: 19.33px;
+    display: block;
+}
+
+
+.active-page {
+    border: 1px solid #e0e0e0;
+    font-family: 'noto-sans-Bold', sans-serif;
+}
+
+.disabled-btn {
+    color: #9e9e9e;
+}

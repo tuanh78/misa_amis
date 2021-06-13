@@ -1,0 +1,230 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $color-white;
+    -webkit-box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px 0 rgba(0,0,0, 0.05);
+
+    &-left {
+        display: flex;
+        align-items: center;
+    }
+
+    &-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-three-stripes {
+        background-position: -843px -30px;
+        margin: 0 10px;
+    }
+
+    .company {
+        &-name {
+            display: flex;
+            cursor: pointer;
+
+            &-detail {
+                max-width: 200px;
+                padding-left: 10px;
+                font-family: 'noto-sans-semi-Bold', sans-serif;
+                font-size: 14px;
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .icon-arrow-down {
+                min-width: 34px;
+                min-height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .arrow-down {
+                    background-position: -80px -360px;
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+
+    .search {
+        position: relative;
+        margin-right: 20px;
+        &:hover {
+            .search-input {
+                outline: 1px solid $color-header-search-outline
+            }
+        }
+        &-input {
+            padding: 6px 22.75px 6px 11.05px;
+            border: 1px solid $color-header-border-search;
+            border-radius: 3px;
+            outline: none;
+            min-width: 200px;
+            height: 32px;
+            box-sizing: border-box;
+
+            &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                color: $color-gray;
+                font-family: 'noto-sans-italic';
+                font-size: 12px;
+            }
+            &::-moz-placeholder { /* Firefox 19+ */
+                color: $color-gray;
+                font-family: 'noto-sans-italic';
+                font-size: 12px;
+            }
+            &:-ms-input-placeholder { /* IE 10+ */
+                color: $color-gray;
+                font-family: 'noto-sans-italic';
+                font-size: 12px;
+            }
+            &:-moz-placeholder { /* Firefox 18- */
+                color: $color-gray;
+                font-family: 'noto-sans-italic';
+                font-size: 12px;
+            }
+        }
+
+        &-icon {
+            background-position: -992px -360px;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            right: 5px;
+            top: 8px;
+            left: auto;
+            margin-right: 4px;
+        }
+    }
+
+    .tools {
+        display: flex;
+        
+        &-item {
+            padding: 0 10px;
+            width: 44px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+                background-color: $color-black;
+
+                div.icon-setting {
+                    background-position: -144px -88px;
+                }
+
+                div.icon-chat {
+                    background-position: -368px -88px;
+                }
+
+                div.icon-help {
+                    background-position: -200px -88px;
+                }
+                
+                div.icon-bell {
+                    background-position: -256px -88px;
+                }
+            }
+
+            &:hover::after {
+                content: "";
+                width: 0;
+                height: 0;
+                border-bottom: 8px solid transparent;
+                border-left: 22px solid transparent;
+                border-right: 22px solid transparent;
+                border-top: 8px solid $color-black;
+                position: absolute;
+                bottom: -16px;
+                left: 0;
+                z-index: 5;
+            }
+
+            &:first-child:hover {
+                background-color: $bg-header-tools-hover;
+
+                div.icon-mess {
+                    background-position: -568px -76px;
+                }
+
+                &::after {
+                    border-top: 8px solid $bg-header-tools-hover;
+                }
+            }
+            .icon-mess {
+                background-position: -568px -30px;
+            }
+
+            .icon-setting {
+                background-position: -675px -30px;
+            }
+
+            .icon-chat {
+                background-position: -899px -30px;
+            }
+
+            .icon-help {
+                background-position: -731px -30px;
+            }
+            
+            .icon-bell {
+                background-position: -788px -30px;
+            }
+        }
+    }
+
+    .user-ctn {
+        padding-right: 20px;
+    }
+
+    .user {
+        display: flex;
+        padding: 0 16px;
+
+        &-avatar {
+            background-image: url('../../../assets/img/avatar.jpg');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        &-fullname {
+            display: flex;
+            align-items: center;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 5px 0;
+            color: $color-dark;
+            font-family: 'noto-sans-semi-Bold';
+            font-size: 14px;
+            text-transform: capitalize;
+            line-height: 13px;
+            margin-right: 8px;
+        }
+
+        &-icon {
+            display: flex;
+            align-items: center;
+            .icon-arrow-down {
+                background-position: -1076px -32px;
+            }
+        }
+    }
+
+    .space-between-div {
+        width: 47.43px;
+    }
+}

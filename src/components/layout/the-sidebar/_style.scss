@@ -1,0 +1,165 @@
+.sidebar {
+    height: 100vh;
+
+    .sidebar-three-stripes {
+        display: flex;
+        background-color: $bg-sidebar;
+        padding: 10px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        .icon-three-stripes {
+            background-position: -312px -32px;
+        }
+    }
+
+    &-logo-ctn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $bg-sidebar;
+        height: 48px;
+        padding: 24px;
+    }
+
+    &-option {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        background: url('../../../assets/img/Sprites.64af8f61.svg') no-repeat -424px -86px;
+        cursor: pointer;
+    }
+
+    &-logo {
+        width: 96px;
+        height: 32px;
+        background-image: url('../../../assets/img/Logo_Module_TiengViet_White.66947422.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+    .list-menu {
+        height: calc(100% - 48px);
+        overflow-x: auto;
+        padding-top: 14px;
+        background-color: #393a3d;
+
+        &::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px;
+            background-color: #F5F5F5;
+        }
+
+        &::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $bg-scrollbar-thumb;
+
+        }
+
+        &:hover {
+            &::-webkit-scrollbar-thumb {
+                background-color: $bg-scrollbar-thumb-hover;
+            }
+        }
+
+        &::-webkit-scrollbar-track-piece {
+            background-color: $bg-scrollbar-track-piece;
+        }
+        .item-menu {
+            background-color: $bg-sidebar;
+            display: block;
+            padding-left: 14px;
+            height: 42px;
+            line-height: 42px;
+            text-decoration: none;
+
+            &-ctn {
+                display: flex;
+                color: $color-white;
+                height: 42px;
+            }
+        }
+        .item-menu-icon {
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon-dashboard {
+                background-position: -30px -1628px;
+            }
+
+            .sidebar-cash {
+                background-position: -73px -1628px;
+            }
+
+            .sidebar-bank {
+                background-position: -117px -1628px;
+            }
+
+            .sidebar-pu {
+                background-position: -161px -1628px;
+            }
+
+            .sidebar-sale {
+                background-position: -204px -1628px;
+            }
+
+            .sidebar-invoice {
+                background-position: -249px -1628px;
+            }
+
+            .sidebar-stock {
+                background-position: -291px -1628px;
+            }
+
+            .sidebar-tools {
+                background-position: -336px -1628px;
+            }
+
+            .sidebar-fixed-assets {
+                background-position: -378px -1630px;
+            }
+
+            .sidebar-tax {
+                background-position: -423px -1630px;
+            }
+
+            .sidebar-price {
+                background-position: -467px -1628px;
+            }
+
+            .sidebar-general {
+                background-position: -510px -1628px;
+            }
+
+            .sidebar-budget {
+                background-position: -378px -1659px;
+            }
+
+            .sidebar-report {
+                background-position: -547px -1628px;
+            }
+
+            .sidebar-finance {
+                background-position: -204px -1664px;
+            }
+        }
+
+        .item-menu-text {
+
+        }
+
+        ul {
+            li:hover {
+                .item-menu {
+                    background-color: $bg-item-menu-hover;
+                }
+            }
+        }
+    }
+}

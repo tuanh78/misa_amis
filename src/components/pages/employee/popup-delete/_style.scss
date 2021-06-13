@@ -1,0 +1,89 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    
+    .main-popup-ctn {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 32px;
+        border-radius: 3px;
+        width: 444px;
+        min-width: 444px;
+
+    }
+
+    .main-popup {
+        display: flex;
+        .icon-warning {
+            width: 48px;
+            height: 48px;
+            background-image: url('../../../../assets/img/Sprites.64af8f61.svg');
+            background-position: -592px -456px;
+        }
+
+        .content-warning {
+            margin-bottom: 32px;
+            padding: 12px 0 0 16px;
+
+            span {
+                display: block;
+            }
+        }
+    }
+
+    .straight-line {
+        height: 1px;
+        width: 100%;
+        margin-bottom: 20px;
+        background: #b8bcc3;
+    }
+
+    .group-btn {
+        display: flex;
+        justify-content: space-between;
+
+        .btn-common {
+            height: 36px;
+            padding: 8px 20px;
+            border-radius: 3px;
+            color: #111;
+            background-color: transparent;
+            cursor: pointer;
+            font-family: 'noto-sans-semi-Bold', sans-serif;
+            transition: all .2s ease;
+        }
+
+        .btn-close {
+            border: 1px solid #8d9096;
+
+            &:hover {
+                background-color: #d2d3d6;
+            }
+        }
+
+        .btn-delete {
+            border: 1px solid transparent;
+            color: #fff;
+            background-color: #2ca01c;
+
+            &:hover {
+                background-color: #35bf22;
+            }
+        }
+    }
+
+    .mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        background: rgba(0,0,0,.4);
+    }
+}

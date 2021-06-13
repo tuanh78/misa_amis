@@ -1,0 +1,447 @@
+<template>
+  <div class="add-employee">
+    <div class="form-ctn">
+      <div class="popup-header">
+        <div class="popup-header-left">
+          <div class="popup-header-title">Thông tin nhân viên</div>
+          <div class="customer">
+            <label class="ms-component con-ms-checkbox px-6"
+              ><input type="checkbox" class="ms-checkbox--input" /><span
+                class="
+                  ms-checkbox-border-disabled-false
+                  ms-checkbox-border-checked-true
+                  checkbox_x
+                  ms-checkbox
+                "
+                ><span
+                  class="
+                    ms-checkbox-inner ms-checkbox-check-disabled-false
+                    ms-checkbox--check
+                  "
+                >
+                  <div
+                    data-v-650c2276=""
+                    class="mi mi-16 mi-checkbox-active"
+                  ></div> </span
+                ><!----></span
+              ><span class="con-slot-label"
+                ><div class="con-ms-tooltip">
+                  <div class="msTooltipParent">
+                    <div
+                      class="ms-tooltip"
+                      style="
+                        left: 0px;
+                        top: 0px;
+                        position: fixed;
+                        display: none;
+                      "
+                    ></div>
+                  </div>
+                  <div class="tooltip-content">Là khách hàng</div>
+                </div></span
+              ></label
+            >
+          </div>
+          <div class="supplier">
+            <label class="ms-component con-ms-checkbox px-6"
+              ><input type="checkbox" class="ms-checkbox--input" /><span
+                class="
+                  ms-checkbox-border-disabled-false
+                  ms-checkbox-border-checked-false
+                  checkbox_x
+                  ms-checkbox
+                "
+                ><span
+                  class="
+                    ms-checkbox-inner ms-checkbox-check-disabled-false
+                    ms-checkbox--check
+                  "
+                >
+                  <div
+                    data-v-650c2276=""
+                    class="mi mi-16 mi-checkbox-active"
+                  ></div> </span
+                ><!----></span
+              ><span class="con-slot-label"
+                ><div class="con-ms-tooltip">
+                  <div class="msTooltipParent">
+                    <div
+                      class="ms-tooltip"
+                      style="
+                        left: 0px;
+                        top: 0px;
+                        position: fixed;
+                        display: none;
+                      "
+                    ></div>
+                  </div>
+                  <div class="tooltip-content">Là nhà cung cấp</div>
+                </div></span
+              ></label
+            >
+          </div>
+        </div>
+
+        <div class="popup-header-right">
+          <div class="icon-question-ctn">
+            <div class="icon-common-large icon-question"></div>
+          </div>
+          <div class="icon-close-ctn">
+            <div
+              class="icon-common-large icon-close"
+              @click="ClosePopupAddEmployee"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-content">
+        <div class="top-content">
+          <div class="top-left-content">
+            <div class="code-name-ctn">
+              <div class="employee-code">
+                <div class="title-input-common">
+                  Mã <span class="field-required">*</span>
+                </div>
+                <div class="input-code">
+                  <input v-model="employee.employeeCode" ref="employeeCode" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
+                </div>
+              </div>
+
+              <div class="employee-name">
+                <div class="title-input-common">
+                  Tên <span class="field-required">*</span>
+                </div>
+                <div class="input-name">
+                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" />
+                </div>
+              </div>
+            </div>
+
+            <div class="department ctn-common">
+              <div class="title-input-common">
+                Đơn vị <span class="field-required">*</span>
+              </div>
+              <div class="auto-complete-input">
+                <div class="input-department">
+                  <div class="input-department-ctn">
+                    <!-- <input type="text" class="input-style-common department-custom" /> -->
+                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment"></v-autocomplete>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="office ctn-common">
+              <div class="title-input-common">Chức danh</div>
+              <div class="input-office">
+                <input v-model="employee.employeePosition" type="text" class="input-style-common" />
+              </div>
+            </div>
+          </div>
+          <div class="top-right-content">
+            <div class="date-gender ctn-common">
+              <div class="date-of-birth">
+                <div class="title-input-common">Ngày sinh</div>
+                <v-datepicker :dateOfBirth="employee.dateOfBirth" @updateValue="UpdateDateOfBirth"></v-datepicker>
+              </div>
+
+              <div class="gender">
+                <div class="title-input-common">Giới tính</div>
+                <div class="gender-option">
+                  <div class="male radio-btn">
+                    <input type="radio" id="male" name="radio-group" v-model.number="employee.gender"
+                    value=0 />
+                    <label for="male">Nam</label>
+                  </div>
+                  <div class="male radio-btn">
+                    <input
+                      type="radio"
+                      id="female"
+                      name="radio-group"
+                      value=1
+                      v-model.number="employee.gender"
+                    />
+                    <label for="female">Nữ</label>
+                  </div>
+                  <div class="male radio-btn">
+                    <input
+                      type="radio"
+                      id="other"
+                      name="radio-group"
+                      value=2
+                      v-model.number="employee.gender"
+                    />
+                    <label for="other">Khác</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="identity-card ctn-common">
+              <div class="identity-card-number">
+                <div class="title-input-common">Số CMND</div>
+                <div class="input-identify-card-ctn">
+                  <input v-model="employee.identityNumber" type="text" class="input-style-common department-custom" />
+                </div>
+              </div>
+
+              <div class="date-range">
+                <div class="title-input-common">Ngày cấp</div>
+                <v-datepicker :dateOfBirth="employee.identityDate" @updateValue="UpdateIdentityDate"></v-datepicker>
+              </div>
+            </div>
+
+            <div class="issued-by ctn-common">
+              <div class="title-input-common">Nơi cấp</div>
+              <div class="input-issued-by">
+                <input v-model="employee.identityPlace" type="text" class="input-style-common" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-content">
+          <div class="address">
+            <div class="title-input-common">Địa chỉ</div>
+            <div class="input-address">
+              <input v-model="employee.address" type="text" class="input-style-common" />
+            </div>
+          </div>
+
+          <div class="phone-number-telephone-email">
+            <div class="phone-number three-input-padding">
+              <div class="title-input-common">ĐT di động</div>
+              <div class="input-phone-number">
+                <input
+                  v-model="employee.phoneNumber"
+                  type="text"
+                  class="input-style-common width-three-input"
+                />
+              </div>
+            </div>
+
+            <div class="telephone-number three-input-padding">
+              <div class="title-input-common">ĐT cố định</div>
+              <div class="input-telephone width-three-input">
+                <input v-model="employee.telephoneNumber" type="text" class="input-style-common" />
+              </div>
+            </div>
+
+            <div class="email">
+              <div class="title-input-common">Email</div>
+              <div class="input-email">
+                <input
+                  v-model="employee.email"
+                  type="text"
+                  class="input-style-common width-three-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="phone-number-telephone-email">
+            <div class="phone-number three-input-padding">
+              <div class="title-input-common">Tài khoản ngân hàng</div>
+              <div class="input-phone-number">
+                <input
+                  v-model="employee.bankAccountNumber"
+                  type="text"
+                  class="input-style-common width-three-input"
+                />
+              </div>
+            </div>
+
+            <div class="telephone-number three-input-padding">
+              <div class="title-input-common">Tên ngân hàng</div>
+              <div class="input-telephone width-three-input">
+                <input v-model="employee.bankName" type="text" class="input-style-common" />
+              </div>
+            </div>
+            <div class="email">
+              <div class="title-input-common">Chi nhánh</div>
+              <div class="input-email">
+                <input
+                  v-model="employee.bankBranchName"
+                  type="text"
+                  class="input-style-common width-three-input"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-container">
+        <div class="divide"></div>
+        <div class="popup-footer">
+          <div class="destroy-btn">Hủy</div>
+          <div class="save-btn-group">
+            <div class="save-btn-ctn" @click="SaveEmployee">
+              <div class="save-btn">Cất</div>
+            </div>
+            <div class="save-new-record">Cất và thêm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mask"></div>
+    <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="ClosePopupWarning"></popup-duplicate-code>
+    <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="ClosePopupError"></popup-error>
+  </div>
+</template>
+
+<script>
+import VDatepicker from '../../../common/v-datepicker/v-datepicker'
+import VAutocomplete from '../../../common/v-autocomplete/v-autocomplete.vue'
+import PopupDuplicateCode from '../../../pages/employee/popup-duplicate-code/popup-duplicate-code.vue'
+import { HTTP } from '../../../../axios/http-common'
+import PopupError from '../popup-error/popup-error.vue'
+export default {
+  data () {
+    return {
+      employee: {
+        employeeCode: this.latestEmployeeCode,
+        employeeName: null,
+        dateOfBirth: null,
+        gender: 0,
+        departmentId: null,
+        identityNumber: null,
+        identityDate: null,
+        identityPlace: null,
+        employeePosition: null,
+        address: null,
+        bankAccountNumber: null,
+        bankName: null,
+        bankBranchName: null,
+        bankProvinceName: null,
+        phoneNumber: null,
+        telephoneNumber: null,
+        email: null
+      },
+      isShowEmployeeCodeWarning: false,
+      errorProperties: [],
+      errorMessage: '',
+      isShowPopupError: false
+
+    }
+  },
+  props: {
+    departments: {
+      type: Array
+    },
+    latestEmployeeCode: {
+      type: String
+    }
+  },
+  mounted () {
+    this.$refs.employeeCode.focus()
+  },
+  components: {
+    VDatepicker,
+    VAutocomplete,
+    PopupDuplicateCode,
+    PopupError
+  },
+  methods: {
+    ClosePopupAddEmployee () {
+      this.$emit('closePopupAddEmployee')
+    },
+    UpdateDateOfBirth (dateOfBirth) {
+      this.employee.dateOfBirth = dateOfBirth
+    },
+    UpdateIdentityDate (identityDate) {
+      this.employee.identityDate = identityDate
+    },
+    UpdateDepartment (departmentId) {
+      this.employee.departmentId = departmentId
+    },
+    SaveEmployee () {
+      if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+        this.errorProperties.push('employeeCode')
+      }
+      if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+        this.errorProperties.push('employeeName')
+      }
+      if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+        this.errorProperties.push('departmentId')
+      }
+      if (this.errorProperties.length > 0) {
+        this.errorProperties.every(element => {
+          if (element === 'employeeCode') {
+            this.errorMessage = 'Mã không được để trống'
+            this.isShowPopupError = true
+            return false
+          }
+          if (element === 'employeeName') {
+            this.isShowPopupError = true
+            this.errorMessage = 'Tên không được để trống'
+            return false
+          }
+          if (element === 'departmentId') {
+            this.isShowPopupError = true
+            this.errorMessage = 'Đơn vị không được để trống'
+            return false
+          }
+        })
+      } else {
+        HTTP.post('employees', this.employee)
+          .then((result) => {
+            this.$emit('saveEmployeeSuccess')
+          }).catch((err) => {
+            const propertyInvalidLists = err.response.data.propertyInvalidLists
+            if (err.response.data.misaCode === 400) {
+              propertyInvalidLists.forEach(element => {
+                if (element.propertyName === 'employeeCode') {
+                  this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                  this.isShowEmployeeCodeWarning = true
+                }
+              })
+            }
+          })
+      }
+    },
+    ClosePopupWarning () {
+      this.isShowEmployeeCodeWarning = false
+    },
+    CheckValueEmployeeCode () {
+      if (!this.employee.employeeCode) {
+        this.errorProperties.push('employeeCode')
+      } else {
+        const index = this.errorProperties.indexOf('employeeCode')
+        if (index > -1) {
+          this.errorProperties.splice(index, 1)
+        }
+      }
+    },
+    CheckValueEmployeeName () {
+      if (!this.employee.employeeName) {
+        this.errorProperties.push('employeeName')
+      } else {
+        const index = this.errorProperties.indexOf('employeeName')
+        if (index > -1) {
+          this.errorProperties.splice(index, 1)
+        }
+      }
+    },
+    ClosePopupError () {
+      this.isShowPopupError = false
+    },
+    AddErrorDepartment () {
+      if (!this.errorProperties.includes('departmentId')) {
+        this.errorProperties.push('departmentId')
+      }
+    },
+    RemoveErrorDepartment () {
+      const index = this.errorProperties.indexOf('departmentId')
+      if (index > -1) {
+        this.errorProperties.splice(index, 1)
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "../../../../scss/_variable.scss";
+@import "./_style.scss";
+</style>
