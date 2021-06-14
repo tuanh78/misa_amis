@@ -5,21 +5,23 @@
       <i class="fa fa-spinner fa-spin"></i>
     </div>
     <div class="employee-top">
-      <div class="employee-top-left">
-        <div class="title-text">Nhân viên</div>
-        <div class="title-icon">
-          <div class="icon-common-medium icon-arrow-left"></div>
-          <div class="text-blue">Tất cả danh mục</div>
+      <div class="employee-top-atop">
+        <div class="employee-top-left">
+          <div class="title-text">Nhân viên</div>
         </div>
-      </div>
 
-      <div class="employee-top-right">
-        <!-- Button thêm nhân viên -->
-        <div class="btn-add">
-          <div class="btn-add-left" @click="ShowAddForm">
-            <span>Thêm mới nhân viên</span>
+        <div class="employee-top-right">
+          <!-- Button thêm nhân viên -->
+          <div class="btn-add">
+            <div class="btn-add-left" @click="ShowAddForm">
+              <span>Thêm mới nhân viên</span>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="title-icon employee-top-bottom">
+        <div class="icon-common-medium icon-arrow-left"></div>
+        <div class="text-blue">Tất cả danh mục</div>
       </div>
     </div>
     <!-- Nhóm chức năng -->
@@ -40,7 +42,7 @@
           </div>
           <!-- Button xuất file excel -->
           <div class="icon-ctn">
-            <div class="icon-common-large icon-excel"></div>
+            <div class="icon-common-large icon-excel" @click="ExportFileExcel"></div>
           </div>
         </div>
       </div>
@@ -174,16 +176,16 @@
         <span>Tổng số: <span class="text-bold">{{ totalEmployees }}</span> bản ghi</span>
       </div>
       <div class="right-pagination">
-        <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" ref="numberRecords" @click="isActiveTotalRecord = true" v-click-outside="CloseOptionsNumberRecords">
-          <div class="total-record-detail-ctn">
+        <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" @click="isActiveTotalRecord = true" v-click-outside="CloseOptionsNumberRecords">
+          <div class="total-record-detail-ctn" ref="numberRecords">
             <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="MoveDownOption" @keydown.38="MoveUpOption" @keydown.enter="ReloadPageWithPageSize"/>
           </div>
           <div class="icon-arrow-down-ctn" @click="ToggleDropDownOption">
-            <div class="icon-common-medium icon-arrow-down"></div>
+            <div :class="['icon-common-medium', 'icon-arrow-down', {'icon-arrow-down-open': isShowOptionsNumberRecords}]"></div>
           </div>
         </div>
         <!-- Selectbox số bản ghi trên trang -->
-        <div class="list-option-number-records" :style="{top: screenY - 692 + 'px', left: screenX - 198 + 'px'}" v-if="isShowOptionsNumberRecords">
+        <div class="list-option-number-records" :style="{top: screenY - 170 + 'px', left: screenX - 1 + 'px'}" v-if="isShowOptionsNumberRecords">
             <ul class="list-options">
               <li :class="['item-option', {'item-selected': item === pageSize}]" v-for="(item, index) in numberRecords" :key="index" @click="ChangeNumberRecords(item, index)">
                 <span>{{ item }} bản ghi trên 1 trang</span>
@@ -200,6 +202,7 @@
       :latestEmployeeCode="latestEmployeeCode"
       @closePopupAddEmployee="ClosePopupAddEmployee"
       @saveEmployeeSuccess="SaveEmployeeSuccess"
+      @saveEmployeeSuccessAndAdd="SaveEmployeeSuccessAndAdd"
     ></add-employee>
     <!-- Form sửa nhân viên -->
     <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="ClosePopupEditEmployee" @saveEmployeeSuccess="SaveEmployeeSuccess"></edit-employee>
@@ -221,6 +224,7 @@ import CONSTANTS from '../../constants/constants'
 var debounce = require('lodash.debounce')
 Vue.use(vClickOutside)
 var moment = require('moment') // require
+const FileDownload = require('js-file-download')
 export default {
   data () {
     return {
@@ -230,7 +234,7 @@ export default {
       isShowPopupDelete: false, // Biến hiển thị Popup cảnh báo xóa nhân viên
       isShowNoContent: false, // Biến hiển thị thông báo bảng không có dữ liệu
       isShowOptionsNumberRecords: false, // Biến hiển thị dropdown số lượng bản ghi trên trang
-      isActiveTotalRecord: true, // Biến xác định Selectedbox số lượng bản ghi trên trang được chọn hay không
+      isActiveTotalRecord: false, // Biến xác định Selectedbox số lượng bản ghi trên trang được chọn hay không
       screenX: 0, // Vị trí con trỏ chuột theo trục X
       screenY: 0, // Vị trí con trỏ chuột theo trục Y
       employees: null, // Biến lưu trữ danh sách nhân viên
@@ -312,13 +316,15 @@ export default {
       HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
         .then(response => {
           this.employees = response.data
-
-          this.employees.map(employee => {
-            if (employee.dateOfBirth) {
-              employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
-            }
-            return employee
-          })
+          if (!this.employees.length) {
+            console.log('error')
+            this.employees.map(employee => {
+              if (employee.dateOfBirth) {
+                employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
+              }
+              return employee
+            })
+          }
           this.isShowReload = false
         })
         .catch(e => {
@@ -399,10 +405,18 @@ export default {
      * CreatedDate: 15/06/2021
      */
     DeleteEmployee () {
+      debugger
       HTTP.delete(`employees/${this.employee.employeeId}`)
         .then((result) => {
           this.isShowPopupDelete = false
-          this.ReloadPage()
+          HTTP.get(`employees/numbers-record?filter=${this.filter}`)
+            .then((result) => {
+              this.totalEmployees = result.data
+              this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+              this.ReloadPage()
+            }).catch((err) => {
+              console.log(err)
+            })
         }).catch((err) => {
           console.log(err)
         })
@@ -454,12 +468,14 @@ export default {
             }).catch((err) => {
               console.log(err)
             })
-          this.employees.map(employee => {
-            if (employee.dateOfBirth) {
-              employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
-            }
-            return employee
-          })
+          if (!this.employees.length) {
+            this.employees.map(employee => {
+              if (employee.dateOfBirth) {
+                employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
+              }
+              return employee
+            })
+          }
         })
         .catch(e => {
           this.errors.push(e)
@@ -539,6 +555,22 @@ export default {
       this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
       this.isShowOptionsNumberRecords = false
       this.ReloadPage()
+    },
+    ExportFileExcel () {
+      HTTP.get('employees/export', {
+        responseType: 'blob'
+      })
+        .then((result) => {
+          FileDownload(result.data, 'DanhSachNhanVien.xlsx')
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+    SaveEmployeeSuccessAndAdd () {
+      this.isShowEditEmployee = false
+      this.isShowAddEmployee = false
+      this.ReloadPage()
+      this.ShowAddForm()
     }
   }
 }

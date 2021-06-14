@@ -12,154 +12,154 @@
     <div class="list-menu">
       <ul>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large icon-dashboard"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Tổng quan</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/nhan-vien" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-cash"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Tiền mặt</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/tien-gui" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-bank"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Tiền gửi</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/mua-hang" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-pu"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Mua hàng</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/ban-hang" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-sale"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Bán hàng</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/quan-ly-hoa-don" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-invoice"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Quản lý hóa đơn</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/kho" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-stock"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Kho</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/cong-cu-dung-cu" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-tools"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Công cụ dụng cụ</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/tai-san-co-dinh" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-fixed-assets"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Tài sản cố định</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/thue" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-tax"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Thuế</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/gia-thanh" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-price"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Giá thành</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/tong-hop" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-general"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Tổng hợp</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/ngan-sach" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-budget"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Ngân sách</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/bao-cao" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-report"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Báo cáo</div>
             </div>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="item-menu">
+          <router-link to="/phan-tich-tai-chinh" class="item-menu">
             <div class="item-menu-ctn">
               <div class="item-menu-icon">
                 <div class="icon-common-large sidebar-finance"></div>
               </div>
               <div v-if="isShowLogo" class="item-menu-text">Phân tích tài chính</div>
             </div>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>

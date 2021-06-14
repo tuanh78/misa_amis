@@ -20,7 +20,7 @@
   }
   
   .vdpComponent {
-    height: 32px;
+    height: 30px;
     display: flex;
     input {
       padding: 5px 0 5px 10px;
@@ -33,4 +33,27 @@
 
 .border-focus {
   border: 1px solid #2ca01c;
+}
+
+.input-date {
+  &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-family: 'noto-sans-italic', sans-serif;
+    color: #A4A4A4;
+    font-size: 12px;
+  }
+  &::-moz-placeholder { /* Firefox 19+ */
+    font-family: 'noto-sans-italic', sans-serif;
+    color: #A4A4A4;
+    font-size: 12px;
+  }
+  &:-ms-input-placeholder { /* IE 10+ */
+    font-family: 'noto-sans-italic', sans-serif;
+    color: #A4A4A4;
+    font-size: 12px;
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    font-family: 'noto-sans-italic', sans-serif;
+    color: #A4A4A4;
+    font-size: 12px;
+  }
 }

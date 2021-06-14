@@ -109,6 +109,10 @@
                         transform: rotate(0deg);
                     }
 
+                    .icon-arrow-down-open {
+                        transform: rotate(180deg);
+                    }
+
                     .icon-arrow-up {
                         transform: rotate(180deg);
                         transition: transform .15s linear;
@@ -117,7 +121,7 @@
             }
 
             .list-option-number-records {
-                position: absolute;
+                position: fixed;
                 z-index: 9;
                 min-width: 200px;
                 transition: opacity .1s,transform .1s,width .2s ease;
@@ -157,33 +161,39 @@
 
 .employee-top {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     padding: 24px 0 24px 0px;
     position: sticky;
     top: 0;
     left: 0;
     z-index: 4;
     background-color: #f4f5f6;
+
+    .employee-top-atop{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .title-icon {
+        align-items: center;
+        display: flex;
+        cursor: pointer;
+
+        .icon-arrow-left {
+            background-position: -224px -360px;
+        }
+
+        .text-blue {
+            color: $color-light-blue;
+        }
+    }
     &-left {
         .title-text {
             font-size: 24px;
             font-family: 'noto-sans-Bold', sans-serif;
             color: $color-dark;
             display: inline-block;
-        }
-
-        .title-icon {
-            align-items: center;
-            display: flex;
-            cursor: pointer;
-
-            .icon-arrow-left {
-                background-position: -224px -360px;
-            }
-
-            .text-blue {
-                color: $color-light-blue;
-            }
         }
     }
 
@@ -396,7 +406,6 @@
     border-right: 1px dotted #c7c7c7;
     background-color: $color-white;
     vertical-align: middle;
-    overflow: hidden;
     white-space: nowrap;
 }
 
@@ -409,7 +418,7 @@
 
 .th-style-common {
     position: sticky;
-    top: 103.33px;
+    top: 102.33px;
     left: auto;
 }
 
@@ -660,6 +669,7 @@ tbody {
 
 .function-th {
     text-align: right;
+    border-left-style: solid;
 }
 
 .space-right-white {
@@ -681,7 +691,7 @@ tbody {
 }
 
 .sticky-style {
-    top: 103.33px;
+    top: 102.33px;
     z-index: 4;
 }
 }

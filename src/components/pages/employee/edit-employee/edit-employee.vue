@@ -1,5 +1,5 @@
 <template>
-  <div class="add-employee">
+  <div class="add-employee" @keydown.27="ClosePopupEditEmployee">
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -89,7 +89,7 @@
           <div class="icon-close-ctn">
             <div
               class="icon-common-large icon-close"
-              @click="ClosePopupEditEmployee"
+              @click="CheckChangeData"
             ></div>
           </div>
         </div>
@@ -105,6 +105,7 @@
                 </div>
                 <div class="input-code">
                   <input v-model="employee.employeeCode" ref="employeeCode" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
+                  <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống."></tool-tip>
                 </div>
               </div>
 
@@ -113,7 +114,8 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" />
+                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"  @keydown.tab="MoveToDepartment"/>
+                  <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
             </div>
@@ -273,7 +275,7 @@
       <div class="footer-container">
         <div class="divide"></div>
         <div class="popup-footer">
-          <div class="destroy-btn">Hủy</div>
+          <div class="destroy-btn" @click="ClosePopupEditEmployee">Hủy</div>
           <div class="save-btn-group">
             <div class="save-btn-ctn" @click="SaveEmployee">
               <div class="save-btn">Cất</div>
@@ -287,6 +289,7 @@
     <div class="mask"></div>
     <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="ClosePopupWarning"></popup-duplicate-code>
     <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="ClosePopupError"></popup-error>
+    <popup-data-change v-if="isShowPopupDataChange" :message="messageDataChange" @closePopup="ClosePopupDataChange" @closeForm="ClosePopupEditEmployee" @saveData="SaveData"></popup-data-change>
   </div>
 </template>
 
@@ -294,8 +297,11 @@
 import VDatepicker from '../../../common/v-datepicker/v-datepicker'
 import VAutocomplete from '../../../common/v-autocomplete/v-autocomplete.vue'
 import PopupDuplicateCode from '../../../pages/employee/popup-duplicate-code/popup-duplicate-code.vue'
+import ToolTip from '../../../common/tool-tip/tool-tip.vue'
 import { HTTP } from '../../../../axios/http-common'
 import PopupError from '../popup-error/popup-error.vue'
+import EventBus from '../../../../event-bus/event-bus'
+import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
 import moment from 'moment'
 export default {
   data () {
@@ -304,7 +310,10 @@ export default {
       isShowEmployeeCodeWarning: false, // Biến hiển thị thông báo mã nhân viên bị trùng
       errorProperties: [], // Biến lưu trữ các trường bị lỗi
       errorMessage: '', // Thông báo lỗi
-      isShowPopupError: false // Biến hiển thị thông báo lỗi
+      isShowPopupError: false, // Biến hiển thị thông báo lỗi,
+      fakeEmployee: null,
+      messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?',
+      isShowPopupDataChange: false
 
     }
   },
@@ -343,7 +352,9 @@ export default {
     VDatepicker,
     VAutocomplete,
     PopupDuplicateCode,
-    PopupError
+    PopupError,
+    ToolTip,
+    PopupDataChange
   },
   methods: {
     /**
@@ -490,6 +501,46 @@ export default {
       if (index > -1) {
         this.errorProperties.splice(index, 1)
       }
+    },
+    /**
+     * Hàm chuyển đến input đơn vị
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    MoveToDepartment () {
+      EventBus.$emit('moveToDepartment')
+    },
+    /**
+     * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    CheckChangeData () {
+      for (const property in this.employee) {
+        if (this.employee[property] !== this.fakeEmployee[property]) {
+          this.isShowPopupDataChange = true
+          return true
+        }
+      }
+
+      this.ClosePopupEditEmployee()
+    },
+    /**
+     * Hàm đóng Popup thông báo thay đổi dữ liệu
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ClosePopupDataChange () {
+      this.isShowPopupDataChange = false
+    },
+    /**
+     * Hàm lưu dữ liệu khi dữ liệu thay đổi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    SaveData () {
+      this.ClosePopupDataChange()
+      this.SaveEmployee()
     }
   }
 }

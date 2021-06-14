@@ -1,5 +1,5 @@
 <template>
-  <div class="add-employee">
+  <div class="add-employee" @keydown.27="ClosePopupAddEmployee">
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -20,7 +20,6 @@
                   "
                 >
                   <div
-                    data-v-650c2276=""
                     class="mi mi-16 mi-checkbox-active"
                   ></div> </span
                 ><!----></span
@@ -89,7 +88,7 @@
           <div class="icon-close-ctn">
             <div
               class="icon-common-large icon-close"
-              @click="ClosePopupAddEmployee"
+              @click="CheckChangeData"
             ></div>
           </div>
         </div>
@@ -105,7 +104,7 @@
                 </div>
                 <div class="input-code">
                   <input v-model="employee.employeeCode" ref="employeeCode" @mousemove="GetMousePosition" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
-                  <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống." :screenX="screenX" :screenY="screenY"></tool-tip>
+                  <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống."></tool-tip>
                 </div>
               </div>
 
@@ -114,7 +113,8 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" />
+                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="MoveToDepartment" />
+                  <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
             </div>
@@ -274,12 +274,12 @@
       <div class="footer-container">
         <div class="divide"></div>
         <div class="popup-footer">
-          <div class="destroy-btn">Hủy</div>
+          <div class="destroy-btn" @click="ClosePopupAddEmployee">Hủy</div>
           <div class="save-btn-group">
             <div class="save-btn-ctn" @click="SaveEmployee">
               <div class="save-btn">Cất</div>
             </div>
-            <div class="save-new-record">Cất và thêm</div>
+            <div class="save-new-record" @click="SaveEmployeeAndAdd">Cất và thêm</div>
           </div>
         </div>
       </div>
@@ -288,6 +288,7 @@
     <div class="mask"></div>
     <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="ClosePopupWarning"></popup-duplicate-code>
     <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="ClosePopupError"></popup-error>
+    <popup-data-change v-if="isShowPopupDataChange" :message="messageDataChange" @closePopup="ClosePopupDataChange" @closeForm="ClosePopupAddEmployee" @saveData="SaveData"></popup-data-change>
   </div>
 </template>
 
@@ -298,6 +299,8 @@ import PopupDuplicateCode from '../../../pages/employee/popup-duplicate-code/pop
 import ToolTip from '../../../common/tool-tip/tool-tip.vue'
 import { HTTP } from '../../../../axios/http-common'
 import PopupError from '../popup-error/popup-error.vue'
+import EventBus from '../../../../event-bus/event-bus'
+import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
 export default {
   data () {
     return {
@@ -325,10 +328,12 @@ export default {
       errorProperties: [],
       errorMessage: '',
       isShowPopupError: false,
+      isShowPopupDataChange: false,
       departmentSearch: '',
       screenX: 0,
-      screenY: 0
-
+      screenY: 0,
+      fakeEmployee: null,
+      messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?'
     }
   },
   props: {
@@ -341,6 +346,9 @@ export default {
       type: String
     }
   },
+  created () {
+    this.fakeEmployee = { ...this.employee }
+  },
   mounted () {
     // Focus vào ô mã nhân viên khi hiện Popup
     this.$refs.employeeCode.focus()
@@ -350,7 +358,8 @@ export default {
     VAutocomplete,
     PopupDuplicateCode,
     PopupError,
-    ToolTip
+    ToolTip,
+    PopupDataChange
   },
   methods: {
     /**
@@ -522,6 +531,98 @@ export default {
     GetMousePosition (event) {
       this.screenX = event.screenX
       this.screenY = event.screenY
+    },
+    /**
+     * Hàm chuyển đến input đơn vị
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    MoveToDepartment () {
+      EventBus.$emit('moveToDepartment')
+    },
+    /**
+     * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    CheckChangeData () {
+      for (const property in this.employee) {
+        if (this.employee[property] !== this.fakeEmployee[property]) {
+          this.isShowPopupDataChange = true
+          return true
+        }
+      }
+
+      this.ClosePopupAddEmployee()
+    },
+    /**
+     * Hàm đóng Popup thông báo thay đổi dữ liệu
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ClosePopupDataChange () {
+      this.isShowPopupDataChange = false
+    },
+    /**
+     * Hàm lưu dữ liệu khi dữ liệu thay đổi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    SaveData () {
+      this.ClosePopupDataChange()
+      this.SaveEmployee()
+    },
+    /**
+     * Hàm lưu và tao
+     */
+    SaveEmployeeAndAdd () {
+      if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+        this.errorProperties.push('employeeCode')
+      }
+      if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+        this.errorProperties.push('employeeName')
+      }
+      if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+        this.errorProperties.push('departmentId')
+      }
+      if (this.errorProperties.length > 0) {
+        this.errorProperties.every(element => {
+          if (element === 'employeeCode') {
+            this.errorMessage = 'Mã không được để trống.'
+            this.isShowPopupError = true
+            return false
+          }
+          if (element === 'employeeName') {
+            this.isShowPopupError = true
+            this.errorMessage = 'Tên không được để trống.'
+            return false
+          }
+          if (element === 'departmentId') {
+            this.isShowPopupError = true
+            if (!this.departmentSearch) {
+              this.errorMessage = 'Đơn vị không được để trống.'
+            } else {
+              this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+            }
+            return false
+          }
+        })
+      } else {
+        HTTP.post('employees', this.employee)
+          .then((result) => {
+            this.$emit('saveEmployeeSuccessAndAdd')
+          }).catch((err) => {
+            const propertyInvalidLists = err.response.data.propertyInvalidLists
+            if (err.response.data.misaCode === 400) {
+              propertyInvalidLists.forEach(element => {
+                if (element.propertyName === 'employeeCode') {
+                  this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                  this.isShowEmployeeCodeWarning = true
+                }
+              })
+            }
+          })
+      }
     }
   }
 }

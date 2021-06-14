@@ -64,27 +64,27 @@
             border: 1px solid $color-header-border-search;
             border-radius: 3px;
             outline: none;
-            min-width: 200px;
+            width: 200px;
             height: 32px;
             box-sizing: border-box;
 
             &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-                color: $color-gray;
+                color: #949494;
                 font-family: 'noto-sans-italic';
                 font-size: 12px;
             }
             &::-moz-placeholder { /* Firefox 19+ */
-                color: $color-gray;
+                color: #949494;
                 font-family: 'noto-sans-italic';
                 font-size: 12px;
             }
             &:-ms-input-placeholder { /* IE 10+ */
-                color: $color-gray;
+                color: #949494;
                 font-family: 'noto-sans-italic';
                 font-size: 12px;
             }
             &:-moz-placeholder { /* Firefox 18- */
-                color: $color-gray;
+                color: #949494;
                 font-family: 'noto-sans-italic';
                 font-size: 12px;
             }

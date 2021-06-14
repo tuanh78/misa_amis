@@ -72,10 +72,11 @@
         .item-menu {
             background-color: $bg-sidebar;
             display: block;
-            padding-left: 14px;
+            padding-left: 8px;
             height: 42px;
             line-height: 42px;
             text-decoration: none;
+            border-left: 6px solid transparent;
 
             &-ctn {
                 display: flex;
@@ -161,5 +162,74 @@
                 }
             }
         }
+
+        .router-link-exact-active {
+            border-left-color: #2ca01c;
+            background-color: $bg-item-menu-hover;
+
+            .item-menu-text {
+                font-family: 'noto-sans-Bold', sans-serif;
+            }
+
+            .item-menu-icon {
+
+                .icon-dashboard {
+                    background-position: -30px -1585px;
+                }
+                
+                .sidebar-cash {
+                    background-position: -73px -1585px;
+                }
+
+                .sidebar-bank {
+                    background-position: -117px -1585px;
+                }
+
+                .sidebar-pu {
+                    background-position: -161px -1585px;
+                }
+
+                .sidebar-sale {
+                    background-position: -204px -1585px;
+                }
+
+                .sidebar-invoice {
+                    background-position: -249px -1585px;
+                }
+
+                .sidebar-stock {
+                    background-position: -291px -1585px;
+                }
+
+                .sidebar-tools {
+                    background-position: -336px -1585px;
+                }
+
+                .sidebar-fixed-assets {
+                    background-position: -378px -1587px;
+                }
+
+                .sidebar-tax {
+                    background-position: -423px -1587px;
+                }
+
+                .sidebar-price {
+                    background-position: -467px -1585px;
+                }
+
+                .sidebar-general {
+                    background-position: -510px -1585px;
+                }
+
+                .sidebar-budget {
+                    background-position: -422px -1659px;
+                }
+
+                .sidebar-finance {
+                    background-position: -204px -1664px;
+                }
+            }
+        }
+
     }
 }

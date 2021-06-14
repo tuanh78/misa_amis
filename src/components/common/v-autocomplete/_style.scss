@@ -42,6 +42,12 @@ input {
     position: relative;
     border: 1px solid #babec5;
 
+    &:hover {
+        .tool-tip {
+            display: block;
+        }
+    }
+
     .dropdown-option {
         position: absolute;
         top: 110%;

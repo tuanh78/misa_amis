@@ -6,7 +6,7 @@
     </div> -->
     <date-pick v-model="date" :weekdays="weekDays" :months="months" :displayFormat="dateFormat" :isDateDisabled="isFutureDate">
         <template v-slot:default="{toggle, processUserInput, valueToInputFormat}">
-            <input @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" v-mask="'99/99/9999'">
+            <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" :v-mask="dateFormatMask" :placeholder="dateFormat">
             <div class="calendar" @click="toggle">
               <div class="icon-calendar"></div>
             </div>
@@ -25,7 +25,8 @@ export default {
   data: () => ({
     date: '', // Biến lưu giá trị của ngày được chọn
     weekDays: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], // Biến lưu giá trị hiển thị ngày
-    dateFormat: CONSTANTS.DATE_FORMAT, // Định dạng hiển thị ngày tháng năm
+    dateFormat: CONSTANTS.DATE_FORMAT, // Định dạng hiển thị ngày tháng năm,
+    dateFormatMask: CONSTANTS.DATE_FORMAT_MASK,
     months: [
       'Tháng 1',
       'Tháng 2',

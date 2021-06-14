@@ -38,7 +38,7 @@
       <div class="user-ctn">
         <div class="user">
           <div class="user-avatar"></div>
-          <div class="user-fullname">Nguyễn Quang Minh</div>
+          <div class="user-fullname">Phạm Tú Anh</div>
           <div class="user-icon">
             <div class="icon-common-small icon-arrow-down"></div>
           </div>

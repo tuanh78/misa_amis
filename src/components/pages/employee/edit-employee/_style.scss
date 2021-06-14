@@ -144,6 +144,9 @@
                     cursor: pointer;
                     .icon-question {
                         background-position: -89px -144px;
+                        &:hover {
+                            margin-top: 1px;
+                        }
                     }
                 }
 
@@ -151,6 +154,9 @@
                     cursor: pointer;
                     .icon-close {
                         background-position: -144px -144px;
+                        &:hover {
+                            margin-top: 1px;
+                        }
                     }
                 }
             }
@@ -214,10 +220,28 @@
                 .employee-code {
                     width: 40%;
                     padding-right: 6px;
+
+                    .input-code {
+                        position: relative;
+                        &:hover {
+                            .tool-tip {
+                                display: block;
+                            }
+                        }
+                    }
                 }
 
                 .employee-name {
                     width: 60%;
+
+                    .input-name {
+                        position: relative;
+                        &:hover {
+                            .tool-tip {
+                                display: block;
+                            }
+                        }
+                    }
                 }
             }
 

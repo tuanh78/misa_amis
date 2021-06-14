@@ -8,7 +8,9 @@
     @click="[departmentInputActive = true]"
     @keydown.enter="ResetDepartmentSelected"
     v-click-outside="HiddenDropdownOption"
+    shortkey
   >
+    <tool-tip v-if="errorProperties.includes('departmentId')" :message="!departmentSearch ? 'Đơn vị không được để trống.' : 'Dữ liệu không có trong danh sách.'"></tool-tip>
     <div>
       <input
         id="autocomplete"
@@ -73,6 +75,11 @@
 
 <script>
 import { HTTP } from '../../../axios/http-common'
+import ToolTip from '../tool-tip/tool-tip.vue'
+import EventBus from '../../../event-bus/event-bus'
+import Vue from 'vue'
+import vClickOutside from 'v-click-outside'
+Vue.use(vClickOutside)
 var debounce = require('lodash.debounce')
 export default {
   created () {
@@ -85,6 +92,8 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+
+    EventBus.$on('moveToDepartment', this.ActiveInputDepartment)
   },
   data () {
     return {
@@ -97,6 +106,10 @@ export default {
       departmentSeleted: this.departmentId, // Biến lưu Id phòng ban đang được chọn
       indexOptionSelected: 0 // Vị trí của phòng ban đang được chọn
     }
+  },
+  destroyed () {
+    // Stop listening the event hello with handler
+    EventBus.$off('moveToDepartment', this.ChangeValueOption)
   },
   props: {
     // Các thuộc tính lỗi
@@ -113,6 +126,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  components: {
+    ToolTip
   },
   methods: {
     /**
@@ -167,6 +183,9 @@ export default {
      * CreatedDate: 15/06/2021
      */
     MoveDownOption () {
+      if (!this.departmentSeleted) {
+        this.departmentSeleted = this.fakeDepartments[0].departmentId
+      }
       this.isShowDepartmentList = true
       const options = [...this.$el.querySelectorAll('.option-item')]
       options.forEach((option, index) => {
@@ -194,6 +213,9 @@ export default {
      * CreatedDate: 15/06/2021
      */
     MoveUpOption () {
+      if (!this.departmentSeleted) {
+        this.departmentSeleted = this.fakeDepartments[0].departmentId
+      }
       this.isShowDepartmentList = true
       const options = [...this.$el.querySelectorAll('.option-item')]
       options.forEach((option, index) => {
@@ -249,7 +271,11 @@ export default {
         this.departmentSeleted = this.fakeDepartments[0].departmentId
         this.indexOptionSelected = 0
       }
+      this.departmentInputActive = true
       this.isShowDepartmentList = true
+    },
+    ActiveInputDepartment () {
+      this.departmentInputActive = true
     }
   },
   watch: {
