@@ -128,8 +128,8 @@
 
             @media only screen and (max-width: 848px) {
                 .total-record {
-                    width: 164px;
-                    min-width: 164px;    
+                    width: 171px;
+                    min-width: 171px;    
                 }
             }
 
@@ -162,6 +162,13 @@
                 .item-selected {
                     color: #fff !important;
                     background-color: #2ca01c !important;
+                }
+            }
+
+            @media only screen and (max-width: 848px) {
+                .list-option-number-records {
+                    width: 171px;
+                    min-width: 171px;    
                 }
             }
         }

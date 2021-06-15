@@ -58,7 +58,7 @@
               class="ms-th-viewer ms-muli-checkall employee-checkbox th-style-common sticky-style"
             >
               <label class="ms-component con-ms-checkbox justify-center"
-                ><input type="checkbox" class="ms-checkbox--input" /><span
+                ><input type="checkbox" class="ms-checkbox--input" v-model="isSelectedAll" @click="selectedAllEmployees"/><span
                   class="ms-checkbox-border-disabled-false ms-checkbox-border-checked-false checkbox_x ms-checkbox"
                   ><span
                     class="ms-checkbox-inner ms-checkbox-check-disabled-false ms-checkbox--check"
@@ -121,7 +121,7 @@
             >
               <label
                 class="ms-component con-ms-checkbox justify-center ms-td-viewer label-custom"
-                ><input type="checkbox" class="ms-checkbox--input" /><span
+                ><input type="checkbox" class="ms-checkbox--input" v-model="employeesSelected" :value="employee.employeeId" /><span
                   class="ms-checkbox-border-disabled-false ms-checkbox-border-checked-false checkbox_x ms-checkbox"
                   ><span
                     class="ms-checkbox-inner ms-checkbox-check-disabled-false ms-checkbox--check"
@@ -250,7 +250,9 @@ export default {
       totalEmployees: 0, // Tổng số nhân viên
       totalPages: 0, // Tổng số trang
       numberRecords: [...CONSTANTS.NUMBER_RECORDS], // Các số lượng bản ghi có thể trên một trang
-      indexOptionSelected: 0
+      indexOptionSelected: 0,
+      employeesSelected: [],
+      isSelectedAll: false
     }
   },
   components: {
@@ -567,6 +569,15 @@ export default {
     SaveEmployeeSuccessAndAdd () {
       this.isShowEditEmployee = false
       this.ReloadPage()
+    },
+    selectedAllEmployees () {
+      if (!this.isSelectedAll) {
+        this.employees.forEach(item => {
+          this.employeesSelected.push(item.employeeId)
+        })
+      } else {
+        this.employeesSelected = []
+      }
     }
   }
 }
