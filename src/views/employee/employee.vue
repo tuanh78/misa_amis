@@ -316,8 +316,7 @@ export default {
       HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
         .then(response => {
           this.employees = response.data
-          if (!this.employees.length) {
-            console.log('error')
+          if (response.status === 200) {
             this.employees.map(employee => {
               if (employee.dateOfBirth) {
                 employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
@@ -405,7 +404,6 @@ export default {
      * CreatedDate: 15/06/2021
      */
     DeleteEmployee () {
-      debugger
       HTTP.delete(`employees/${this.employee.employeeId}`)
         .then((result) => {
           this.isShowPopupDelete = false
@@ -468,7 +466,7 @@ export default {
             }).catch((err) => {
               console.log(err)
             })
-          if (!this.employees.length) {
+          if (this.employees.length || this.employees !== '') {
             this.employees.map(employee => {
               if (employee.dateOfBirth) {
                 employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
@@ -568,9 +566,7 @@ export default {
     },
     SaveEmployeeSuccessAndAdd () {
       this.isShowEditEmployee = false
-      this.isShowAddEmployee = false
       this.ReloadPage()
-      this.ShowAddForm()
     }
   }
 }

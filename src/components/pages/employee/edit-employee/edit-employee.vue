@@ -1,5 +1,5 @@
 <template>
-  <div class="add-employee" @keydown.27="ClosePopupEditEmployee">
+  <div class="add-employee" @keydown.27="CheckChangeData">
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -128,7 +128,7 @@
                 <div class="input-department">
                   <div class="input-department-ctn">
                     <!-- <input type="text" class="input-style-common department-custom" /> -->
-                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment"></v-autocomplete>
+                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment" @updateDepartmentSearch="UpdateDepartmentSearch"></v-autocomplete>
                   </div>
                 </div>
               </div>
@@ -280,7 +280,7 @@
             <div class="save-btn-ctn" @click="SaveEmployee">
               <div class="save-btn">Cất</div>
             </div>
-            <div class="save-new-record">Cất và thêm</div>
+            <div class="save-new-record" @click="SaveEmployeeAndAdd">Cất và thêm</div>
           </div>
         </div>
       </div>
@@ -313,9 +313,13 @@ export default {
       isShowPopupError: false, // Biến hiển thị thông báo lỗi,
       fakeEmployee: null,
       messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?',
-      isShowPopupDataChange: false
-
+      isShowPopupDataChange: false,
+      editMode: true,
+      departmentSearch: ''
     }
+  },
+  created () {
+    this.fakeEmployee = { ...this.employee }
   },
   mounted () {
     // Focus vào ô mã nhân viên khi Popup hiển thị
@@ -418,25 +422,33 @@ export default {
           }
           if (element === 'departmentId') {
             this.isShowPopupError = true
-            this.errorMessage = 'Đơn vị không được để trống'
+            if (!this.departmentSearch) {
+              this.errorMessage = 'Đơn vị không được để trống.'
+            } else {
+              this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+            }
             return false
           }
         })
       } else {
-        HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
-          .then((result) => {
-            this.$emit('saveEmployeeSuccess')
-          }).catch((err) => {
-            const propertyInvalidLists = err.response.data.propertyInvalidLists
-            if (err.response.data.misaCode === 400) {
-              propertyInvalidLists.forEach(element => {
-                if (element.propertyName === 'employeeCode') {
-                  this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
-                  this.isShowEmployeeCodeWarning = true
-                }
-              })
-            }
-          })
+        if (this.editMode) {
+          HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
+            .then((result) => {
+              this.$emit('saveEmployeeSuccess')
+            }).catch((err) => {
+              const propertyInvalidLists = err.response.data.propertyInvalidLists
+              if (err.response.data.misaCode === 400) {
+                propertyInvalidLists.forEach(element => {
+                  if (element.propertyName === 'employeeCode') {
+                    this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                    this.isShowEmployeeCodeWarning = true
+                  }
+                })
+              }
+            })
+        } else {
+          this.SaveNewEmployee()
+        }
       }
     },
     /**
@@ -541,6 +553,160 @@ export default {
     SaveData () {
       this.ClosePopupDataChange()
       this.SaveEmployee()
+    },
+    /**
+     * Hàm lưu và thêm mới nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    SaveEmployeeAndAdd () {
+      if (this.editMode) {
+        if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+          this.errorProperties.push('employeeCode')
+        }
+        if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+          this.errorProperties.push('employeeName')
+        }
+        if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+          this.errorProperties.push('departmentId')
+        }
+        if (this.errorProperties.length > 0) {
+          this.errorProperties.every(element => {
+            if (element === 'employeeCode') {
+              this.errorMessage = 'Mã không được để trống'
+              this.isShowPopupError = true
+              return false
+            }
+            if (element === 'employeeName') {
+              this.isShowPopupError = true
+              this.errorMessage = 'Tên không được để trống'
+              return false
+            }
+            if (element === 'departmentId') {
+              this.isShowPopupError = true
+              if (!this.departmentSearch) {
+                this.errorMessage = 'Đơn vị không được để trống.'
+              } else {
+                this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+              }
+              return false
+            }
+          })
+        } else {
+          HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
+            .then((result) => {
+              this.ResetData()
+            }).catch((err) => {
+              const propertyInvalidLists = err.response.data.propertyInvalidLists
+              if (err.response.data.misaCode === 400) {
+                propertyInvalidLists.forEach(element => {
+                  if (element.propertyName === 'employeeCode') {
+                    this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                    this.isShowEmployeeCodeWarning = true
+                  }
+                })
+              }
+            })
+        }
+      } else {
+        if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+          this.errorProperties.push('employeeCode')
+        }
+        if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+          this.errorProperties.push('employeeName')
+        }
+        if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+          this.errorProperties.push('departmentId')
+        }
+        if (this.errorProperties.length > 0) {
+          this.errorProperties.every(element => {
+            if (element === 'employeeCode') {
+              this.errorMessage = 'Mã không được để trống'
+              this.isShowPopupError = true
+              return false
+            }
+            if (element === 'employeeName') {
+              this.isShowPopupError = true
+              this.errorMessage = 'Tên không được để trống'
+              return false
+            }
+            if (element === 'departmentId') {
+              this.isShowPopupError = true
+              if (!this.departmentSearch) {
+                this.errorMessage = 'Đơn vị không được để trống.'
+              } else {
+                this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+              }
+              return false
+            }
+          })
+        } else {
+          this.SaveNewEmployee()
+        }
+      }
+    },
+    /**
+     * Hàm đặt lại dữ liệu của Popup add
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ResetData () {
+      this.employee = {
+        employeeCode: this.latestEmployeeCode,
+        employeeName: null,
+        dateOfBirth: null,
+        gender: 0,
+        departmentId: null,
+        identityNumber: null,
+        identityDate: null,
+        identityPlace: null,
+        employeePosition: null,
+        address: null,
+        bankAccountNumber: null,
+        bankName: null,
+        bankBranchName: null,
+        bankProvinceName: null,
+        phoneNumber: null,
+        telephoneNumber: null,
+        email: null
+      }
+      this.departmentSearch = ''
+      this.editMode = false
+      EventBus.$emit('resetDepartmentSearch')
+      EventBus.$emit('resetDataDatePicker')
+      this.$emit('saveEmployeeSuccessAndAdd')
+      HTTP.get('employees/max-employee-code')
+        .then((result) => {
+          this.employee.employeeCode = result.data
+          this.fakeEmployee = { ...this.employee }
+          this.$refs.employeeCode.focus()
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+    SaveNewEmployee () {
+      HTTP.post('employees', this.employee)
+        .then((result) => {
+          this.$emit('saveEmployeeSuccess')
+        }).catch((err) => {
+          const propertyInvalidLists = err.response.data.propertyInvalidLists
+          if (err.response.data.misaCode === 400) {
+            propertyInvalidLists.forEach(element => {
+              if (element.propertyName === 'employeeCode') {
+                this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                this.isShowEmployeeCodeWarning = true
+              }
+            })
+          }
+        })
+    },
+    /**
+     * Hàm cập nhật phòng ban tìm kiếm
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    UpdateDepartmentSearch (departmentSearch) {
+      this.departmentSearch = departmentSearch
     }
   }
 }

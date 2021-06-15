@@ -1,5 +1,5 @@
 <template>
-  <div class="add-employee" @keydown.27="ClosePopupAddEmployee">
+  <div class="add-employee" @keydown.27="CheckChangeData">
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -113,7 +113,7 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="MoveToDepartment" />
+                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="MoveToDepartment"/>
                   <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
@@ -279,7 +279,7 @@
             <div class="save-btn-ctn" @click="SaveEmployee">
               <div class="save-btn">Cất</div>
             </div>
-            <div class="save-new-record" @click="SaveEmployeeAndAdd">Cất và thêm</div>
+            <div class="save-new-record" @click="SaveEmployeeAndAdd">Cất và Thêm</div>
           </div>
         </div>
       </div>
@@ -610,7 +610,7 @@ export default {
       } else {
         HTTP.post('employees', this.employee)
           .then((result) => {
-            this.$emit('saveEmployeeSuccessAndAdd')
+            this.ResetData()
           }).catch((err) => {
             const propertyInvalidLists = err.response.data.propertyInvalidLists
             if (err.response.data.misaCode === 400) {
@@ -623,6 +623,44 @@ export default {
             }
           })
       }
+    },
+    /**
+     * Hàm đặt lại dữ liệu của Popup add
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ResetData () {
+      this.employee = {
+        employeeCode: this.latestEmployeeCode,
+        employeeName: null,
+        dateOfBirth: null,
+        gender: 0,
+        departmentId: null,
+        identityNumber: null,
+        identityDate: null,
+        identityPlace: null,
+        employeePosition: null,
+        address: null,
+        bankAccountNumber: null,
+        bankName: null,
+        bankBranchName: null,
+        bankProvinceName: null,
+        phoneNumber: null,
+        telephoneNumber: null,
+        email: null
+      }
+      this.departmentSearch = ''
+      EventBus.$emit('resetDepartmentSearch')
+      EventBus.$emit('resetDataDatePicker')
+      this.$emit('saveEmployeeSuccessAndAdd')
+      HTTP.get('employees/max-employee-code')
+        .then((result) => {
+          this.employee.employeeCode = result.data
+          this.$refs.employeeCode.focus()
+          this.fakeEmployee = { ...this.employee }
+        }).catch((err) => {
+          console.log(err)
+        })
     }
   }
 }

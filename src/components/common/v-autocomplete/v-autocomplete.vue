@@ -94,6 +94,7 @@ export default {
       })
 
     EventBus.$on('moveToDepartment', this.ActiveInputDepartment)
+    EventBus.$on('resetDepartmentSearch', this.ResetDepartmentSearch)
   },
   data () {
     return {
@@ -110,6 +111,7 @@ export default {
   destroyed () {
     // Stop listening the event hello with handler
     EventBus.$off('moveToDepartment', this.ChangeValueOption)
+    EventBus.$off('resetDepartmentSearch', this.ResetDepartmentSearch)
   },
   props: {
     // Các thuộc tính lỗi
@@ -163,7 +165,9 @@ export default {
         this.isShowLoading = false
       }
       if (!this.departmentSearch || !this.fakeDepartments.length) {
-        this.$emit('addErrorDepartment')
+        if (!this.errorProperties.includes('departmentId')) {
+          this.$emit('addErrorDepartment')
+        }
       } else {
         this.$emit('removeErrorDepartment')
       }
@@ -276,6 +280,10 @@ export default {
     },
     ActiveInputDepartment () {
       this.departmentInputActive = true
+    },
+    ResetDepartmentSearch () {
+      this.departmentSearch = ''
+      this.departmentSeleted = ''
     }
   },
   watch: {

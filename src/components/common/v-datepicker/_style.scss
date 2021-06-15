@@ -17,6 +17,10 @@
         background-position: -128px -306px;
       }
     }
+    
+    &:hover {
+      outline: 1px solid #e2e2e2;
+    }
   }
   
   .vdpComponent {
@@ -25,7 +29,7 @@
     input {
       padding: 5px 0 5px 10px;
       outline: none;
-      width: 127.2px;
+      width: 133.19px;
       box-sizing: border-box;
       font-size: 13px;
     }
@@ -33,6 +37,7 @@
 
 .border-focus {
   border: 1px solid #2ca01c;
+  outline: none !important;
 }
 
 .input-date {

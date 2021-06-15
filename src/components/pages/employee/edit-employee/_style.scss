@@ -201,6 +201,10 @@
         height: 32px;
         font-size: 13px;
 
+        &:hover:not(:focus) {
+            outline: 1px solid #e2e2e2;
+        }
+
         &:focus {
             border: 1px solid #2ca01c
         }
@@ -369,6 +373,10 @@
                     width: 250.70px;
                 }
             }
+
+            .issued-by {
+                margin-top: 1px;
+            }
         }
     }
 
@@ -388,6 +396,12 @@
 
             .width-three-input {
                 width: 197px;
+            }
+        }
+
+        .input-email {
+            .width-three-input {
+                width: 203px;
             }
         }
     }

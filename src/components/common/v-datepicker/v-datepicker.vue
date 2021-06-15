@@ -6,7 +6,7 @@
     </div> -->
     <date-pick v-model="date" :weekdays="weekDays" :months="months" :displayFormat="dateFormat" :isDateDisabled="isFutureDate">
         <template v-slot:default="{toggle, processUserInput, valueToInputFormat}">
-            <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" :v-mask="dateFormatMask" :placeholder="dateFormat">
+            <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" v-mask="dateFormatMask" :placeholder="dateFormat">
             <div class="calendar" @click="toggle">
               <div class="icon-calendar"></div>
             </div>
@@ -19,6 +19,7 @@
 import DatePick from 'vue-date-pick'
 import 'vue-date-pick/dist/vueDatePick.css'
 import CONSTANTS from '../../../constants/constants'
+import EventBus from '../../../event-bus/event-bus'
 import moment from 'moment'
 export default {
   components: { DatePick },
@@ -52,6 +53,10 @@ export default {
   },
   created () {
     this.date = this.dateOfBirth
+    EventBus.$on('resetDataDatePicker', this.ResetData)
+  },
+  destroyed () {
+    EventBus.$off('resetDataDatePicker', this.ResetData)
   },
   methods: {
     /**
@@ -68,6 +73,15 @@ export default {
      */
     ChangeBorderColor () {
       this.focusInput = false
+    },
+    /**
+     * Hàm reset lại dữ liệu
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    ResetData () {
+      this.date = ''
+      console.log('ok')
     }
   },
   watch: {
