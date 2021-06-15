@@ -5,7 +5,7 @@
         <a href="#" class="sidebar-option"></a>
         <a href="#" class="sidebar-logo"></a>
       </div>
-      <div v-else class="sidebar-three-stripes" @click="ShowLogo">
+      <div v-else class="sidebar-three-stripes" @click="showLogo">
         <div class="icon-common-large icon-three-stripes"></div>
       </div>
     </div>
@@ -181,7 +181,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ShowLogo () {
+    showLogo () {
       this.$emit('showLogo')
     }
   }

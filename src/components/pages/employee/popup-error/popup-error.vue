@@ -11,7 +11,7 @@
     </div>
     <div class="straight-line"></div>
     <div class="btn-close-ctn">
-      <div class="btn-close" @click="ClosePopupError">Đóng</div>
+      <div class="btn-close" @click="closePopupError">Đóng</div>
     </div>
   </div>
   <div class="mask"></div>
@@ -33,7 +33,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupError () {
+    closePopupError () {
       this.$emit('closePopupError')
     }
   }

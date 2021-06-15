@@ -7,6 +7,7 @@
 <script>
 export default {
   props: {
+    // Thông báo
     message: {
       type: String,
       default: ''

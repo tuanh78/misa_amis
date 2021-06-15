@@ -11,7 +11,7 @@
       </div>
       <div class="straight-line"></div>
       <div class="btn-close-ctn">
-        <div class="btn-close" @click="ClosePopup">
+        <div class="btn-close" @click="closePopup">
           <span>Đồng ý</span>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopup () {
+    closePopup () {
       this.$emit('closePopup')
     }
   }

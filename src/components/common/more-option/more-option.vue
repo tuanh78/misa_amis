@@ -5,7 +5,7 @@
         <a href="#" class="option-item">Nhân bản</a>
       </li>
       <li>
-        <a href="#" class="option-item" @click="ShowPopupDelete">Xóa</a>
+        <a href="#" class="option-item" @click="showPopupDelete">Xóa</a>
       </li>
       <li>
         <a href="#" class="option-item">Ngừng sử dụng</a>
@@ -34,7 +34,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ShowPopupDelete () {
+    showPopupDelete () {
       this.$emit('showPopupDelete')
     }
   }

@@ -12,15 +12,15 @@
       <div class="straight-line"></div>
       <div class="group-btn">
         <div class="group-btn-left">
-          <button class="btn-common btn-close btn-destroy" @click="ClosePopup">
+          <button class="btn-common btn-close btn-destroy" @click="closePopup">
             <span>Hủy</span>
           </button>
         </div>
         <div class="group-btn-right">
-          <button class="btn-common btn-close" @click="CloseForm">
+          <button class="btn-common btn-close" @click="closeForm">
             <span>Không</span>
           </button>
-          <button class="btn-common btn-delete" @click="SaveData">
+          <button class="btn-common btn-delete" @click="saveData">
             <span>Có</span>
           </button>
         </div>
@@ -44,7 +44,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopup () {
+    closePopup () {
       this.$emit('closePopup')
     },
     /**
@@ -52,7 +52,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    CloseForm () {
+    closeForm () {
       this.$emit('closeForm')
     },
     /**
@@ -60,7 +60,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SaveData () {
+    saveData () {
       this.$emit('saveData')
     }
   }

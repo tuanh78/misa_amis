@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="header-left">
-      <div v-if="isShowThreeStripes" class="icon-common-large icon-three-stripes" @click="HiddenLogo"></div>
+      <div v-if="isShowThreeStripes" class="icon-common-large icon-three-stripes" @click="hiddenLogo"></div>
 
       <div class="company-name">
         <div class="company-name-detail">Công ty cổ phần Misa</div>
@@ -64,7 +64,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    HiddenLogo () {
+    hiddenLogo () {
       this.$emit('hiddenLogo')
     }
   }

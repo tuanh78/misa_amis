@@ -1,5 +1,5 @@
 <template>
-  <div class="add-employee" @keydown.27="CheckChangeData">
+  <div class="add-employee" @keydown.27="checkChangeData">
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -88,7 +88,7 @@
           <div class="icon-close-ctn">
             <div
               class="icon-common-large icon-close"
-              @click="CheckChangeData"
+              @click="checkChangeData"
             ></div>
           </div>
         </div>
@@ -103,7 +103,7 @@
                   Mã <span class="field-required">*</span>
                 </div>
                 <div class="input-code">
-                  <input v-model="employee.employeeCode" ref="employeeCode" @mousemove="GetMousePosition" @input="CheckValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
+                  <input v-model="employee.employeeCode" ref="employeeCode" @mousemove="getMousePosition" @input="checkValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
                   <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống."></tool-tip>
                 </div>
               </div>
@@ -113,7 +113,7 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="CheckValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="MoveToDepartment"/>
+                  <input v-model="employee.employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="moveToDepartment"/>
                   <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
@@ -127,7 +127,7 @@
                 <div class="input-department">
                   <div class="input-department-ctn">
                     <!-- <input type="text" class="input-style-common department-custom" /> -->
-                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartmentSearch="UpdateDepartmentSearch" @updateDepartment="UpdateDepartment" @addErrorDepartment="AddErrorDepartment" @removeErrorDepartment="RemoveErrorDepartment"></v-autocomplete>
+                    <v-autocomplete :errorProperties="errorProperties" :departmentId="employee.departmentId" :departmentName="employee.departmentName" @updateDepartmentSearch="updateDepartmentSearch" @updateDepartment="updateDepartment" @addErrorDepartment="addErrorDepartment" @removeErrorDepartment="removeErrorDepartment"></v-autocomplete>
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@
             <div class="date-gender ctn-common">
               <div class="date-of-birth">
                 <div class="title-input-common">Ngày sinh</div>
-                <v-datepicker :dateOfBirth="employee.dateOfBirth" @updateValue="UpdateDateOfBirth"></v-datepicker>
+                <v-datepicker :dateOfBirth="employee.dateOfBirth" @updateValue="updateDateOfBirth"></v-datepicker>
               </div>
 
               <div class="gender">
@@ -188,7 +188,7 @@
 
               <div class="date-range">
                 <div class="title-input-common">Ngày cấp</div>
-                <v-datepicker :dateOfBirth="employee.identityDate" @updateValue="UpdateIdentityDate"></v-datepicker>
+                <v-datepicker :dateOfBirth="employee.identityDate" @updateValue="updateIdentityDate"></v-datepicker>
               </div>
             </div>
 
@@ -274,21 +274,21 @@
       <div class="footer-container">
         <div class="divide"></div>
         <div class="popup-footer">
-          <div class="destroy-btn" @click="ClosePopupAddEmployee">Hủy</div>
+          <div class="destroy-btn" @click="closePopupAddEmployee">Hủy</div>
           <div class="save-btn-group">
-            <div class="save-btn-ctn" @click="SaveEmployee">
+            <div class="save-btn-ctn" @click="saveEmployee">
               <div class="save-btn">Cất</div>
             </div>
-            <div class="save-new-record" @click="SaveEmployeeAndAdd">Cất và Thêm</div>
+            <div class="save-new-record" @click="saveEmployeeAndAdd">Cất và Thêm</div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="mask"></div>
-    <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="ClosePopupWarning"></popup-duplicate-code>
-    <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="ClosePopupError"></popup-error>
-    <popup-data-change v-if="isShowPopupDataChange" :message="messageDataChange" @closePopup="ClosePopupDataChange" @closeForm="ClosePopupAddEmployee" @saveData="SaveData"></popup-data-change>
+    <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="closePopupWarning"></popup-duplicate-code>
+    <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="closePopupError"></popup-error>
+    <popup-data-change v-if="isShowPopupDataChange" :message="messageDataChange" @closePopup="closePopupDataChange" @closeForm="closePopupAddEmployee" @saveData="saveData"></popup-data-change>
   </div>
 </template>
 
@@ -306,34 +306,34 @@ export default {
     return {
       // Biến lưu trữ giá trị của nhân viên
       employee: {
-        employeeCode: this.latestEmployeeCode,
-        employeeName: null,
-        dateOfBirth: null,
-        gender: 0,
-        departmentId: null,
-        identityNumber: null,
-        identityDate: null,
-        identityPlace: null,
-        employeePosition: null,
-        address: null,
-        bankAccountNumber: null,
-        bankName: null,
-        bankBranchName: null,
-        bankProvinceName: null,
-        phoneNumber: null,
-        telephoneNumber: null,
-        email: null
+        employeeCode: this.latestEmployeeCode, // Mã khách hàng
+        employeeName: null, // Tên khách hàng
+        dateOfBirth: null, // Ngày sinh
+        gender: 0, // Giới tính
+        departmentId: null, // Id của phòng ban
+        identityNumber: null, // Số CMT
+        identityDate: null, // Ngày cấp
+        identityPlace: null, // Nơi cấp
+        employeePosition: null, // Chức danh
+        address: null, // Địa chỉ
+        bankAccountNumber: null, // Tài khoản NH
+        bankName: null, // Tên ngân hàng
+        bankBranchName: null, // Chi Nhánh
+        bankProvinceName: null, // Tỉnh
+        phoneNumber: null, // Số điện thoại
+        telephoneNumber: null, // Số điện thoại cố định
+        email: null // Email
       },
-      isShowEmployeeCodeWarning: false,
-      errorProperties: [],
-      errorMessage: '',
-      isShowPopupError: false,
-      isShowPopupDataChange: false,
-      departmentSearch: '',
-      screenX: 0,
-      screenY: 0,
-      fakeEmployee: null,
-      messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?'
+      isShowEmployeeCodeWarning: false, // Biến hiển thị cảnh báo mã khách hàng đã tồn tại
+      errorProperties: [], // Biến danh sách các trường bị lỗi
+      errorMessage: '', // Biến thông báo lỗi
+      isShowPopupError: false, // Biến hiển thị Popup lỗi
+      isShowPopupDataChange: false, // Biến hiển thị Popup dữ liệu thay đổi
+      departmentSearch: '', // Biến tên phòng ban tìm kiếm
+      screenX: 0, // Vị trí theo trục X
+      screenY: 0, // Vị trí theo trục Y
+      fakeEmployee: null, // Biến sao chép dữ liệu của employee
+      messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?' // Biến thông báo dữ liệu thay đổi
     }
   },
   props: {
@@ -367,7 +367,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupAddEmployee () {
+    closePopupAddEmployee () {
       this.$emit('closePopupAddEmployee')
     },
     /**
@@ -375,7 +375,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    UpdateDateOfBirth (dateOfBirth) {
+    updateDateOfBirth (dateOfBirth) {
       this.employee.dateOfBirth = dateOfBirth
     },
     /**
@@ -383,7 +383,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    UpdateIdentityDate (identityDate) {
+    updateIdentityDate (identityDate) {
       this.employee.identityDate = identityDate
     },
     /**
@@ -391,7 +391,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    UpdateDepartment (departmentId) {
+    updateDepartment (departmentId) {
       this.employee.departmentId = departmentId
     },
     /**
@@ -399,16 +399,20 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SaveEmployee () {
+    saveEmployee () {
+      // Kiểm tra mã khách hàng có trống hay lỗi không
       if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
         this.errorProperties.push('employeeCode')
       }
+      // Kiểm tra tên nhân viên có trống hay lỗi không
       if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
         this.errorProperties.push('employeeName')
       }
+      // Kiểm tra phòng ban có trống hay lỗi không
       if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
+      // Kiểm tra xem có lỗi không
       if (this.errorProperties.length > 0) {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
@@ -432,15 +436,18 @@ export default {
           }
         })
       } else {
+        // Lưu nhân viên
         HTTP.post('employees', this.employee)
           .then((result) => {
             this.$emit('saveEmployeeSuccess')
           }).catch((err) => {
+            // Biến lưu lại các trường bị lỗi server trả về
             const propertyInvalidLists = err.response.data.propertyInvalidLists
             if (err.response.data.misaCode === 400) {
               propertyInvalidLists.forEach(element => {
                 if (element.propertyName === 'employeeCode') {
                   this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                  // Hiện Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
                 }
               })
@@ -453,7 +460,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupWarning () {
+    closePopupWarning () {
+      // Đóng thông báo trùng mã
       this.isShowEmployeeCodeWarning = false
     },
     /**
@@ -461,10 +469,13 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    CheckValueEmployeeCode () {
+    checkValueEmployeeCode () {
+      // Kiểm tra mã nhân viên có trống không
       if (!this.employee.employeeCode) {
+        // Thêm lỗi
         this.errorProperties.push('employeeCode')
       } else {
+        // Xóa lỗi
         const index = this.errorProperties.indexOf('employeeCode')
         if (index > -1) {
           this.errorProperties.splice(index, 1)
@@ -476,10 +487,13 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    CheckValueEmployeeName () {
+    checkValueEmployeeName () {
+      // Kiểm tra tên nhân viên có rỗng không
       if (!this.employee.employeeName) {
+        // Thêm lỗi
         this.errorProperties.push('employeeName')
       } else {
+        // Xóa lỗi
         const index = this.errorProperties.indexOf('employeeName')
         if (index > -1) {
           this.errorProperties.splice(index, 1)
@@ -491,7 +505,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupError () {
+    closePopupError () {
+      // Đóng thông báo lỗi
       this.isShowPopupError = false
     },
     /**
@@ -499,7 +514,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    AddErrorDepartment () {
+    addErrorDepartment () {
+      // Kiểm tra xem lỗi đã tồn tại trong mảng lỗi chưa
       if (!this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
@@ -509,7 +525,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    RemoveErrorDepartment () {
+    removeErrorDepartment () {
+      // Xóa lỗi khỏi mảng lỗi
       const index = this.errorProperties.indexOf('departmentId')
       if (index > -1) {
         this.errorProperties.splice(index, 1)
@@ -520,7 +537,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    UpdateDepartmentSearch (departmentSearch) {
+    updateDepartmentSearch (departmentSearch) {
+      // Cập nhật tên phòng ban tìm kiếm
       this.departmentSearch = departmentSearch
     },
     /**
@@ -528,8 +546,10 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    GetMousePosition (event) {
+    getMousePosition (event) {
+      // Lấy vị trí chuột theo trục X
       this.screenX = event.screenX
+      // Lấy vị trí chuột theo trục Y
       this.screenY = event.screenY
     },
     /**
@@ -537,7 +557,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    MoveToDepartment () {
+    moveToDepartment () {
+      // Di chuyển sang ô input phòng ban
       EventBus.$emit('moveToDepartment')
     },
     /**
@@ -545,22 +566,25 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    CheckChangeData () {
+    checkChangeData () {
       for (const property in this.employee) {
+        // Kiểm tra xem dữ liệu hiện tại có khác dữ liệu ban đầu hay không
         if (this.employee[property] !== this.fakeEmployee[property]) {
+          // Hiển thị Popup thông báo dữ liệu thay đã thay đổi
           this.isShowPopupDataChange = true
           return true
         }
       }
-
-      this.ClosePopupAddEmployee()
+      // Đóng Popup thêm nhân viên
+      this.closePopupAddEmployee()
     },
     /**
      * Hàm đóng Popup thông báo thay đổi dữ liệu
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupDataChange () {
+    closePopupDataChange () {
+      // Đóng Popup thông báo dữ liệu bị thay đổi
       this.isShowPopupDataChange = false
     },
     /**
@@ -568,24 +592,34 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SaveData () {
-      this.ClosePopupDataChange()
-      this.SaveEmployee()
+    saveData () {
+      // Đóng Popup thông báo dữ liệu bị thay đổi
+      this.closePopupDataChange()
+      // Lưu nhân viên
+      this.saveEmployee()
     },
     /**
-     * Hàm lưu và tao
+     * Hàm lưu và tạo
      */
-    SaveEmployeeAndAdd () {
+    saveEmployeeAndAdd () {
+      // Kiểm tra mã khách hàng trống và chưa có lỗi hay không
       if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+        // Thêm lỗi mã khách hàng
         this.errorProperties.push('employeeCode')
       }
+      // Kiểm tra tên khách hàng trống và chưa có lỗi hay không
       if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+        // Thêm lỗi tên khách hàng
         this.errorProperties.push('employeeName')
       }
+      // Kiểm tra id phòng ban trống và chưa có lỗi hay không
       if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+        // Thêm lỗi phòng ban
         this.errorProperties.push('departmentId')
       }
+      // Kiểm tra mảng lỗi có lỗi nào hay không
       if (this.errorProperties.length > 0) {
+        // Lặp lỗi gán message để hiển thị
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
             this.errorMessage = 'Mã không được để trống.'
@@ -608,15 +642,20 @@ export default {
           }
         })
       } else {
+        // Lưu nhân viên
         HTTP.post('employees', this.employee)
           .then((result) => {
-            this.ResetData()
+            this.resetData()
           }).catch((err) => {
+            // Biến lưu lỗi của các trường từ server trả về
             const propertyInvalidLists = err.response.data.propertyInvalidLists
             if (err.response.data.misaCode === 400) {
               propertyInvalidLists.forEach(element => {
+                // Nếu employeeCode lỗi
                 if (element.propertyName === 'employeeCode') {
+                  // Gán thông báo lỗi trùng
                   this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                  // Hiển thị Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
                 }
               })
@@ -629,7 +668,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ResetData () {
+    resetData () {
+      // Đặt lại giá trị cho biết employee
       this.employee = {
         employeeCode: this.latestEmployeeCode,
         employeeName: null,
@@ -649,16 +689,24 @@ export default {
         telephoneNumber: null,
         email: null
       }
+      // Đặt lại tên phòng ban tìm kiếm
       this.departmentSearch = ''
+      // Đặt lại phòng ban tìm kiếm trong component v-autocomplete
       EventBus.$emit('resetDepartmentSearch')
+      // Đặt lại date cho component v-datepicker
       EventBus.$emit('resetDataDatePicker')
       this.$emit('saveEmployeeSuccessAndAdd')
+      // Lấy mã nhân viên mới
       HTTP.get('employees/max-employee-code')
         .then((result) => {
+          // Gán mã nhân viên mới
           this.employee.employeeCode = result.data
+          // Focus vào ô mã nhân viên
           this.$refs.employeeCode.focus()
+          // Sao chép biến employee
           this.fakeEmployee = { ...this.employee }
         }).catch((err) => {
+          // Log lỗi
           console.log(err)
         })
     }

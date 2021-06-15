@@ -1,9 +1,5 @@
 <template>
-  <div :class="['date-picker', { 'border-focus': focusInput}]" @click="focusInput = true" v-click-outside="ChangeBorderColor">
-    <!-- <date-pick v-model="date" :weekdays="weekDays" :months="months" :displayFormat="dateFormat"></date-pick>
-    <div class="calendar">
-      <div class="icon-calendar"></div>
-    </div> -->
+  <div :class="['date-picker', { 'border-focus': focusInput}]" @click="focusInput = true" v-click-outside="changeBorderColor">
     <date-pick v-model="date" :weekdays="weekDays" :months="months" :displayFormat="dateFormat" :isDateDisabled="isFutureDate">
         <template v-slot:default="{toggle, processUserInput, valueToInputFormat}">
             <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" v-mask="dateFormatMask" :placeholder="dateFormat">
@@ -26,8 +22,8 @@ export default {
   data: () => ({
     date: '', // Biến lưu giá trị của ngày được chọn
     weekDays: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], // Biến lưu giá trị hiển thị ngày
-    dateFormat: CONSTANTS.DATE_FORMAT, // Định dạng hiển thị ngày tháng năm,
-    dateFormatMask: CONSTANTS.DATE_FORMAT_MASK,
+    dateFormat: CONSTANTS.DATE_FORMAT, // Định dạng hiển thị
+    dateFormatMask: CONSTANTS.DATE_FORMAT_MASK, // Định dạng hiển thị khi nhập trong ô input
     months: [
       'Tháng 1',
       'Tháng 2',
@@ -53,14 +49,16 @@ export default {
   },
   created () {
     this.date = this.dateOfBirth
-    EventBus.$on('resetDataDatePicker', this.ResetData)
+    // Lắng nghe sự kiện reset giá trị ngày
+    EventBus.$on('resetDataDatePicker', this.resetData)
   },
   destroyed () {
-    EventBus.$off('resetDataDatePicker', this.ResetData)
+    // Hủy lắng nghe sự kiện
+    EventBus.$off('resetDataDatePicker', this.resetData)
   },
   methods: {
     /**
-     * Hàm không cho chọn ngày ở tương lai
+     * Hàm kiểm tra ngày chọn có lớn hơn ngày hiện tại không
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
@@ -70,8 +68,10 @@ export default {
     },
     /**
      * Hàm thay đổi focus input
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
      */
-    ChangeBorderColor () {
+    changeBorderColor () {
       this.focusInput = false
     },
     /**
@@ -79,13 +79,12 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ResetData () {
+    resetData () {
       this.date = ''
-      console.log('ok')
     }
   },
   watch: {
-    // Theo dõi biến date
+    // Theo dõi biến date và cập nhật giá trị
     date (newValue, oldValue) {
       this.$emit('updateValue', newValue)
     }

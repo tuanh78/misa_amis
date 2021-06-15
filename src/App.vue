@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="content">
-      <the-sidebar :isShowLogo="isShowLogo" @showLogo="ShowLogo"></the-sidebar>
+      <the-sidebar :isShowLogo="isShowLogo" @showLogo="showLogo"></the-sidebar>
       <div class="main-content">
-        <the-header :isShowThreeStripes="isShowLogo" @hiddenLogo="HiddenLogo"></the-header>
+        <the-header :isShowThreeStripes="isShowLogo" @hiddenLogo="hiddenLogo"></the-header>
         <the-content></the-content>
       </div>
     </div>
@@ -27,11 +27,11 @@ export default {
   },
   methods: {
     // Hàm ẩn Logo
-    HiddenLogo () {
+    hiddenLogo () {
       this.isShowLogo = false
     },
     // Hàm hiện Logo
-    ShowLogo () {
+    showLogo () {
       this.isShowLogo = true
     }
   }

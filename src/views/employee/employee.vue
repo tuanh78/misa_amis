@@ -13,7 +13,7 @@
         <div class="employee-top-right">
           <!-- Button thêm nhân viên -->
           <div class="btn-add">
-            <div class="btn-add-left" @click="ShowAddForm">
+            <div class="btn-add-left" @click="showAddForm">
               <span>Thêm mới nhân viên</span>
             </div>
           </div>
@@ -30,7 +30,7 @@
         <!-- Tìm kiếm -->
         <div class="search-ctn">
           <div class="search">
-            <input type="text" v-model="filter" @input="SearchEmployee" placeholder="Tìm theo mã, tên nhân viên" />
+            <input type="text" v-model="filter" @input="searchEmployee" placeholder="Tìm theo mã, tên nhân viên" />
             <div class="icon-common-medium icon-search"></div>
           </div>
         </div>
@@ -38,11 +38,11 @@
         <div class="group-tools-right">
           <!-- Button load lại dữ liệu -->
           <div class="icon-ctn">
-            <div class="icon-common-large icon-refresh" @click="ReloadPage"></div>
+            <div class="icon-common-large icon-refresh" @click="reloadPage"></div>
           </div>
           <!-- Button xuất file excel -->
           <div class="icon-ctn">
-            <div class="icon-common-large icon-excel" @click="ExportFileExcel"></div>
+            <div class="icon-common-large icon-excel" @click="exportFileExcel"></div>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@
         </thead>
         <!-- Nội dung của bảng -->
         <tbody>
-          <tr class="ms-tr-viewer" @click="SelectedRow" v-on:dblclick="counter += 1, ShowEditForm(employee.employeeId)" v-for="employee in employees" :key="employee.employeeId">
+          <tr class="ms-tr-viewer" @click="selectedRow" v-on:dblclick="counter += 1, showEditForm(employee.employeeId)" v-for="employee in employees" :key="employee.employeeId">
             <td class="space-left ms-td-viewer"></td>
             <td
               class="ms-th-viewer ms-muli-checkall employee-checkbox ms-th-viewer-custom ms-td-viewer"
@@ -146,10 +146,10 @@
             <td class="ms-td-viewer bank-address">{{ employee.bankBranchName }}</td>
             <td class="ms-td-viewer function td-function">
               <div class="edit-form-ctn">
-                <button class="edit-form" @click="ShowEditForm(employee.employeeId)">
+                <button class="edit-form" @click="showEditForm(employee.employeeId)">
                   <span class="edit-form-text">Sửa</span>
                 </button>
-                <button class="edit-option" @click="ResetMousePosition(employee, $event)">
+                <button class="edit-option" @click="resetMousePosition(employee, $event)">
                   <div class="edit-option-sub">
                     <div class="icon-common-medium icon-arrow-down-blue"></div>
                   </div>
@@ -159,7 +159,7 @@
             <td class="space-right-white ms-td-viewer"></td>
             <td class="space-right-gray ms-td-viewer"></td>
           </tr>
-          <more-option v-if="isShowMoreOption" @showPopupDelete="ShowPopupDelete" :screenX="screenX" :screenY="screenY" v-click-outside="OnClickOutside"></more-option>
+          <more-option v-if="isShowMoreOption" @showPopupDelete="showPopupDelete" :screenX="screenX" :screenY="screenY" v-click-outside="onClickOutside"></more-option>
         </tbody>
       </table>
     </div>
@@ -176,38 +176,38 @@
         <span><span class="total">Tổng số:</span> <span class="text-bold">{{ totalEmployees }}</span> bản ghi</span>
       </div>
       <div class="right-pagination">
-        <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" @click="isActiveTotalRecord = true" v-click-outside="CloseOptionsNumberRecords">
+        <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" @click="isActiveTotalRecord = true" v-click-outside="closeOptionsNumberRecords">
           <div class="total-record-detail-ctn" ref="numberRecords">
-            <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="MoveDownOption" @keydown.38="MoveUpOption" @keydown.enter="ReloadPageWithPageSize"/>
+            <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="moveDownOption" @keydown.38="moveUpOption" @keydown.enter="reloadPageWithPageSize"/>
           </div>
-          <div class="icon-arrow-down-ctn" @click="ToggleDropDownOption">
+          <div class="icon-arrow-down-ctn" @click="toggleDropDownOption">
             <div :class="['icon-common-medium', 'icon-arrow-down', {'icon-arrow-down-open': isShowOptionsNumberRecords}]"></div>
           </div>
         </div>
         <!-- Selectbox số bản ghi trên trang -->
         <div class="list-option-number-records" :style="{top: screenY - 170 + 'px', left: screenX - 1 + 'px'}" v-if="isShowOptionsNumberRecords">
             <ul class="list-options">
-              <li :class="['item-option', {'item-selected': item === pageSize}]" v-for="(item, index) in numberRecords" :key="index" @click="ChangeNumberRecords(item, index)">
+              <li :class="['item-option', {'item-selected': item === pageSize}]" v-for="(item, index) in numberRecords" :key="index" @click="changeNumberRecords(item, index)">
                 <span>{{ item }} bản ghi trên 1 trang</span>
               </li>
             </ul>
           </div>
         <!-- Component phân trang -->
-        <v-pagination :totalPages="totalPages" @loadPage="LoadPage"></v-pagination>
+        <v-pagination :totalPages="totalPages" @loadPage="loadPage"></v-pagination>
       </div>
     </div>
     <!-- Form thêm nhân viên -->
     <add-employee
       v-if="isShowAddEmployee"
       :latestEmployeeCode="latestEmployeeCode"
-      @closePopupAddEmployee="ClosePopupAddEmployee"
-      @saveEmployeeSuccess="SaveEmployeeSuccess"
-      @saveEmployeeSuccessAndAdd="SaveEmployeeSuccessAndAdd"
+      @closePopupAddEmployee="closePopupAddEmployee"
+      @saveEmployeeSuccess="saveEmployeeSuccess"
+      @saveEmployeeSuccessAndAdd="saveEmployeeSuccessAndAdd"
     ></add-employee>
     <!-- Form sửa nhân viên -->
-    <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="ClosePopupEditEmployee" @saveEmployeeSuccess="SaveEmployeeSuccess"></edit-employee>
+    <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="closePopupEditEmployee" @saveEmployeeSuccess="saveEmployeeSuccess"></edit-employee>
     <!-- Popup cảnh báo xóa -->
-    <popup-delete v-if="isShowPopupDelete" :messageDelete="messageDelete" @deleteEmployee="DeleteEmployee" @closePopup="ClosePopupDelete"></popup-delete>
+    <popup-delete v-if="isShowPopupDelete" :messageDelete="messageDelete" @deleteEmployee="deleteEmployee" @closePopup="closePopupDelete"></popup-delete>
   </div>
 </template>
 
@@ -250,9 +250,9 @@ export default {
       totalEmployees: 0, // Tổng số nhân viên
       totalPages: 0, // Tổng số trang
       numberRecords: [...CONSTANTS.NUMBER_RECORDS], // Các số lượng bản ghi có thể trên một trang
-      indexOptionSelected: 0,
-      employeesSelected: [],
-      isSelectedAll: false
+      indexOptionSelected: 0, // Vị trí số lượng bản ghi đang chọn
+      employeesSelected: [], // Danh sách nhân viên đang chọn
+      isSelectedAll: false // Biến trạng thái chọn tất cả nhân viên
     }
   },
   components: {
@@ -263,6 +263,7 @@ export default {
     PopupDelete
   },
   created () {
+    // Lấy nhân viên theo điều kiện
     this.GetEmployeesPaging()
     /**
      * Lấy số lượng nhân viên
@@ -271,9 +272,12 @@ export default {
      */
     HTTP.get('employees/numbers-record')
       .then((result) => {
+        // Lưu lại tổng số lượng bản ghi
         this.totalEmployees = result.data
+        // Tổng số trang
         this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
       }).catch((err) => {
+        // Log lỗi
         console.log(err)
       })
   },
@@ -298,14 +302,19 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SelectedRow (event) {
+    selectedRow (event) {
+      // Kiểm tra hàng hiện tại đã được chọn hay chưa
       if (event.target.parentNode.classList.contains('row-selected')) {
+        // Xóa class
         event.target.parentNode.classList.remove('row-selected')
       } else {
+        // Lấy ra tất cả element các hàng
         var rows = this.$el.querySelectorAll('.ms-tr-viewer')
         rows.forEach((row) => {
+          // Xóa các element có class row-selected
           row.classList.remove('row-selected')
         })
+        // Thêm class row-selected cho dòng được chọn
         event.target.parentNode.classList.add('row-selected')
       }
     },
@@ -315,20 +324,25 @@ export default {
      * CreatedDate: 15/06/2021
      */
     GetEmployeesPaging () {
+      // Lấy nhân viên theo điều kiện
       HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
         .then(response => {
           this.employees = response.data
           if (response.status === 200) {
             this.employees.map(employee => {
+              // Kiểm tra ngày sinh có rỗng hay không
               if (employee.dateOfBirth) {
+                // Format lại ngày sinh
                 employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
               }
               return employee
             })
           }
+          // Tắt reload
           this.isShowReload = false
         })
         .catch(e => {
+          // Log lỗi
           this.errors.push(e)
         })
     },
@@ -337,7 +351,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupAddEmployee () {
+    closePopupAddEmployee () {
       this.isShowAddEmployee = false
     },
     /**
@@ -345,7 +359,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ResetMousePosition (employee, event) {
+    resetMousePosition (employee, event) {
       this.screenX = event.screenX
       this.screenY = event.screenY
       this.isShowMoreOption = !this.isShowMoreOption
@@ -356,7 +370,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    OnClickOutside () {
+    onClickOutside () {
       this.isShowMoreOption = false
     },
     /**
@@ -364,12 +378,14 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ShowEditForm (employeeId) {
+    showEditForm (employeeId) {
       HTTP.get(`employees/${employeeId}`)
         .then((result) => {
           this.employee = result.data
+          // Hiển thị Popup sửa nhân viên
           this.isShowEditEmployee = true
         }).catch((err) => {
+          // Log lỗi
           console.log(err)
         })
     },
@@ -378,7 +394,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupEditEmployee () {
+    closePopupEditEmployee () {
+      // Đóng Popup sửa nhân viên
       this.isShowEditEmployee = false
     },
     /**
@@ -386,17 +403,20 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SaveEmployeeSuccess () {
+    saveEmployeeSuccess () {
+      // Đóng Popup thêm nhân viên
       this.isShowAddEmployee = false
+      // Đóng Popup sửa nhân viên
       this.isShowEditEmployee = false
-      this.ReloadPage()
+      // Load lại trang
+      this.reloadPage()
     },
     /**
      * Hàm load lại trang
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ReloadPage () {
+    reloadPage () {
       this.isShowReload = true
       this.GetEmployeesPaging()
     },
@@ -405,31 +425,39 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    DeleteEmployee () {
+    deleteEmployee () {
       HTTP.delete(`employees/${this.employee.employeeId}`)
         .then((result) => {
           this.isShowPopupDelete = false
+          // Lấy số lượng bản ghi theo điều kiện
           HTTP.get(`employees/numbers-record?filter=${this.filter}`)
             .then((result) => {
               this.totalEmployees = result.data
+              // Tính tổng số lượng trang
               this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-              this.ReloadPage()
+              // Load lại trang
+              this.reloadPage()
             }).catch((err) => {
+              // Log lỗi
               console.log(err)
             })
         }).catch((err) => {
+          // Log lỗi
           console.log(err)
         })
     },
     /**
      * Hàm hiển thị Popup thêm nhân viên và lấy mã nhân viên mới nhất chưa có trong csdl
      */
-    ShowAddForm () {
+    showAddForm () {
       HTTP.get('employees/max-employee-code')
         .then((result) => {
+          // Lưu lại mã khách hàng mới
           this.latestEmployeeCode = result.data
+          // Hiển thị Popup thêm nhân viên
           this.isShowAddEmployee = true
         }).catch((err) => {
+          // Log lỗi
           console.log(err)
         })
     },
@@ -438,8 +466,10 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ShowPopupDelete () {
+    showPopupDelete () {
+      // Hiển thị Popup cảnh báo xóa
       this.isShowPopupDelete = true
+      // Thông báo xóa
       this.messageDelete = `Bạn có thực sự muốn xóa Nhân viên <${this.employee.employeeCode}> không?`
     },
     /**
@@ -447,7 +477,8 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopupDelete () {
+    closePopupDelete () {
+      // Đóng Popup thông báo xóa
       this.isShowPopupDelete = false
     },
     /**
@@ -455,22 +486,30 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    SearchEmployee: debounce(function () {
+    searchEmployee: debounce(function () {
+      // Lấy danh sách nhân viên theo điều kiện
       HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
         .then(response => {
           this.employees = response.data
+          // Số lượng nhân viên
           this.totalEmployees = this.employees.length
+          // Tính số lượng trang
           this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+          // Lấy số lượng nhân viên
           HTTP.get(`employees/numbers-record?filter=${this.filter}`)
             .then((result) => {
               this.totalEmployees = result.data
+              // Tính tổng số lượng nhân viên
               this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
             }).catch((err) => {
+              // Log lỗi
               console.log(err)
             })
+          // Kiểm tra có nhân viên nào không
           if (this.employees.length || this.employees !== '') {
             this.employees.map(employee => {
               if (employee.dateOfBirth) {
+                // Format lại định dạng dữ liệu của ngày sinh
                 employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
               }
               return employee
@@ -486,28 +525,35 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    LoadPage (pageNum) {
+    loadPage (pageNum) {
       this.pageIndex = pageNum
-      this.ReloadPage()
+      // Load lại trang
+      this.reloadPage()
     },
     /**
      * Hàm thay đổi số lượng bản ghi trên một trang
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ChangeNumberRecords (pageSize, index) {
+    changeNumberRecords (pageSize, index) {
+      // Gán vị trí số lượng bản ghi được chọn
       this.indexOptionSelected = index
+      // Gán số lượng bản ghi trên một trang
       this.pageSize = pageSize
+      // Tính số lượng trang
       this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-      this.ReloadPage()
+      // Load lại trang
+      this.reloadPage()
     },
     /**
      * Hàm đóng dropdown số lượng bản ghi trên trang
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    CloseOptionsNumberRecords () {
+    closeOptionsNumberRecords () {
+      // Đóng danh sách số lượng bản ghi trên trang
       this.isShowOptionsNumberRecords = false
+      // Tắt active ô số lượng bản ghi
       this.isActiveTotalRecord = false
     },
     /**
@@ -515,10 +561,14 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ToggleDropDownOption () {
+    toggleDropDownOption () {
+      // Focus vào ô số lượng bản ghi
       this.$refs.inputNumberRecord.focus()
+      // Toggle danh sách số lượng bản ghi
       this.isShowOptionsNumberRecords = !this.isShowOptionsNumberRecords
+      // Lấy vị trí theo trục X của ô hiển thị số lượng bản ghi
       this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      // Lấy vị trí theo trục Y của ô hiển thị số lượng bản ghi
       this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
     },
     /**
@@ -526,14 +576,21 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    MoveDownOption () {
+    moveDownOption () {
+      // Hiển thị danh sách số lượng bản ghi
       this.isShowOptionsNumberRecords = true
+      // Tăng vị trí chọn bản ghi lên 1
       this.indexOptionSelected = this.indexOptionSelected + 1
+      // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
       if (this.indexOptionSelected === this.numberRecords.length) {
+        // Gán lại vị trí được chọn về 0
         this.indexOptionSelected = 0
       }
+      // Gán số lượng bản ghi trên trang
       this.pageSize = this.numberRecords[this.indexOptionSelected]
+      // Vị trí danh sách theo trục X
       this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      // Vị trí danh sách theo trục Y
       this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
     },
     /**
@@ -541,22 +598,45 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    MoveUpOption () {
+    moveUpOption () {
+      // Hiển thị danh sách số lượng bản ghi trên trang
       this.isShowOptionsNumberRecords = true
+      // Giảm vị trí chọn bản ghi đi 1
       this.indexOptionSelected = this.indexOptionSelected - 1
+      // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
       if (this.indexOptionSelected < 0) {
+        // Gán vị trí chọn bản ghi về cuối
         this.indexOptionSelected = this.numberRecords.length - 1
       }
+      // Gán số lượng bản ghi trên trang
       this.pageSize = this.numberRecords[this.indexOptionSelected]
+      // Vị trí của danh sách bản ghi theo trục X
       this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+      // Vị trí của danh sách bản ghi theo trục Y
       this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
     },
-    ReloadPageWithPageSize () {
+
+    /**
+     * Hàm Load lại trang với kích thước trang mới
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    reloadPageWithPageSize () {
+      // Tính số lượng trang
       this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+      // Đóng danh sách số lượng bản ghi trên trang
       this.isShowOptionsNumberRecords = false
-      this.ReloadPage()
+      // Load lại trang
+      this.reloadPage()
     },
-    ExportFileExcel () {
+
+    /**
+     * Hàm xuất dữ liệu ra file excel
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    exportFileExcel () {
+      // Gọi API
       HTTP.get('employees/export', {
         responseType: 'blob'
       })
@@ -566,11 +646,25 @@ export default {
           console.log(err)
         })
     },
-    SaveEmployeeSuccessAndAdd () {
+
+    /**
+     * Hàm sau khi lưu nhân viên và thêm
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    saveEmployeeSuccessAndAdd () {
+      // Đóng Popup sửa nhân viên
       this.isShowEditEmployee = false
-      this.ReloadPage()
+      // Load lại trang
+      this.reloadPage()
     },
+    /**
+     * Hàm chọn tất cả nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
     selectedAllEmployees () {
+      // Kiểm tra xem tất cả nhân viên được chọn hay chưa
       if (!this.isSelectedAll) {
         this.employees.forEach(item => {
           this.employeesSelected.push(item.employeeId)

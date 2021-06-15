@@ -11,10 +11,10 @@
       </div>
       <div class="straight-line"></div>
       <div class="group-btn">
-        <button class="btn-common btn-close" @click="ClosePopup">
+        <button class="btn-common btn-close" @click="closePopup">
           <span>Không</span>
         </button>
-        <button class="btn-common btn-delete" @click="DeleteEmployee">
+        <button class="btn-common btn-delete" @click="deleteEmployee">
           <span>Có</span>
         </button>
       </div>
@@ -37,7 +37,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    ClosePopup () {
+    closePopup () {
       this.$emit('closePopup')
     },
     /**
@@ -45,7 +45,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    DeleteEmployee () {
+    deleteEmployee () {
       this.$emit('deleteEmployee')
     }
   }
