@@ -56,6 +56,12 @@
             display: flex;
             align-items: center;
             padding-left: 20px;
+
+            @media only screen and (max-width: 812px) {
+                .total {
+                    display: none;
+                }
+              }
         }
 
         .right-pagination {
@@ -117,6 +123,13 @@
                         transform: rotate(180deg);
                         transition: transform .15s linear;
                     }
+                }
+            }
+
+            @media only screen and (max-width: 848px) {
+                .total-record {
+                    width: 164px;
+                    min-width: 164px;    
                 }
             }
 
@@ -195,6 +208,12 @@
             color: $color-dark;
             display: inline-block;
         }
+
+        @media only screen and (max-width: 870px) {
+            .title-text {
+                font-size: 20px;
+            }
+          }
     }
 
     &-right {
@@ -216,6 +235,13 @@
 
                 &:hover {
                     background-color: #35bf22;
+                }
+
+                @media only screen and (max-width: 870px) {
+                    padding: 5px 8px 5px 8px;
+                    height: 30px;
+                    line-height: 20px;
+                    font-size: 11px;
                 }
             }
 
@@ -279,6 +305,12 @@
         width: 250px;
         height: 32px;
     }
+
+    @media only screen and (max-width: 800px) {
+        .search-ctn {
+            width: 200px;
+        }
+    }
     .search {
         position: relative;
         width: 240px;
@@ -324,6 +356,12 @@
             }
         }
 
+        @media only screen and (max-width: 800px) {
+            input {
+                width: 200px;
+            }
+        }
+
         .icon-search {
             position: absolute;
             top: 8px;
@@ -331,6 +369,12 @@
             background-position: -992px -360px;
             margin-right: 4px;
             cursor: pointer;
+        }
+    }
+
+    @media only screen and (max-width: 800px) {
+        .search {
+            width: auto;
         }
     }
 
@@ -420,6 +464,13 @@
     position: sticky;
     top: 102.33px;
     left: auto;
+}
+
+@media only screen and (max-width: 870px) {
+    .th-style-common {
+        top: 94.33px;
+        font-size: 11px;
+    }
 }
 
 tbody {
@@ -694,6 +745,13 @@ tbody {
     top: 102.33px;
     z-index: 4;
 }
+
+@media only screen and (max-width: 870px) {
+    .sticky-style {
+        top: 94.33px;
+    }
+}
+
 }
 
 .ms-checkbox-border-checked-true {

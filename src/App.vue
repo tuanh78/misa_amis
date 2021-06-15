@@ -55,6 +55,9 @@ export default {
 html {
   width: 100%;
   font-size: 13px;
+  @media only screen and (max-width: 870px) {
+      font-size: 11px;
+  }
 }
 
 body {

@@ -173,7 +173,7 @@
     <!-- Phần phân trang -->
     <div v-if="!isShowNoContent" class="pagination-bar">
       <div class="left-pagination">
-        <span>Tổng số: <span class="text-bold">{{ totalEmployees }}</span> bản ghi</span>
+        <span><span class="total">Tổng số:</span> <span class="text-bold">{{ totalEmployees }}</span> bản ghi</span>
       </div>
       <div class="right-pagination">
         <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" @click="isActiveTotalRecord = true" v-click-outside="CloseOptionsNumberRecords">
