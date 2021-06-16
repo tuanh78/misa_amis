@@ -1,19 +1,24 @@
 .popup {
+    transition: all .2s;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 99;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     .main-popup-ctn {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         background-color: #fff;
         padding: 32px;
         border-radius: 3px;
         width: 444px;
         min-width: 444px;
+        animation: zoomOutAnimation 0.3s;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
 
     }
 
@@ -39,7 +44,7 @@
     .straight-line {
         height: 1px;
         width: 100%;
-        margin-bottom: 20.8px;
+        margin-bottom: 20px;
         background: #b8bcc3;
     }
 
@@ -86,4 +91,9 @@
         z-index: -1;
         background: rgba(0,0,0,.4);
     }
+}
+
+@keyframes zoomOutAnimation {
+    0%   {transform: scale(0.9); }
+    100% {transform: scale(1);}
 }

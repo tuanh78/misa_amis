@@ -1,20 +1,21 @@
 .add-employee {
     transition: all .2s;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: 99;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .form-ctn {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
         z-index: 10;
         background-color: $color-white;
         width: 900px;
         animation: zoomOutAnimation 0.3s;
         animation-timing-function: linear;
         animation-fill-mode: forwards;
-        transform-origin: top left;
 
 
         .popup-header {
@@ -379,10 +380,6 @@
                     width: 250.70px;
                 }
             }
-
-            .issued-by {
-                margin-top: 1px;
-            }
         }
     }
 
@@ -491,6 +488,6 @@
 }
 
 @keyframes zoomOutAnimation {
-    0%   {transform: scale(0.9) translate(-50%, -50%); }
-    100% {transform: scale(1) translate(-50%, -50%);}
+    0%   {transform: scale(0.9); }
+    100% {transform: scale(1);}
   }
