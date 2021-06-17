@@ -184,10 +184,11 @@
     flex-direction: column;
     padding: 24px 0 24px 0px;
     position: sticky;
-    top: 0;
+    // top: 0;
     left: 0;
-    z-index: 4;
+    z-index: 6;
     background-color: #f4f5f6;
+    transition: top .25s;
 
     .employee-top-atop{
         display: flex;
@@ -292,9 +293,9 @@
     padding: 16px 16px 10px;
     background-color: $color-white;
     height: 72px;
-    position: sticky;
-    top: 0;
-    left: 0;
+    // position: sticky;
+    // top: 0;
+    // left: 0;
 }
 
 .group-tools {
@@ -469,7 +470,8 @@
 
 .th-style-common {
     position: sticky;
-    top: 102.33px;
+    // top: 102.33px;
+    top: 0;
     left: auto;
 }
 
@@ -509,7 +511,8 @@ tbody {
 
 .ms-muli-checkall {
     left: 16px;
-    top: 0px;
+    // top: 0px;
+    top: -47px;
     z-index: 3;
     position: sticky;
     min-width: 40px;
@@ -663,7 +666,8 @@ tbody {
     min-width: 120px;
     position: sticky;
     right: 30px;
-    top: 0;
+    // top: 0;
+    top: -47px;
     border-left: 1px dotted #c7c7c7;
     text-align: center;
     border-right: none;
@@ -749,7 +753,8 @@ tbody {
 }
 
 .sticky-style {
-    top: 102.33px;
+    // top: 102.33px;
+    top: 0;
     z-index: 4;
 }
 

@@ -1,10 +1,10 @@
 <template>
-  <div class="employee">
+  <div class="employee" @scroll="handleScroll" ref="employee">
     <!-- Loading -->
     <div class="loading" v-if="isShowReload">
       <i class="fa fa-spinner fa-spin"></i>
     </div>
-    <div class="employee-top">
+    <div class="employee-top" :style="{top: employeeTopValue + '%'}">
       <div class="employee-top-atop">
         <div class="employee-top-left">
           <div class="title-text">Nhân viên</div>
@@ -252,7 +252,9 @@ export default {
       numberRecords: [...CONSTANTS.NUMBER_RECORDS], // Các số lượng bản ghi có thể trên một trang
       indexOptionSelected: 0, // Vị trí số lượng bản ghi đang chọn
       employeesSelected: [], // Danh sách nhân viên đang chọn
-      isSelectedAll: false // Biến trạng thái chọn tất cả nhân viên
+      isSelectedAll: false, // Biến trạng thái chọn tất cả nhân viên
+      employeeTopValue: 0, // Biến lưu top của section employee code
+      lastScrollTop: 0 // Biến lưu lại giá trị của scroll top
     }
   },
   components: {
@@ -270,6 +272,14 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/6/2021
      */
+
+    /**
+     * Xử lý sự kiện khi người dùng scroll chuột
+     * CreatedBy: PTANH
+     * CreatedDate: 17/6/2021
+     */
+    // this.handleDebouncedScroll = debounce(this.handleScroll, 100)
+    // window.addEventListener('scroll', this.handleDebouncedScroll)
     HTTP.get('employees/numbers-record')
       .then((result) => {
         // Lưu lại tổng số lượng bản ghi
@@ -281,6 +291,9 @@ export default {
         console.log(err)
       })
   },
+  // beforeDestroy () {
+  //   window.removeEventListener('scroll', this.handleDebouncedScroll)
+  // },
   watch: {
     /**
      * Theo dõi biến employees
@@ -670,7 +683,25 @@ export default {
       } else {
         this.employeesSelected = []
       }
-    }
+    },
+    /**
+     * Hàm xử lý sự kiện scroll
+     * CreatedBy: PTANH
+     * CreatedDate: 17/06/2021
+     */
+    handleScroll: debounce(function (event) {
+      console.log(event)
+      var st = event.target.scrollTop
+      if (st > this.lastScrollTop) {
+        // downscroll code
+        this.employeeTopValue = -100
+      } else {
+      // upscroll code
+        this.employeeTopValue = 0
+        console.log('scroll up')
+      }
+      this.lastScrollTop = st <= 0 ? 0 : st
+    }, 100)
   }
 }
 </script>
