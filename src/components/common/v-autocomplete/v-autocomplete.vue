@@ -364,6 +364,14 @@ export default {
     showDepartmentList () {
       this.isShowDepartmentList = !this.isShowDepartmentList
       this.$refs.departmentName.focus()
+    },
+    /**
+     * Focus vào ô input
+     * CreatedBy: PTANH
+     * CreatedDate: 17/06/2021
+     */
+    focusDepartmentInput () {
+      this.$refs.departmentName.focus()
     }
   },
   watch: {

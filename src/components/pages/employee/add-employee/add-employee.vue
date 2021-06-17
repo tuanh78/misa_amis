@@ -117,7 +117,7 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"/>
+                  <input v-model="employee.employeeName" ref="employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"/>
                   <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
@@ -484,6 +484,10 @@ export default {
     closePopupWarning () {
       // Đóng thông báo trùng mã
       this.isShowEmployeeCodeWarning = false
+      const firstErrorInput = this.errorProperties[0]
+      if (firstErrorInput !== 'departmentId') {
+        this.$refs[firstErrorInput].focus()
+      }
     },
     /**
      * Hàm kiểm tra giá trị của mã nhân viên
@@ -529,6 +533,10 @@ export default {
     closePopupError () {
       // Đóng thông báo lỗi
       this.isShowPopupError = false
+      const firstErrorInput = this.errorProperties[0]
+      if (firstErrorInput !== 'departmentId') {
+        this.$refs[firstErrorInput].focus()
+      }
     },
     /**
      * Hàm thêm phòng ban vào danh sách lỗi
@@ -674,6 +682,8 @@ export default {
                 if (element.propertyName === 'employeeCode') {
                   // Gán thông báo lỗi trùng
                   this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                  // Thêm lỗi
+                  this.errorProperties.push('employeeCode')
                   // Hiển thị Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
                   return true

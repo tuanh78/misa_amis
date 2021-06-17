@@ -188,7 +188,7 @@
     left: 0;
     z-index: 6;
     background-color: #f4f5f6;
-    transition: top .25s;
+    transition: top 1s linear .1s;
 
     .employee-top-atop{
         display: flex;
@@ -293,9 +293,8 @@
     padding: 16px 16px 10px;
     background-color: $color-white;
     height: 72px;
-    // position: sticky;
-    // top: 0;
-    // left: 0;
+    position: sticky;
+    left: 0;
 }
 
 .group-tools {

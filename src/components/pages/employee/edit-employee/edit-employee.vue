@@ -118,7 +118,7 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"/>
+                  <input v-model="employee.employeeName" ref="employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"/>
                   <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
@@ -452,6 +452,7 @@ export default {
                 propertyInvalidLists.every(element => {
                   if (element.propertyName === 'employeeCode') {
                     this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                    this.errorProperties.push('employeeCode')
                     this.isShowEmployeeCodeWarning = true
                   }
 
@@ -478,6 +479,10 @@ export default {
      */
     closePopupWarning () {
       this.isShowEmployeeCodeWarning = false
+      const firstErrorInput = this.errorProperties[0]
+      if (firstErrorInput !== 'departmentId') {
+        this.$refs[firstErrorInput].focus()
+      }
     },
     /**
      * Hàm kiểm tra giá trị của mã nhân viên
@@ -514,6 +519,10 @@ export default {
      */
     closePopupError () {
       this.isShowPopupError = false
+      const firstErrorInput = this.errorProperties[0]
+      if (firstErrorInput !== 'departmentId') {
+        this.$refs[firstErrorInput].focus()
+      }
     },
     /**
      * Hàm thêm lỗi phòng ban vào danh sách lỗi
@@ -639,6 +648,8 @@ export default {
                   if (element.propertyName === 'employeeCode') {
                     // Gán thông báo lỗi trùng mã nhân viên
                     this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                    // Thêm lỗi
+                    this.errorProperties.push('employeeCode')
                     // Hiện Popup thông báo trùng mã nhân viên
                     this.isShowEmployeeCodeWarning = true
                     return true
