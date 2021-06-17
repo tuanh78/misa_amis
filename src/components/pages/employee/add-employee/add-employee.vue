@@ -1,5 +1,9 @@
 <template>
   <div class="add-employee" @keydown.27="checkChangeData">
+    <!-- Loading -->
+    <div class="loading" v-if="isShowLoading">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
     <div class="form-ctn">
       <div class="popup-header">
         <div class="popup-header-left">
@@ -113,7 +117,7 @@
                   Tên <span class="field-required">*</span>
                 </div>
                 <div class="input-name">
-                  <input v-model="employee.employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]" @keydown.tab="moveToDepartment"/>
+                  <input v-model="employee.employeeName" @input="checkValueEmployeeName" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeName')}]"/>
                   <tool-tip v-if="errorProperties.includes('employeeName')" message="Tên không được để trống."></tool-tip>
                 </div>
               </div>
@@ -329,6 +333,7 @@ export default {
       errorMessage: '', // Biến thông báo lỗi
       isShowPopupError: false, // Biến hiển thị Popup lỗi
       isShowPopupDataChange: false, // Biến hiển thị Popup dữ liệu thay đổi
+      isShowLoading: false, // Biến hiển thị load lại trang
       departmentSearch: '', // Biến tên phòng ban tìm kiếm
       screenX: 0, // Vị trí theo trục X
       screenY: 0, // Vị trí theo trục Y
@@ -409,7 +414,7 @@ export default {
         this.errorProperties.push('employeeName')
       }
       // Kiểm tra phòng ban có trống hay lỗi không
-      if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+      if ((!this.employee.departmentId || !this.departmentSearch) && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
       // Kiểm tra xem có lỗi không
@@ -444,11 +449,18 @@ export default {
             // Biến lưu lại các trường bị lỗi server trả về
             const propertyInvalidLists = err.response.data.propertyInvalidLists
             if (err.response.data.misaCode === 400) {
-              propertyInvalidLists.forEach(element => {
+              propertyInvalidLists.every(element => {
                 if (element.propertyName === 'employeeCode') {
                   this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
                   // Hiện Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
+                  return true
+                }
+                if (element.propertyName === 'email') {
+                  this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                  // Hiện Popup cảnh báo trùng mã
+                  this.isShowEmployeeCodeWarning = true
+                  return true
                 }
               })
             }
@@ -553,15 +565,6 @@ export default {
       this.screenY = event.screenY
     },
     /**
-     * Hàm chuyển đến input đơn vị
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    moveToDepartment () {
-      // Di chuyển sang ô input phòng ban
-      EventBus.$emit('moveToDepartment')
-    },
-    /**
      * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
@@ -612,9 +615,8 @@ export default {
         // Thêm lỗi tên khách hàng
         this.errorProperties.push('employeeName')
       }
-      // Kiểm tra id phòng ban trống và chưa có lỗi hay không
-      if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
-        // Thêm lỗi phòng ban
+      // Kiểm tra phòng ban có trống hay lỗi không
+      if ((!this.employee.departmentId || !this.departmentSearch) && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
       // Kiểm tra mảng lỗi có lỗi nào hay không
@@ -645,18 +647,29 @@ export default {
         // Lưu nhân viên
         HTTP.post('employees', this.employee)
           .then((result) => {
+            this.isShowLoading = true
             this.resetData()
           }).catch((err) => {
+            // Ẩn loading
+            this.isShowLoading = false
             // Biến lưu lỗi của các trường từ server trả về
             const propertyInvalidLists = err.response.data.propertyInvalidLists
             if (err.response.data.misaCode === 400) {
-              propertyInvalidLists.forEach(element => {
+              propertyInvalidLists.every(element => {
                 // Nếu employeeCode lỗi
                 if (element.propertyName === 'employeeCode') {
                   // Gán thông báo lỗi trùng
                   this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
                   // Hiển thị Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
+                  return true
+                }
+
+                if (element.propertyName === 'email') {
+                  this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                  // Hiện Popup cảnh báo trùng mã
+                  this.isShowEmployeeCodeWarning = true
+                  return true
                 }
               })
             }
@@ -705,6 +718,8 @@ export default {
           this.$refs.employeeCode.focus()
           // Sao chép biến employee
           this.fakeEmployee = { ...this.employee }
+          // Ẩn loading
+          this.isShowLoading = false
         }).catch((err) => {
           // Log lỗi
           console.log(err)

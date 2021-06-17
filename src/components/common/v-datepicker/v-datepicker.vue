@@ -2,7 +2,7 @@
   <div :class="['date-picker', { 'border-focus': focusInput}]" @click="focusInput = true" v-click-outside="changeBorderColor">
     <date-pick v-model="date" :weekdays="weekDays" :months="months" :displayFormat="dateFormat" :isDateDisabled="isFutureDate">
         <template v-slot:default="{toggle, processUserInput, valueToInputFormat}">
-            <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @input="processUserInput($event.target.value)" v-mask="dateFormatMask" :placeholder="dateFormat">
+            <input class="input-date" @click="toggle" :value="valueToInputFormat(date)" @focus="focusInput = true" @blur="focusInput = false" @input="processUserInput($event.target.value)" v-mask="dateFormatMask" :placeholder="dateFormat">
             <div class="calendar" @click="toggle">
               <div class="icon-calendar"></div>
             </div>

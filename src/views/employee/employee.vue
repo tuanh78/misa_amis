@@ -178,7 +178,7 @@
       <div class="right-pagination">
         <div :class="['total-record', {'total-record-active': isActiveTotalRecord}]" @click="isActiveTotalRecord = true" v-click-outside="closeOptionsNumberRecords">
           <div class="total-record-detail-ctn" ref="numberRecords">
-            <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="moveDownOption" @keydown.38="moveUpOption" @keydown.enter="reloadPageWithPageSize"/>
+            <input class="total-record-detail" ref="inputNumberRecord" :value="`${pageSize} bản ghi trên 1 trang`" readonly @keydown.40.prevent="moveDownOption" @keydown.38.prevent="moveUpOption" @keydown.enter="reloadPageWithPageSize"/>
           </div>
           <div class="icon-arrow-down-ctn" @click="toggleDropDownOption">
             <div :class="['icon-common-medium', 'icon-arrow-down', {'icon-arrow-down-open': isShowOptionsNumberRecords}]"></div>
@@ -205,7 +205,7 @@
       @saveEmployeeSuccessAndAdd="saveEmployeeSuccessAndAdd"
     ></add-employee>
     <!-- Form sửa nhân viên -->
-    <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="closePopupEditEmployee" @saveEmployeeSuccess="saveEmployeeSuccess"></edit-employee>
+    <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="closePopupEditEmployee" @saveEmployeeSuccess="saveEmployeeSuccess" @saveEmployeeSuccessAndAdd="saveEmployeeSuccessAndAdd"></edit-employee>
     <!-- Popup cảnh báo xóa -->
     <popup-delete v-if="isShowPopupDelete" :messageDelete="messageDelete" @deleteEmployee="deleteEmployee" @closePopup="closePopupDelete"></popup-delete>
   </div>
@@ -653,8 +653,6 @@ export default {
      * CreatedDate: 15/06/2021
      */
     saveEmployeeSuccessAndAdd () {
-      // Đóng Popup sửa nhân viên
-      this.isShowEditEmployee = false
       // Load lại trang
       this.reloadPage()
     },

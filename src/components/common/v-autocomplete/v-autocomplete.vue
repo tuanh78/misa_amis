@@ -18,8 +18,11 @@
           filterDepartment();
           inputChangedValue();
         "
+        ref="departmentName"
+        @focus="departmentInputActive = true" @blur="departmentInputActive = false"
         @keydown.40="moveDownOption"
         @keydown.38="moveUpOption"
+        @keydown.tab="moveToNextInput"
         @click="changeValueOption"
         v-model="departmentSearch"
         autocomplete="off"
@@ -27,7 +30,7 @@
       <label
         class="department-icon-ctn"
         for="autocomplete"
-        @click.prevent="isShowDepartmentList = !isShowDepartmentList"
+        @click.prevent="showDepartmentList"
       >
         <div class="icon-common-medium icon-arrow-down"></div>
       </label>
@@ -53,7 +56,7 @@
               'option-item',
               {
                 'selected-option':
-                  department.departmentId === departmentSeleted
+                  indexOptionSelected === index
               },
             ]"
             >{{ department.departmentName }}</a
@@ -90,14 +93,18 @@ export default {
         this.departments = result.data
         // Tạo ra một mảng danh sách phòng ban khác để xử lý
         this.fakeDepartments = [...this.departments]
+        if (!this.departmentId) {
+          this.indexOptionSelected = 0
+        } else {
+          this.indexOptionSelected = this.fakeDepartments.findIndex((item) => {
+            return item.departmentId === this.departmentId
+          })
+        }
       })
       .catch((err) => {
         // Log ra khi gặp lỗi
         console.log(err)
       })
-    // Lắng nghe sự kiện khi người dùng sử dụng Tab để chuyển sang ô input tiếp theo
-    EventBus.$on('moveToDepartment', this.activeInputDepartment)
-    // Lắng nghe sự kiện đặt lại giá trị tìm kiếm phòng ban
     EventBus.$on('resetDepartmentSearch', this.resetDepartmentSearch)
   },
   data () {
@@ -114,7 +121,6 @@ export default {
   },
   destroyed () {
     // Dừng lắng nghe sự kiện
-    EventBus.$off('moveToDepartment', this.changeValueOption)
     EventBus.$off('resetDepartmentSearch', this.resetDepartmentSearch)
   },
   props: {
@@ -157,7 +163,7 @@ export default {
         // Mảng phòng ban xử lý bằng mảng phòng ban ban đầu
         this.fakeDepartments = [...this.departments]
         // Gán phòng ban được chọn là phòng ban đầu tiên
-        this.departmentSeleted = this.fakeDepartments[0].departmentId
+        // this.departmentSeleted = this.fakeDepartments[0].departmentId
         // Vị trí phòng ban được chọn là 0
         this.indexOptionSelected = 0
       } else {
@@ -168,7 +174,7 @@ export default {
         // Kiểm tra mảng department có phần tử nào hay không
         if (this.fakeDepartments.length > 0) {
           // Chọn phần tử đầu tiên
-          this.departmentSeleted = this.fakeDepartments[0].departmentId
+          // this.departmentSeleted = this.fakeDepartments[0].departmentId
           // Vị trí phần tử đầu tiên được chọn
           this.indexOptionSelected = 0
         }
@@ -317,8 +323,6 @@ export default {
     changeValueOption () {
       // Kiểm tra tên phòng ban tìm kiếm có rỗng không
       if (!this.departmentSearch) {
-        // Gán giá trị được chọn là giá trị đầu tiên
-        this.departmentSeleted = this.fakeDepartments[0].departmentId
         // Gán vị trí được chọn là vị trí đầu tiên
         this.indexOptionSelected = 0
       }
@@ -343,6 +347,23 @@ export default {
     resetDepartmentSearch () {
       this.departmentSearch = ''
       this.departmentSeleted = ''
+    },
+    /**
+     * Hàm xử lý khi chuyển sang ô input tiếp theo
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    moveToNextInput () {
+      this.departmentInputActive = false
+    },
+    /**
+     * Hàm hiển thị danh sách phòng ban
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    showDepartmentList () {
+      this.isShowDepartmentList = !this.isShowDepartmentList
+      this.$refs.departmentName.focus()
     }
   },
   watch: {
