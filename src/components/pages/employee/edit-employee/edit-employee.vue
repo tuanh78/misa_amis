@@ -238,7 +238,8 @@
                 <input
                   v-model="employee.email"
                   type="text"
-                  class="input-style-common width-three-input"
+                  :class="['input-style-common', 'width-three-input', {'border-error': errorProperties.includes('email')}]"
+                  @input="removeEmailError"
                 />
               </div>
             </div>
@@ -435,6 +436,10 @@ export default {
             }
             return false
           }
+          if (element === 'email') {
+            this.isShowEmployeeCodeWarning = true
+            return false
+          }
         })
       } else {
         if (this.editMode) {
@@ -452,6 +457,8 @@ export default {
 
                   if (element.propertyName === 'email') {
                     this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                    // Thêm lỗi email vào mảng lỗi
+                    this.errorProperties.push('email')
                     // Hiện Popup cảnh báo trùng mã
                     this.isShowEmployeeCodeWarning = true
                     return true
@@ -610,6 +617,10 @@ export default {
               }
               return false
             }
+            if (element === 'email') {
+              this.isShowEmployeeCodeWarning = true
+              return false
+            }
           })
         } else {
           // Lưu nhân viên
@@ -634,6 +645,8 @@ export default {
                   }
                   if (element.propertyName === 'email') {
                     this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                    // Thêm lỗi email vào mảng lỗi
+                    this.errorProperties.push('email')
                     // Hiện Popup cảnh báo trùng mã
                     this.isShowEmployeeCodeWarning = true
                     return true
@@ -723,7 +736,7 @@ export default {
       EventBus.$emit('resetDataDatePicker')
       this.$emit('saveEmployeeSuccessAndAdd')
       // Lấy mã nhân viên mới
-      HTTP.get('employees/max-employee-code')
+      HTTP.get('employees/new-code')
         .then((result) => {
           // Gán mã nhân viên mới
           this.employee.employeeCode = result.data
@@ -811,6 +824,19 @@ export default {
             })
           }
         })
+    },
+    /**
+     * Xóa lỗi Email
+     * CreatedBy: PTANH
+     * CreatedDate: 17/06/2021
+     */
+    removeEmailError () {
+      if (this.errorProperties.includes('email') !== -1) {
+        const index = this.errorProperties.indexOf('email')
+        if (index > -1) {
+          this.errorProperties.splice(index, 1)
+        }
+      }
     }
   }
 }

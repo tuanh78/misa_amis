@@ -450,7 +450,7 @@ export default {
      * Hàm hiển thị Popup thêm nhân viên và lấy mã nhân viên mới nhất chưa có trong csdl
      */
     showAddForm () {
-      HTTP.get('employees/max-employee-code')
+      HTTP.get('employees/new-code')
         .then((result) => {
           // Lưu lại mã khách hàng mới
           this.latestEmployeeCode = result.data
