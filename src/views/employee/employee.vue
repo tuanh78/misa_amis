@@ -689,7 +689,7 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 17/06/2021
      */
-    handleScroll: debounce(function (event) {
+    handleScroll (event) {
       console.log(event)
       var st = event.target.scrollTop
       if (st > this.lastScrollTop) {
@@ -701,7 +701,7 @@ export default {
         console.log('scroll up')
       }
       this.lastScrollTop = st <= 0 ? 0 : st
-    }, 100)
+    }
   }
 }
 </script>
