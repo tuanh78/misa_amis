@@ -238,6 +238,7 @@
                 <input
                   v-model="employee.email"
                   type="email"
+                  ref="email"
                   :class="['input-style-common', 'width-three-input', {'border-error': errorProperties.includes('email')}]"
                   @input="removeEmailError"
                 />
