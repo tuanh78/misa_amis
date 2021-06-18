@@ -438,6 +438,16 @@
             .width-three-input {
                 width: 203px;
             }
+
+            .input-email {
+                position: relative;
+
+                &:hover {
+                    .tool-tip {
+                        display: block;
+                    }
+                }
+            }
         }
     }
 }

@@ -242,6 +242,7 @@
                   :class="['input-style-common', 'width-three-input', {'border-error': errorProperties.includes('email')}]"
                   @input="removeEmailError"
                 />
+                <tool-tip v-if="errorProperties.includes('email')" message="Địa chỉ email không hợp lệ."></tool-tip>
               </div>
             </div>
           </div>

@@ -435,6 +435,13 @@
             .width-three-input {
                 width: 203px;
             }
+
+            position: relative;
+            &:hover {
+                .tool-tip {
+                    display: block;
+                }
+            }
         }
     }
 }

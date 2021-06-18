@@ -109,7 +109,7 @@
                 </div>
                 <div class="input-code">
                   <input v-model="employee.employeeCode" ref="employeeCode" @input="checkValueEmployeeCode" type="text" :class="['input-style-common', {'border-error': errorProperties.includes('employeeCode')}]" />
-                  <tool-tip v-if="errorProperties.includes('employeeCode')" message="Mã không được để trống."></tool-tip>
+                  <tool-tip v-if="errorProperties.includes('employeeCode')" :message="employee.employeeCode ? `Mã nhân viên ${employee.employeeCode} đã tồn tại trong hệ thống.` : 'Mã không được để trống.'"></tool-tip>
                 </div>
               </div>
 
@@ -243,6 +243,7 @@
                   :class="['input-style-common', 'width-three-input', {'border-error': errorProperties.includes('email')}]"
                   @input="removeEmailError"
                 />
+                <tool-tip v-if="errorProperties.includes('email')" message="Địa chỉ email không hợp lệ."></tool-tip>
               </div>
             </div>
           </div>
@@ -705,8 +706,12 @@ export default {
           // Lặp lỗi trong mảng và gán thông báo lỗi cho từng trường để hiển thị
           this.errorProperties.every(element => {
             if (element === 'employeeCode') {
-              this.errorMessage = 'Mã không được để trống'
-              this.isShowPopupError = true
+              if (!this.employee.employeeCode) {
+                this.errorMessage = 'Mã không được để trống.'
+                this.isShowPopupError = true
+              } else {
+                this.isShowEmployeeCodeWarning = true
+              }
               return false
             }
             if (element === 'employeeName') {
@@ -722,6 +727,16 @@ export default {
                 this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
               }
               return false
+            }
+
+            if (element === 'email') {
+              this.isShowEmployeeCodeWarning = true
+              return false
+            }
+
+            if (element === 'identityNumber') {
+              this.errorMessage = 'Giá trị của Số CMND không đúng.'
+              this.isShowPopupError = true
             }
           })
         } else {
@@ -781,14 +796,14 @@ export default {
         })
     },
     saveNewEmployee () {
-      // Hiển thị Loading
-      this.isShowLoading = true
       // Lưu nhân viên
       HTTP.post('employees', this.employee)
         .then((result) => {
+          // Hiển thị Loading
+          this.isShowLoading = true
           this.resetData()
           this.$emit('saveEmployeeSuccessAndAdd')
-          this.isShowLoading = false
+          // this.isShowLoading = false
         }).catch((err) => {
           // Lưu danh sách trường lỗi từ server trả về
           const propertyInvalidLists = err.response.data.propertyInvalidLists
@@ -798,6 +813,8 @@ export default {
               if (element.propertyName === 'employeeCode') {
                 // Gán thông báo mã nhân viên bị trùng
                 this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                // Thêm lỗi trùng mã
+                this.errorProperties.push('employeeCode')
                 // Hiển thị thông báo bị trùng mã
                 this.isShowEmployeeCodeWarning = true
                 return true
@@ -805,6 +822,8 @@ export default {
 
               if (element.propertyName === 'email') {
                 this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                // Thêm lỗi email
+                this.errorProperties.push('email')
                 // Hiện Popup cảnh báo trùng mã
                 this.isShowEmployeeCodeWarning = true
                 return true
@@ -839,6 +858,8 @@ export default {
               if (element.propertyName === 'employeeCode') {
                 // Gán thông báo mã nhân viên bị trùng
                 this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                // Thêm lỗi employeeCode
+                this.errorProperties.push('employeeCode')
                 // Hiển thị thông báo bị trùng mã
                 this.isShowEmployeeCodeWarning = true
                 return true
@@ -846,6 +867,8 @@ export default {
 
               if (element.propertyName === 'email') {
                 this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                // Thêm lỗi email vào danh sách lỗi
+                this.errorProperties.push('email')
                 // Hiện Popup cảnh báo trùng mã
                 this.isShowEmployeeCodeWarning = true
                 return true
