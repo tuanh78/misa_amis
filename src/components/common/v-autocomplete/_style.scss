@@ -134,6 +134,16 @@ input {
             justify-content: center;
             background-color: #fff;
             color: #2CA01C;
+
+            .icon-loading {
+                width: 32px;
+                height: 32px;
+                background: transparent url('../../../assets/img/loading.svg') no-repeat center;
+                background-size: 100%;
+                animation: rotate 1s ease infinite;
+                transition: all .3s ease;
+                z-index: 99;
+            }
         }
 
         .message-no-data {
@@ -147,4 +157,14 @@ input {
 
 .input-active {
     border: 1px solid #2ca01c;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(1turn);
+    }
 }

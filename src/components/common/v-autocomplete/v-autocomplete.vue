@@ -70,7 +70,7 @@
         Không có dữ liệu hiển thị
       </div>
       <div class="loading" v-if="isShowLoading">
-        <i class="fa fa-spinner fa-spin"></i>
+        <div class="icon-loading"></div>
       </div>
     </div>
   </div>

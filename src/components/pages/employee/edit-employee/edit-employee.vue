@@ -2,7 +2,6 @@
   <div class="add-employee" @keydown.27="checkChangeData">
     <!-- Loading -->
     <div class="loading" v-if="isShowLoading">
-      <i class="fa fa-spinner fa-spin"></i>
     </div>
     <div class="form-ctn">
       <div class="popup-header">

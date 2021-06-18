@@ -15,10 +15,12 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 32px;
-        height: 32px;
-        font-size: 32px;
-        color: #2CA01C;
+        width: 44px;
+        height: 44px;
+        background: transparent url('../../../../assets/img/loading.svg') no-repeat center;
+        background-size: 100%;
+        animation: rotate 1s ease infinite;
+        transition: all .3s ease;
         z-index: 99;
     }
 
@@ -532,4 +534,14 @@
 @keyframes zoomOutAnimation {
     0%   {transform: scale(0.9); }
     100% {transform: scale(1);}
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(1turn);
+    }
 }

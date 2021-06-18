@@ -2,7 +2,6 @@
   <div class="employee" @scroll="handleScroll" ref="employee">
     <!-- Loading -->
     <div class="loading" v-if="isShowReload">
-      <i class="fa fa-spinner fa-spin"></i>
     </div>
     <div class="employee-top" :style="{top: employeeTopValue + '%'}">
       <div class="employee-top-atop">
