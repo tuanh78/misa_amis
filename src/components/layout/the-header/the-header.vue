@@ -5,6 +5,7 @@
 
       <div class="company-name">
         <div class="company-name-detail">Công ty cổ phần Misa</div>
+        <tool-tip message="Công ty cổ phần Misa"></tool-tip>
         <div class="icon-arrow-down">
           <div class="icon-common-small arrow-down"></div>
         </div>
@@ -20,18 +21,23 @@
       <div class="tools">
         <div class="tools-item">
           <div class="icon-common-large icon-mess"></div>
+          <tool-tip message="Tính năng mở rộng"></tool-tip>
         </div>
         <div class="tools-item">
           <div class="icon-common-large icon-setting"></div>
+          <tool-tip message="Thiết lập"></tool-tip>
         </div>
         <div class="tools-item">
           <div class="icon-common-large icon-chat"></div>
+          <tool-tip message="Trò chuyện"></tool-tip>
         </div>
         <div class="tools-item">
           <div class="icon-common-large icon-help"></div>
+          <tool-tip message="Giúp"></tool-tip>
         </div>
         <div class="tools-item">
           <div class="icon-common-large icon-bell"></div>
+          <tool-tip message="Thông báo"></tool-tip>
         </div>
       </div>
 
@@ -50,7 +56,9 @@
 </template>
 
 <script>
+import ToolTip from '../../common/tool-tip/tool-tip.vue'
 export default {
+  components: { ToolTip },
   props: {
     // Biến hiển thị icon đóng mở sidebar
     isShowThreeStripes: {

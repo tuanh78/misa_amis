@@ -31,6 +31,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
+            position: relative;
 
             &-detail {
                 max-width: 200px;
@@ -42,6 +43,13 @@
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
+
+                &:hover + .tool-tip {
+                    display: block;
+                    top: 110%;
+                    left: 80%;
+                    text-transform: uppercase;
+                }
             }
 
             @media only screen and (max-width: 1074px) {
@@ -59,7 +67,7 @@
             
             .icon-arrow-down {
                 min-width: 34px;
-                min-height: 20px;
+                min-height: 19px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -145,6 +153,12 @@
             cursor: pointer;
             position: relative;
 
+            &:hover .tool-tip {
+                display: block;
+                top: 120%;
+                left: 80%;
+            }
+
             &:hover {
                 background-color: $color-black;
 
@@ -219,6 +233,7 @@
     .user {
         display: flex;
         padding: 0 16px;
+        cursor: pointer;
 
         &-avatar {
             background-image: url('../../../assets/img/avatar.jpg');

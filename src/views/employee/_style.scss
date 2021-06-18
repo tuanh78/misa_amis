@@ -306,6 +306,25 @@
 
         .icon-ctn {
             padding: 0 6px;
+            cursor: pointer;
+        }
+
+        .icon-refresh-ctn {
+            position: relative;
+
+            .icon-refresh:hover + .tool-tip {
+                display: block;
+                top: 65%;
+            }
+        }
+
+        .icon-excel-ctn {
+            position: relative;
+
+            .icon-excel:hover + .tool-tip {
+                display: block;
+                top: 65%;
+            }
         }
     }
     .search-ctn {
@@ -656,7 +675,7 @@ tbody {
 }
 
 .bank-address {
-    min-width: 300px;
+    min-width: 250px;
     border-right: none;
 }
 
@@ -685,13 +704,12 @@ tbody {
 
         &:focus {
             .edit-form-text {
-                border: 1px solid #0075c0;
+                outline: 1px solid #0075c0;
             }
         }
         &-text {
             font-family: 'noto-sans-semi-Bold', sans-serif;
             color: #0075c0;
-            border: 1px solid transparent;
             line-height: 13px;
         }
     }

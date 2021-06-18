@@ -37,12 +37,14 @@
 
         <div class="group-tools-right">
           <!-- Button load lại dữ liệu -->
-          <div class="icon-ctn">
+          <div class="icon-ctn icon-refresh-ctn">
             <div class="icon-common-large icon-refresh" @click="reloadPage"></div>
+            <tool-tip message="Lấy lại dữ liệu"></tool-tip>
           </div>
           <!-- Button xuất file excel -->
-          <div class="icon-ctn">
+          <div class="icon-ctn icon-excel-ctn">
             <div class="icon-common-large icon-excel" @click="exportFileExcel"></div>
+            <tool-tip message="Xuất ra Excel"></tool-tip>
           </div>
         </div>
       </div>
@@ -96,7 +98,7 @@
             </th>
             <th class="bank-address ms-th-viewer th-style-common">
               <span class="th-padding-right"
-                >Chi nhánh tài khoản ngân hàng</span
+                >Chi nhánh TK ngân hàng</span
               >
             </th>
             <th
@@ -218,6 +220,7 @@ import EditEmployee from '../../components/pages/employee/edit-employee/edit-emp
 import MoreOption from '../../components/common/more-option/more-option'
 import PopupDelete from '../../components/pages/employee/popup-delete/popup-delete.vue'
 import vClickOutside from 'v-click-outside'
+import ToolTip from '../../components/common/tool-tip/tool-tip.vue'
 import Vue from 'vue'
 import { HTTP } from '../../axios/http-common'
 import CONSTANTS from '../../constants/constants'
@@ -262,7 +265,8 @@ export default {
     AddEmployee,
     EditEmployee,
     MoreOption,
-    PopupDelete
+    PopupDelete,
+    ToolTip
   },
   created () {
     // Lấy nhân viên theo điều kiện
