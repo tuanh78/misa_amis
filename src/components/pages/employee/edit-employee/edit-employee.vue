@@ -187,7 +187,8 @@
               <div class="identity-card-number">
                 <div class="title-input-common">Số CMND</div>
                 <div class="input-identify-card-ctn">
-                  <input v-model="employee.identityNumber" type="text" class="input-style-common department-custom" />
+                  <input v-model="employee.identityNumber" type="text" ref="identityNumber" @input="checkIdentityNumber" :class="['input-style-common', 'department-custom', {'border-error': errorProperties.includes('identityNumber')}]" />
+                  <tool-tip v-if="errorProperties.includes('identityNumber')" message="Giá trị của Số CMND không đúng."></tool-tip>
                 </div>
               </div>
 
@@ -440,6 +441,10 @@ export default {
             this.isShowEmployeeCodeWarning = true
             return false
           }
+          if (element === 'identityNumber') {
+            this.errorMessage = 'Giá trị của Số CMND không đúng.'
+            this.isShowPopupError = true
+          }
         })
       } else {
         if (this.editMode) {
@@ -629,6 +634,10 @@ export default {
             if (element === 'email') {
               this.isShowEmployeeCodeWarning = true
               return false
+            }
+            if (element === 'identityNumber') {
+              this.errorMessage = 'Giá trị của Số CMND không đúng.'
+              this.isShowPopupError = true
             }
           })
         } else {
@@ -847,6 +856,31 @@ export default {
         if (index > -1) {
           this.errorProperties.splice(index, 1)
         }
+      }
+    },
+    /**
+     * Hàm kiểm tra một chuỗi có phải là một số hợp lệ hay không
+     * CreatedBy: PTANH
+     * CreatedDate: 18/06/2021
+     */
+    isNumeric (str) {
+      if (typeof str !== 'string') return false // we only process strings!
+      return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+    },
+    /**
+     * Hàm kiểm tra giá trị của số CMND
+     * CreatedBy: PTANH
+     * CreatedDate: 18/06/2021
+     */
+    checkIdentityNumber () {
+      const isNumber = this.isNumeric(this.employee.identityNumber)
+      const index = this.errorProperties.indexOf('identityNumber')
+      if (!isNumber && index === -1) {
+        this.errorProperties.push('identityNumber')
+      }
+      if ((isNumber && index > -1) || !this.employee.identityNumber) {
+        this.errorProperties.splice(index, 1)
       }
     }
   }

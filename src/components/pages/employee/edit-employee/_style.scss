@@ -183,6 +183,12 @@
         }
     }
 
+    @media only screen and (max-width: 830px) {
+        .form-ctn {
+            width: 750px;
+        }
+    }
+
     .mask {
         position: fixed;
         top: 0;
@@ -391,6 +397,16 @@
                 &-number {
                     padding-right: 6px;
                     width: 250.70px;
+                }
+
+                .input-identify-card-ctn {
+                    position: relative;
+                    &:hover {
+                        .tool-tip {
+                            display: block;
+                        }
+                    }
+
                 }
             }
         }

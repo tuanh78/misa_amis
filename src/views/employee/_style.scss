@@ -187,7 +187,7 @@
     // top: 0;
     left: 0;
     z-index: 6;
-    background-color: #f4f5f6;
+    background-color: #f4f5f8;
     transition: top 1s linear .1s;
 
     .employee-top-atop{
@@ -476,7 +476,6 @@
 
 @media only screen and (max-width: 870px) {
     .th-style-common {
-        top: 94.33px;
         font-size: 11px;
     }
 }
@@ -757,11 +756,11 @@ tbody {
     z-index: 4;
 }
 
-@media only screen and (max-width: 870px) {
-    .sticky-style {
-        top: 94.33px;
-    }
-}
+// @media only screen and (max-width: 870px) {
+//     .sticky-style {
+//         top: 94.33px;
+//     }
+// }
 
 }
 
