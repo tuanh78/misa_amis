@@ -11,7 +11,8 @@
     next-class="next-li"
     next-link-class="next-link"
     active-class="active-page"
-    disabled-class="disabled-btn">
+    disabled-class="disabled-btn"
+    >
   </paginate>
 </template>
 

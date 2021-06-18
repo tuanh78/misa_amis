@@ -690,15 +690,15 @@ export default {
      * CreatedDate: 17/06/2021
      */
     handleScroll (event) {
-      console.log(event)
       var st = event.target.scrollTop
       if (st > this.lastScrollTop) {
         // downscroll code
         this.employeeTopValue = -100
       } else {
       // upscroll code
-        this.employeeTopValue = 0
-        console.log('scroll up')
+        if (this.employeeTopValue !== 0) {
+          this.employeeTopValue = 0
+        }
       }
       this.lastScrollTop = st <= 0 ? 0 : st
     }

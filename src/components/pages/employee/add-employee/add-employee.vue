@@ -424,8 +424,12 @@ export default {
       if (this.errorProperties.length > 0) {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
-            this.errorMessage = 'Mã không được để trống.'
-            this.isShowPopupError = true
+            if (!this.employee.employeeCode) {
+              this.errorMessage = 'Mã không được để trống.'
+              this.isShowPopupError = true
+            } else {
+              this.isShowEmployeeCodeWarning = true
+            }
             return false
           }
           if (element === 'employeeName') {
@@ -647,8 +651,12 @@ export default {
         // Lặp lỗi gán message để hiển thị
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
-            this.errorMessage = 'Mã không được để trống.'
-            this.isShowPopupError = true
+            if (!this.employee.employeeCode) {
+              this.errorMessage = 'Mã không được để trống.'
+              this.isShowPopupError = true
+            } else {
+              this.isShowEmployeeCodeWarning = true
+            }
             return false
           }
           if (element === 'employeeName') {
