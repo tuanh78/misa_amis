@@ -155,9 +155,24 @@
             &-right {
                 display: flex;
                 padding: 12px;
+                
                 .icon-question-ctn {
                     margin-right: 6px;
                     cursor: pointer;
+                    position: relative;
+
+                    .icon-question:hover + .tool-tip {
+                        display: block;
+                        top: 55%;
+                        left: -25%;
+                        border-radius: 3px;
+                        padding: 4px 8px;
+                        background-color: #323643;
+                        color: #fff;
+                        max-width: 500px;
+                        box-shadow: 2px 2px 2px 0 #323643;
+                    }
+
                     .icon-question {
                         background-position: -89px -144px;
 
@@ -168,6 +183,19 @@
                 }
 
                 .icon-close-ctn {
+                    position: relative;
+
+                    .icon-close:hover + .tool-tip {
+                        display: block;
+                        top: 55%;
+                        left: -100%;
+                        border-radius: 3px;
+                        padding: 4px 8px;
+                        background-color: #323643;
+                        color: #fff;
+                        max-width: 500px;
+                        box-shadow: 2px 2px 2px 0 #323643;
+                    }
                     cursor: pointer;
                     .icon-close {
                         background-position: -144px -144px;

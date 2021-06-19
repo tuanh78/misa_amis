@@ -87,12 +87,14 @@
         <div class="popup-header-right">
           <div class="icon-question-ctn">
             <div class="icon-common-large icon-question"></div>
+            <tool-tip message="Giúp"></tool-tip>
           </div>
           <div class="icon-close-ctn">
             <div
               class="icon-common-large icon-close"
               @click="checkChangeData"
             ></div>
+            <tool-tip message="Đóng (ESC)"></tool-tip>
           </div>
         </div>
       </div>
