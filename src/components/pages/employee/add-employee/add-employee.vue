@@ -789,9 +789,9 @@ export default {
      * CreatedDate: 18/06/2021
      */
     isNumeric (str) {
-      if (typeof str !== 'string') return false // we only process strings!
-      return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+      if (typeof str !== 'string') return false // Kiểm tra str có phải chuỗi không
+      return !isNaN(str) &&
+         !isNaN(parseFloat(str))
     },
     /**
      * Hàm kiểm tra giá trị của số CMND
@@ -799,12 +799,16 @@ export default {
      * CreatedDate: 18/06/2021
      */
     checkIdentityNumber () {
+      // Kiểm tra người dùng nhập có phải số không
       const isNumber = this.isNumeric(this.employee.identityNumber)
+      // Kiểm tra có lỗi mã CMND trong danh sách lỗi chưa
       const index = this.errorProperties.indexOf('identityNumber')
       if (!isNumber && index === -1) {
+        // Thêm lỗi
         this.errorProperties.push('identityNumber')
       }
       if ((isNumber && index > -1) || !this.employee.identityNumber) {
+        // Xóa lỗi
         this.errorProperties.splice(index, 1)
       }
     }

@@ -93,9 +93,12 @@ export default {
         this.departments = result.data
         // Tạo ra một mảng danh sách phòng ban khác để xử lý
         this.fakeDepartments = [...this.departments]
+        // Kiểm tra xem đã chọn phòng ban chưa
         if (!this.departmentId) {
+          // Phòng ban đầu tiên được chọn
           this.indexOptionSelected = 0
         } else {
+          // Tìm vị trí của phòng ban được chọn
           this.indexOptionSelected = this.fakeDepartments.findIndex((item) => {
             return item.departmentId === this.departmentId
           })
@@ -105,6 +108,7 @@ export default {
         // Log ra khi gặp lỗi
         console.log(err)
       })
+    // Lắng nghe sự kiện thay đổi giá trị phòng ban
     EventBus.$on('resetDepartmentSearch', this.resetDepartmentSearch)
   },
   data () {
