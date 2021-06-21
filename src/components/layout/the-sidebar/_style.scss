@@ -10,6 +10,7 @@
         justify-content: center;
         .icon-three-stripes {
             background-position: -312px -32px;
+            cursor: pointer;
         }
     }
 
@@ -149,6 +150,10 @@
             .sidebar-finance {
                 background-position: -204px -1664px;
             }
+        }
+
+        .close-logo {
+            margin-right: 14px;
         }
 
         .item-menu-text {
