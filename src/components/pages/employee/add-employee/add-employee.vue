@@ -493,6 +493,22 @@ export default {
                   return true
                 }
               })
+            } else if (err.response.data.misaCode === 650) {
+              propertyInvalidLists.every(element => {
+                if (element.propertyName === 'employeeCode') {
+                  this.errorMessage = Message.employeeCodeEmpty
+                  this.errorProperties.push('employeeCode')
+                  this.isShowPopupError = true
+                } else if (element.propertyName === 'employeeName') {
+                  this.errorMessage = Message.employeeNameEmpty
+                  this.errorProperties.push('employeeName')
+                  this.isShowPopupError = true
+                } else if (element.propertyName === 'departmentId') {
+                  this.errorMessage = Message.departmentEmpty
+                  this.errorProperties.push('departmentId')
+                  this.isShowPopupError = true
+                }
+              })
             }
           })
       }
@@ -732,6 +748,22 @@ export default {
                   // Hiện Popup cảnh báo trùng mã
                   this.isShowEmployeeCodeWarning = true
                   return true
+                }
+              })
+            } else if (err.response.data.misaCode === 650) {
+              propertyInvalidLists.every(element => {
+                if (element.propertyName === 'employeeCode') {
+                  this.errorMessage = Message.employeeCodeEmpty
+                  this.errorProperties.push('employeeCode')
+                  this.isShowPopupError = true
+                } else if (element.propertyName === 'employeeCode') {
+                  this.errorMessage = Message.employeeNameEmpty
+                  this.errorProperties.push('employeeName')
+                  this.isShowPopupError = true
+                } else if (element.propertyName === 'departmentId') {
+                  this.errorMessage = Message.departmentEmpty
+                  this.errorProperties.push('employeeName')
+                  this.isShowPopupError = true
                 }
               })
             }
