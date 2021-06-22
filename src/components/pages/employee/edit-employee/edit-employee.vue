@@ -421,6 +421,10 @@ export default {
       if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
+      if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
+        this.errorProperties.push('email')
+        this.errorMessage = Message.emailInvalid
+      }
       if (this.errorProperties.length > 0) {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
@@ -447,6 +451,7 @@ export default {
             return false
           }
           if (element === 'email') {
+            this.errorMessage = Message.emailInvalid
             this.isShowEmployeeCodeWarning = true
             return false
           }
@@ -617,6 +622,10 @@ export default {
           // Thêm lỗi phòng ban
           this.errorProperties.push('departmentId')
         }
+        if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
+          this.errorProperties.push('email')
+          this.errorMessage = Message.emailInvalid
+        }
         // Kiểm tra có trường nào bị lỗi hay không
         if (this.errorProperties.length > 0) {
           // Lặp qua mảng chứa lỗi và gán thông báo lỗi để hiển thị
@@ -645,6 +654,7 @@ export default {
               return false
             }
             if (element === 'email') {
+              this.errorMessage = Message.emailInvalid
               this.isShowEmployeeCodeWarning = true
               return false
             }
@@ -929,6 +939,15 @@ export default {
      */
     moveToEmployeeCode () {
       this.$refs.employeeCode.focus()
+    },
+    /**
+     * Hàm kiểm tra giá trị của email
+     * CreatedBy: PTANH
+     * CreatedDate: 22/06/2021
+     */
+    checkValueEmail (email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }

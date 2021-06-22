@@ -425,6 +425,11 @@ export default {
       if ((!this.employee.departmentId || !this.departmentSearch) && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
+      // Kiểm tra email có hợp lệ không
+      if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
+        this.errorProperties.push('email')
+        this.errorMessage = Message.emailInvalid
+      }
       // Kiểm tra xem có lỗi không
       if (this.errorProperties.length > 0) {
         this.errorProperties.every(element => {
@@ -452,6 +457,7 @@ export default {
             return false
           }
           if (element === 'email') {
+            this.errorMessage = Message.emailInvalid
             this.isShowEmployeeCodeWarning = true
             return false
           }
@@ -651,6 +657,11 @@ export default {
       if ((!this.employee.departmentId || !this.departmentSearch) && !this.errorProperties.includes('departmentId')) {
         this.errorProperties.push('departmentId')
       }
+      // Kiểm tra email có hợp lệ không
+      if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
+        this.errorProperties.push('email')
+        this.errorMessage = Message.emailInvalid
+      }
       // Kiểm tra mảng lỗi có lỗi nào hay không
       if (this.errorProperties.length > 0) {
         // Lặp lỗi gán message để hiển thị
@@ -680,6 +691,7 @@ export default {
           }
 
           if (element === 'email') {
+            this.errorMessage = Message.emailInvalid
             this.isShowEmployeeCodeWarning = true
             return false
           }
@@ -824,6 +836,15 @@ export default {
      */
     moveToEmployeeCode () {
       this.$refs.employeeCode.focus()
+    },
+    /**
+     * Hàm kiểm tra giá trị của email
+     * CreatedBy: PTANH
+     * CreatedDate: 22/06/2021
+     */
+    checkValueEmail (email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }
