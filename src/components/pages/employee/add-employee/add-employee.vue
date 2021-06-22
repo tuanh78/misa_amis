@@ -310,6 +310,7 @@ import { HTTP } from '../../../../axios/http-common'
 import PopupError from '../popup-error/popup-error.vue'
 import EventBus from '../../../../event-bus/event-bus'
 import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
+import Message from '../../../../message/message'
 export default {
   data () {
     return {
@@ -343,7 +344,8 @@ export default {
       screenX: 0, // Vị trí theo trục X
       screenY: 0, // Vị trí theo trục Y
       fakeEmployee: null, // Biến sao chép dữ liệu của employee
-      messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?' // Biến thông báo dữ liệu thay đổi
+      // messageDataChange: 'Dữ liệu đã bị thay đổi. Bạn có muốn cất không?' // Biến thông báo dữ liệu thay đổi
+      messageDataChange: Message.dataChange // Biến thông báo dữ liệu thay đổi
     }
   },
   props: {
@@ -427,7 +429,7 @@ export default {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
             if (!this.employee.employeeCode) {
-              this.errorMessage = 'Mã không được để trống.'
+              this.errorMessage = Message.employeeCodeEmpty
               this.isShowPopupError = true
             } else {
               this.isShowEmployeeCodeWarning = true
@@ -436,15 +438,15 @@ export default {
           }
           if (element === 'employeeName') {
             this.isShowPopupError = true
-            this.errorMessage = 'Tên không được để trống.'
+            this.errorMessage = Message.employeeNameEmpty
             return false
           }
           if (element === 'departmentId') {
             this.isShowPopupError = true
             if (!this.departmentSearch) {
-              this.errorMessage = 'Đơn vị không được để trống.'
+              this.errorMessage = Message.departmentEmpty
             } else {
-              this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+              this.errorMessage = Message.departmentNotExist
             }
             return false
           }
@@ -453,7 +455,7 @@ export default {
             return false
           }
           if (element === 'identityNumber') {
-            this.errorMessage = 'Giá trị của Số CMND không đúng.'
+            this.errorMessage = Message.identityNumberInvalid
             this.isShowPopupError = true
           }
         })
@@ -476,7 +478,7 @@ export default {
                   return true
                 }
                 if (element.propertyName === 'email') {
-                  this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                  this.errorMessage = Message.emailInvalid
                   // Thêm lỗi email vào danh sách lỗi
                   this.errorProperties.push('email')
                   // Hiện Popup cảnh báo trùng mã
@@ -654,7 +656,7 @@ export default {
         this.errorProperties.every(element => {
           if (element === 'employeeCode') {
             if (!this.employee.employeeCode) {
-              this.errorMessage = 'Mã không được để trống.'
+              this.errorMessage = Message.employeeCodeEmpty
               this.isShowPopupError = true
             } else {
               this.isShowEmployeeCodeWarning = true
@@ -663,15 +665,15 @@ export default {
           }
           if (element === 'employeeName') {
             this.isShowPopupError = true
-            this.errorMessage = 'Tên không được để trống.'
+            this.errorMessage = Message.employeeNameEmpty
             return false
           }
           if (element === 'departmentId') {
             this.isShowPopupError = true
             if (!this.departmentSearch) {
-              this.errorMessage = 'Đơn vị không được để trống.'
+              this.errorMessage = Message.departmentEmpty
             } else {
-              this.errorMessage = 'Dữ liệu <Đơn vị> không có trong danh mục.'
+              this.errorMessage = Message.departmentNotExist
             }
             return false
           }
@@ -682,7 +684,7 @@ export default {
           }
 
           if (element === 'identityNumber') {
-            this.errorMessage = 'Giá trị của Số CMND không đúng.'
+            this.errorMessage = Message.identityNumberInvalid
             this.isShowPopupError = true
           }
         })
@@ -711,7 +713,7 @@ export default {
                 }
 
                 if (element.propertyName === 'email') {
-                  this.errorMessage = 'Địa chỉ email không hợp lệ, vui lòng kiểm tra lại.'
+                  this.errorMessage = Message.emailInvalid
                   // Thêm lỗi email
                   this.errorProperties.push('email')
                   // Hiện Popup cảnh báo trùng mã
