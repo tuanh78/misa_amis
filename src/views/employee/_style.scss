@@ -194,6 +194,15 @@
     background-color: #f4f5f8;
     transition: top .25s;
 
+    .right-padding {
+        position: absolute;
+        width: 20px;
+        height: 102px;
+        top: 0;
+        right: -20px;
+        background-color: #f4f5f8;
+    }
+
     .employee-top-atop{
         display: flex;
         justify-content: space-between;

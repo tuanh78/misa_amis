@@ -22,6 +22,7 @@
         <div class="icon-common-medium icon-arrow-left"></div>
         <div class="text-blue">Tất cả danh mục</div>
       </div>
+      <div class="right-padding"></div>
     </div>
     <!-- Nhóm chức năng -->
     <div class="tools">
