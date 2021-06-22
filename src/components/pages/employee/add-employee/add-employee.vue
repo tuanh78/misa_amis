@@ -273,6 +273,7 @@
                   v-model="employee.bankBranchName"
                   type="text"
                   class="input-style-common width-three-input"
+                  @keydown.tab.prevent="moveToEmployeeCode"
                 />
               </div>
             </div>
@@ -815,6 +816,14 @@ export default {
         // Xóa lỗi
         this.errorProperties.splice(index, 1)
       }
+    },
+    /**
+     * Hàm di chuyển đến ô input mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 22/06/2021
+     */
+    moveToEmployeeCode () {
+      this.$refs.employeeCode.focus()
     }
   }
 }
