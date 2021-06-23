@@ -379,7 +379,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopupEditEmployee () {
-      this.$emit('closePopupEditEmployee')
+      try {
+        this.$emit('closePopupEditEmployee')
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm cập nhật ngày sinh
@@ -387,7 +391,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     updateDateOfBirth (dateOfBirth) {
-      this.employee.dateOfBirth = dateOfBirth
+      try {
+        this.employee.dateOfBirth = dateOfBirth
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm cập nhật ngày cấp
@@ -395,7 +403,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     updateIdentityDate (identityDate) {
-      this.employee.identityDate = identityDate
+      try {
+        this.employee.identityDate = identityDate
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm cập nhật phòng ban
@@ -403,7 +415,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     updateDepartment (departmentId) {
-      this.employee.departmentId = departmentId
+      try {
+        this.employee.departmentId = departmentId
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm lưu nhân viên
@@ -411,230 +427,21 @@ export default {
      * CreatedDate: 15/06/2021
      */
     saveEmployee () {
-      if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
-        this.errorProperties.push('employeeCode')
-      }
-      if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
-        this.errorProperties.push('employeeName')
-      }
-      if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
-        this.errorProperties.push('departmentId')
-      }
-      if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
-        this.errorProperties.push('email')
-        this.errorMessage = Message.emailInvalid
-      }
-      if (this.errorProperties.length > 0) {
-        if (this.errorProperties.includes('employeeCode')) {
-          if (!this.employee.employeeCode) {
-            this.errorMessage = Message.employeeCodeEmpty
-            this.isShowPopupError = true
-          } else {
-            this.isShowEmployeeCodeWarning = true
-          }
-        } else if (this.errorProperties.includes('employeeName')) {
-          this.isShowPopupError = true
-          this.errorMessage = Message.employeeNameEmpty
-        } else if (this.errorProperties.includes('departmentId')) {
-          this.isShowPopupError = true
-          if (!this.departmentSearch) {
-            this.errorMessage = Message.departmentEmpty
-          } else {
-            this.errorMessage = Message.departmentNotExist
-          }
-        } else if (this.errorProperties.includes('identityNumber')) {
-          this.errorMessage = Message.identityNumberInvalid
-          this.isShowPopupError = true
-        } else if (this.errorProperties.includes('email')) {
-          this.errorMessage = Message.emailInvalid
-          this.isShowEmployeeCodeWarning = true
-        }
-      } else {
-        if (this.editMode) {
-          HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
-            .then((result) => {
-              this.$emit('saveEmployeeSuccess')
-            }).catch((err) => {
-              const propertyInvalidLists = err.response.data.propertyInvalidLists
-              if (err.response.data.misaCode === 400) {
-                propertyInvalidLists.every(element => {
-                  if (element.propertyName === 'employeeCode') {
-                    this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
-                    this.errorProperties.push('employeeCode')
-                    this.isShowEmployeeCodeWarning = true
-                  } else if (element.propertyName === 'email') {
-                    this.errorMessage = Message.emailInvalid
-                    // Thêm lỗi email vào mảng lỗi
-                    this.errorProperties.push('email')
-                    // Hiện Popup cảnh báo trùng mã
-                    this.isShowEmployeeCodeWarning = true
-                  }
-                })
-              } else if (err.response.data.misaCode === 650) {
-                propertyInvalidLists.every(element => {
-                  if (element.propertyName === 'employeeCode') {
-                    this.errorMessage = Message.employeeCodeEmpty
-                    this.errorProperties.push('employeeCode')
-                    this.isShowPopupError = true
-                  } else if (element.propertyName === 'employeeName') {
-                    this.errorMessage = Message.employeeNameEmpty
-                    this.errorProperties.push('employeeName')
-                    this.isShowPopupError = true
-                  } else if (element.propertyName === 'departmentId') {
-                    this.errorMessage = Message.departmentEmpty
-                    this.errorProperties.push('departmentId')
-                    this.isShowPopupError = true
-                  }
-                })
-              }
-            })
-        } else {
-          this.saveEmployeeAndClose()
-        }
-      }
-    },
-    /**
-     * Hàm đóng Popup cảnh báo trùng mã nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    closePopupWarning () {
-      this.isShowEmployeeCodeWarning = false
-      const firstErrorInput = this.errorProperties[0]
-      if (firstErrorInput !== 'departmentId') {
-        this.$refs[firstErrorInput].focus()
-      }
-    },
-    /**
-     * Hàm kiểm tra giá trị của mã nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    checkValueEmployeeCode () {
-      if (!this.employee.employeeCode) {
-        this.errorProperties.push('employeeCode')
-      } else {
-        const index = this.errorProperties.indexOf('employeeCode')
-        if (index > -1) {
-          this.errorProperties.splice(index, 1)
-        }
-      }
-    },
-    /**
-     * Hàm kiểm tra giá trị của tên nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    checkValueEmployeeName () {
-      if (!this.employee.employeeName) {
-        this.errorProperties.push('employeeName')
-      } else {
-        const index = this.errorProperties.indexOf('employeeName')
-        if (index > -1) {
-          this.errorProperties.splice(index, 1)
-        }
-      }
-    },
-    /**
-     * Hàm đóng Popup thông báo lỗi
-     */
-    closePopupError () {
-      // Đóng thông báo lỗi
-      this.isShowPopupError = false
-      if (this.errorProperties.includes('employeeCode')) {
-        this.$refs.employeeCode.focus()
-      } else if (this.errorProperties.includes('employeeName')) {
-        this.$refs.employeeName.focus()
-      } else if (this.errorProperties.includes('identityNumber')) {
-        this.$refs.identityNumber.focus()
-      }
-    },
-    /**
-     * Hàm thêm lỗi phòng ban vào danh sách lỗi
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    addErrorDepartment () {
-      this.errorProperties.push('departmentId')
-    },
-    /**
-     * Hàm xóa lỗi phòng ban khỏi danh sách lỗi
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    removeErrorDepartment () {
-      const index = this.errorProperties.indexOf('departmentId')
-      if (index > -1) {
-        this.errorProperties.splice(index, 1)
-      }
-    },
-    /**
-     * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    checkChangeData () {
-      for (const property in this.employee) {
-        // Kiểm tra dữ liệu ban đầu có khác dữ liệu hiện tại không
-        if (this.employee[property] !== this.fakeEmployee[property]) {
-          // Hiển thị Popup thông báo dữ liệu thay đổi
-          this.isShowPopupDataChange = true
-          return true
-        }
-      }
-      // Đóng Popup sửa
-      this.closePopupEditEmployee()
-    },
-    /**
-     * Hàm đóng Popup thông báo thay đổi dữ liệu
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    closePopupDataChange () {
-      // Đóng Popup thông báo dữ liệu thay đổi
-      this.isShowPopupDataChange = false
-    },
-    /**
-     * Hàm lưu dữ liệu khi dữ liệu thay đổi
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    saveData () {
-      // Hàm đóng Popup thông báo dữ liệu thay đổi
-      this.closePopupDataChange()
-      // Hàm lưu nhân viên
-      this.saveEmployee()
-    },
-    /**
-     * Hàm lưu và thêm mới nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 15/06/2021
-     */
-    saveEmployeeAndAdd () {
-      // Kiểm tra xem có phải đang ở mode sửa dữ liệu hay không
-      if (this.editMode) {
-        // Kiểm tra xem mã nhân viên rỗng và chưa có lỗi trong mảng lỗi hay không
+      try {
         if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
-          // Thêm lỗi mã nhân viên
           this.errorProperties.push('employeeCode')
         }
-        // Kiểm tra xem tên nhân viên rỗng và chưa có lỗi trong mảng lỗi hay không
         if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
-          // Thêm lỗi tên nhân viên
           this.errorProperties.push('employeeName')
         }
-        // Kiểm tra xem mã phòng ban rỗng và chưa có lỗi trong mảng lỗi hay không
         if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
-          // Thêm lỗi phòng ban
           this.errorProperties.push('departmentId')
         }
         if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
           this.errorProperties.push('email')
           this.errorMessage = Message.emailInvalid
         }
-        // Kiểm tra có trường nào bị lỗi hay không
         if (this.errorProperties.length > 0) {
-          // Lặp qua mảng chứa lỗi và gán thông báo lỗi để hiển thị
           if (this.errorProperties.includes('employeeCode')) {
             if (!this.employee.employeeCode) {
               this.errorMessage = Message.employeeCodeEmpty
@@ -660,111 +467,351 @@ export default {
             this.isShowEmployeeCodeWarning = true
           }
         } else {
-          // Lưu nhân viên
-          HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
-            .then((result) => {
-              // Hiển thị Loading
-              this.isShowLoading = true
-              // Hàm reset lại dữ liệu
-              this.resetData()
-            }).catch((err) => {
-              // Lưu danh sách các trường bị lỗi trả về từ server
-              const propertyInvalidLists = err.response.data.propertyInvalidLists
-              if (err.response.data.misaCode === 400) {
-                propertyInvalidLists.every(element => {
-                  // Kiểm tra xem trường mã nhân viên có lỗi không
-                  if (element.propertyName === 'employeeCode') {
-                    // Gán thông báo lỗi trùng mã nhân viên
-                    this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
-                    // Thêm lỗi
-                    this.errorProperties.push('employeeCode')
-                    // Hiện Popup thông báo trùng mã nhân viên
-                    this.isShowEmployeeCodeWarning = true
-                  } else if (element.propertyName === 'email') {
-                    this.errorMessage = Message.emailInvalid
-                    // Thêm lỗi email vào mảng lỗi
-                    this.errorProperties.push('email')
-                    // Hiện Popup cảnh báo trùng mã
-                    this.isShowEmployeeCodeWarning = true
-                  }
-                })
-              } else if (err.response.data.misaCode === 650) {
-                propertyInvalidLists.every(element => {
-                  if (element.propertyName === 'employeeCode') {
-                    this.errorMessage = Message.employeeCodeEmpty
-                    this.errorProperties.push('employeeCode')
-                    this.isShowPopupError = true
-                  } else if (element.propertyName === 'employeeName') {
-                    this.errorMessage = Message.employeeNameEmpty
-                    this.errorProperties.push('employeeName')
-                    this.isShowPopupError = true
-                  } else if (element.propertyName === 'departmentId') {
-                    this.errorMessage = Message.departmentEmpty
-                    this.errorProperties.push('departmentId')
-                    this.isShowPopupError = true
-                  }
-                })
-              }
-            })
+          if (this.editMode) {
+            HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
+              .then((result) => {
+                this.$emit('saveEmployeeSuccess')
+              }).catch((err) => {
+                const propertyInvalidLists = err.response.data.propertyInvalidLists
+                if (err.response.data.misaCode === 400) {
+                  propertyInvalidLists.every(element => {
+                    if (element.propertyName === 'employeeCode') {
+                      this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                      this.errorProperties.push('employeeCode')
+                      this.isShowEmployeeCodeWarning = true
+                    } else if (element.propertyName === 'email') {
+                      this.errorMessage = Message.emailInvalid
+                      // Thêm lỗi email vào mảng lỗi
+                      this.errorProperties.push('email')
+                      // Hiện Popup cảnh báo trùng mã
+                      this.isShowEmployeeCodeWarning = true
+                    }
+                  })
+                } else if (err.response.data.misaCode === 650) {
+                  propertyInvalidLists.every(element => {
+                    if (element.propertyName === 'employeeCode') {
+                      this.errorMessage = Message.employeeCodeEmpty
+                      this.errorProperties.push('employeeCode')
+                      this.isShowPopupError = true
+                    } else if (element.propertyName === 'employeeName') {
+                      this.errorMessage = Message.employeeNameEmpty
+                      this.errorProperties.push('employeeName')
+                      this.isShowPopupError = true
+                    } else if (element.propertyName === 'departmentId') {
+                      this.errorMessage = Message.departmentEmpty
+                      this.errorProperties.push('departmentId')
+                      this.isShowPopupError = true
+                    }
+                  })
+                }
+              })
+          } else {
+            this.saveEmployeeAndClose()
+          }
         }
-      } else {
-        // Kiểm tra mã nhân viên trống và chưa có lỗi trong mảng lỗi hay không
-        if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
-          // Thêm lỗi mã nhân viên
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm đóng Popup cảnh báo trùng mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    closePopupWarning () {
+      try {
+        this.isShowEmployeeCodeWarning = false
+        const firstErrorInput = this.errorProperties[0]
+        if (firstErrorInput !== 'departmentId') {
+          this.$refs[firstErrorInput].focus()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm kiểm tra giá trị của mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    checkValueEmployeeCode () {
+      try {
+        if (!this.employee.employeeCode) {
           this.errorProperties.push('employeeCode')
+        } else {
+          const index = this.errorProperties.indexOf('employeeCode')
+          if (index > -1) {
+            this.errorProperties.splice(index, 1)
+          }
         }
-        // Kiểm tra tên nhân viên trống và chưa có lỗi trong mảng lỗi hay không
-        if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
-          // Thêm lỗi tên nhân viên
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm kiểm tra giá trị của tên nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    checkValueEmployeeName () {
+      try {
+        if (!this.employee.employeeName) {
           this.errorProperties.push('employeeName')
+        } else {
+          const index = this.errorProperties.indexOf('employeeName')
+          if (index > -1) {
+            this.errorProperties.splice(index, 1)
+          }
         }
-        // Kiểm tra mã phòng ban trống và chưa có lỗi trong mảng lỗi hay không
-        if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
-          // Thêm lỗi mã phòng ban
-          this.errorProperties.push('departmentId')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm đóng Popup thông báo lỗi
+     */
+    closePopupError () {
+      try {
+        // Đóng thông báo lỗi
+        this.isShowPopupError = false
+        if (this.errorProperties.includes('employeeCode')) {
+          this.$refs.employeeCode.focus()
+        } else if (this.errorProperties.includes('employeeName')) {
+          this.$refs.employeeName.focus()
+        } else if (this.errorProperties.includes('identityNumber')) {
+          this.$refs.identityNumber.focus()
         }
-        // Kiểm tra mảng lỗi có lỗi nào hay không
-        if (this.errorProperties.length > 0) {
-          // Lặp lỗi trong mảng và gán thông báo lỗi cho từng trường để hiển thị
-          this.errorProperties.every(element => {
-            if (element === 'employeeCode') {
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm thêm lỗi phòng ban vào danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    addErrorDepartment () {
+      try {
+        this.errorProperties.push('departmentId')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm xóa lỗi phòng ban khỏi danh sách lỗi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    removeErrorDepartment () {
+      try {
+        const index = this.errorProperties.indexOf('departmentId')
+        if (index > -1) {
+          this.errorProperties.splice(index, 1)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    checkChangeData () {
+      try {
+        for (const property in this.employee) {
+          // Kiểm tra dữ liệu ban đầu có khác dữ liệu hiện tại không
+          if (this.employee[property] !== this.fakeEmployee[property]) {
+            // Hiển thị Popup thông báo dữ liệu thay đổi
+            this.isShowPopupDataChange = true
+            return true
+          }
+        }
+        // Đóng Popup sửa
+        this.closePopupEditEmployee()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm đóng Popup thông báo thay đổi dữ liệu
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    closePopupDataChange () {
+      try {
+        // Đóng Popup thông báo dữ liệu thay đổi
+        this.isShowPopupDataChange = false
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm lưu dữ liệu khi dữ liệu thay đổi
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    saveData () {
+      try {
+        // Hàm đóng Popup thông báo dữ liệu thay đổi
+        this.closePopupDataChange()
+        // Hàm lưu nhân viên
+        this.saveEmployee()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    /**
+     * Hàm lưu và thêm mới nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 15/06/2021
+     */
+    saveEmployeeAndAdd () {
+      try {
+        // Kiểm tra xem có phải đang ở mode sửa dữ liệu hay không
+        if (this.editMode) {
+          // Kiểm tra xem mã nhân viên rỗng và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+            // Thêm lỗi mã nhân viên
+            this.errorProperties.push('employeeCode')
+          }
+          // Kiểm tra xem tên nhân viên rỗng và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+            // Thêm lỗi tên nhân viên
+            this.errorProperties.push('employeeName')
+          }
+          // Kiểm tra xem mã phòng ban rỗng và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+            // Thêm lỗi phòng ban
+            this.errorProperties.push('departmentId')
+          }
+          if (!this.checkValueEmail(this.employee.email) && !this.errorProperties.includes('email') && this.employee.email) {
+            this.errorProperties.push('email')
+            this.errorMessage = Message.emailInvalid
+          }
+          // Kiểm tra có trường nào bị lỗi hay không
+          if (this.errorProperties.length > 0) {
+            if (this.errorProperties.includes('employeeCode')) {
               if (!this.employee.employeeCode) {
                 this.errorMessage = Message.employeeCodeEmpty
                 this.isShowPopupError = true
               } else {
                 this.isShowEmployeeCodeWarning = true
               }
-              return false
-            }
-            if (element === 'employeeName') {
+            } else if (this.errorProperties.includes('employeeName')) {
               this.isShowPopupError = true
               this.errorMessage = Message.employeeNameEmpty
-              return false
-            }
-            if (element === 'departmentId') {
+            } else if (this.errorProperties.includes('departmentId')) {
               this.isShowPopupError = true
               if (!this.departmentSearch) {
                 this.errorMessage = Message.departmentEmpty
               } else {
                 this.errorMessage = Message.departmentNotExist
               }
-              return false
-            }
-
-            if (element === 'email') {
-              this.isShowEmployeeCodeWarning = true
-              return false
-            }
-
-            if (element === 'identityNumber') {
+            } else if (this.errorProperties.includes('identityNumber')) {
               this.errorMessage = Message.identityNumberInvalid
               this.isShowPopupError = true
+            } else if (this.errorProperties.includes('email')) {
+              this.errorMessage = Message.emailInvalid
+              this.isShowEmployeeCodeWarning = true
             }
-          })
+          } else {
+            // Lưu nhân viên
+            HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
+              .then((result) => {
+                // Hiển thị Loading
+                this.isShowLoading = true
+                // Hàm reset lại dữ liệu
+                this.resetData()
+              }).catch((err) => {
+                // Lưu danh sách các trường bị lỗi trả về từ server
+                const propertyInvalidLists = err.response.data.propertyInvalidLists
+                if (err.response.data.misaCode === 400) {
+                  propertyInvalidLists.every(element => {
+                    // Kiểm tra xem trường mã nhân viên có lỗi không
+                    if (element.propertyName === 'employeeCode') {
+                      // Gán thông báo lỗi trùng mã nhân viên
+                      this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
+                      // Thêm lỗi
+                      this.errorProperties.push('employeeCode')
+                      // Hiện Popup thông báo trùng mã nhân viên
+                      this.isShowEmployeeCodeWarning = true
+                    } else if (element.propertyName === 'email') {
+                      this.errorMessage = Message.emailInvalid
+                      // Thêm lỗi email vào mảng lỗi
+                      this.errorProperties.push('email')
+                      // Hiện Popup cảnh báo trùng mã
+                      this.isShowEmployeeCodeWarning = true
+                    }
+                  })
+                } else if (err.response.data.misaCode === 650) {
+                  propertyInvalidLists.every(element => {
+                    if (element.propertyName === 'employeeCode') {
+                      this.errorMessage = Message.employeeCodeEmpty
+                      this.errorProperties.push('employeeCode')
+                      this.isShowPopupError = true
+                    } else if (element.propertyName === 'employeeName') {
+                      this.errorMessage = Message.employeeNameEmpty
+                      this.errorProperties.push('employeeName')
+                      this.isShowPopupError = true
+                    } else if (element.propertyName === 'departmentId') {
+                      this.errorMessage = Message.departmentEmpty
+                      this.errorProperties.push('departmentId')
+                      this.isShowPopupError = true
+                    }
+                  })
+                }
+              })
+          }
         } else {
-          // Lưu nhân viên
-          this.saveNewEmployee()
+          // Kiểm tra mã nhân viên trống và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.employeeCode && !this.errorProperties.includes('employeeCode')) {
+            // Thêm lỗi mã nhân viên
+            this.errorProperties.push('employeeCode')
+          }
+          // Kiểm tra tên nhân viên trống và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.employeeName && !this.errorProperties.includes('employeeName')) {
+            // Thêm lỗi tên nhân viên
+            this.errorProperties.push('employeeName')
+          }
+          // Kiểm tra mã phòng ban trống và chưa có lỗi trong mảng lỗi hay không
+          if (!this.employee.departmentId && !this.errorProperties.includes('departmentId')) {
+            // Thêm lỗi mã phòng ban
+            this.errorProperties.push('departmentId')
+          }
+          // Kiểm tra mảng lỗi có lỗi nào hay không
+          if (this.errorProperties.length > 0) {
+            if (this.errorProperties.includes('employeeCode')) {
+              if (!this.employee.employeeCode) {
+                this.errorMessage = Message.employeeCodeEmpty
+                this.isShowPopupError = true
+              } else {
+                this.isShowEmployeeCodeWarning = true
+              }
+            } else if (this.errorProperties.includes('employeeName')) {
+              this.isShowPopupError = true
+              this.errorMessage = Message.employeeNameEmpty
+            } else if (this.errorProperties.includes('departmentId')) {
+              this.isShowPopupError = true
+              if (!this.departmentSearch) {
+                this.errorMessage = Message.departmentEmpty
+              } else {
+                this.errorMessage = Message.departmentNotExist
+              }
+            } else if (this.errorProperties.includes('identityNumber')) {
+              this.errorMessage = Message.identityNumberInvalid
+              this.isShowPopupError = true
+            } else if (this.errorProperties.includes('email')) {
+              this.errorMessage = Message.emailInvalid
+              this.isShowEmployeeCodeWarning = true
+            }
+          } else {
+            // Lưu nhân viên
+            this.saveNewEmployee()
+          }
         }
+      } catch (error) {
+        console.log(error)
       }
     },
     /**
@@ -860,7 +907,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     updateDepartmentSearch (departmentSearch) {
-      this.departmentSearch = departmentSearch
+      try {
+        this.departmentSearch = departmentSearch
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm lưu nhân viên và đóng Popup
@@ -905,11 +956,15 @@ export default {
      * CreatedDate: 17/06/2021
      */
     removeEmailError () {
-      if (this.errorProperties.includes('email') !== -1) {
-        const index = this.errorProperties.indexOf('email')
-        if (index > -1) {
-          this.errorProperties.splice(index, 1)
+      try {
+        if (this.errorProperties.includes('email') !== -1) {
+          const index = this.errorProperties.indexOf('email')
+          if (index > -1) {
+            this.errorProperties.splice(index, 1)
+          }
         }
+      } catch (error) {
+        console.log(error)
       }
     },
     /**
@@ -928,17 +983,21 @@ export default {
      * CreatedDate: 18/06/2021
      */
     checkIdentityNumber () {
-      // Kiểm tra giá trị của người dùng nhập có phải là số không
-      const isNumber = this.isNumeric(this.employee.identityNumber)
-      // Kiểm tra lỗi đã có trong danh sách lỗi chưa
-      const index = this.errorProperties.indexOf('identityNumber')
-      if (!isNumber && index === -1) {
-        // Thêm lỗi
-        this.errorProperties.push('identityNumber')
-      }
-      if ((isNumber && index > -1) || !this.employee.identityNumber) {
-        // Xóa lỗi
-        this.errorProperties.splice(index, 1)
+      try {
+        // Kiểm tra giá trị của người dùng nhập có phải là số không
+        const isNumber = this.isNumeric(this.employee.identityNumber)
+        // Kiểm tra lỗi đã có trong danh sách lỗi chưa
+        const index = this.errorProperties.indexOf('identityNumber')
+        if (!isNumber && index === -1) {
+          // Thêm lỗi
+          this.errorProperties.push('identityNumber')
+        }
+        if ((isNumber && index > -1) || !this.employee.identityNumber) {
+          // Xóa lỗi
+          this.errorProperties.splice(index, 1)
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     /**
@@ -947,7 +1006,11 @@ export default {
      * CreatedDate: 22/06/2021
      */
     moveToEmployeeCode () {
-      this.$refs.employeeCode.focus()
+      try {
+        this.$refs.employeeCode.focus()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm kiểm tra giá trị của email
