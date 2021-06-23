@@ -425,40 +425,30 @@ export default {
         this.errorMessage = Message.emailInvalid
       }
       if (this.errorProperties.length > 0) {
-        this.errorProperties.every(element => {
-          if (element === 'employeeCode') {
-            if (!this.employee.employeeCode) {
-              this.errorMessage = Message.employeeCodeEmpty
-              this.isShowPopupError = true
-            } else {
-              this.isShowEmployeeCodeWarning = true
-            }
-            return false
-          }
-          if (element === 'employeeName') {
+        if (this.errorProperties.includes('employeeCode')) {
+          if (!this.employee.employeeCode) {
+            this.errorMessage = Message.employeeCodeEmpty
             this.isShowPopupError = true
-            this.errorMessage = Message.employeeNameEmpty
-            return false
-          }
-          if (element === 'departmentId') {
-            this.isShowPopupError = true
-            if (!this.departmentSearch) {
-              this.errorMessage = Message.departmentEmpty
-            } else {
-              this.errorMessage = Message.departmentNotExist
-            }
-            return false
-          }
-          if (element === 'email') {
-            this.errorMessage = Message.emailInvalid
+          } else {
             this.isShowEmployeeCodeWarning = true
-            return false
           }
-          if (element === 'identityNumber') {
-            this.errorMessage = Message.identityNumberInvalid
-            this.isShowPopupError = true
+        } else if (this.errorProperties.includes('employeeName')) {
+          this.isShowPopupError = true
+          this.errorMessage = Message.employeeNameEmpty
+        } else if (this.errorProperties.includes('departmentId')) {
+          this.isShowPopupError = true
+          if (!this.departmentSearch) {
+            this.errorMessage = Message.departmentEmpty
+          } else {
+            this.errorMessage = Message.departmentNotExist
           }
-        })
+        } else if (this.errorProperties.includes('identityNumber')) {
+          this.errorMessage = Message.identityNumberInvalid
+          this.isShowPopupError = true
+        } else if (this.errorProperties.includes('email')) {
+          this.errorMessage = Message.emailInvalid
+          this.isShowEmployeeCodeWarning = true
+        }
       } else {
         if (this.editMode) {
           HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
@@ -472,15 +462,12 @@ export default {
                     this.errorMessage = `Mã nhân viên <${this.employee.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`
                     this.errorProperties.push('employeeCode')
                     this.isShowEmployeeCodeWarning = true
-                  }
-
-                  if (element.propertyName === 'email') {
+                  } else if (element.propertyName === 'email') {
                     this.errorMessage = Message.emailInvalid
                     // Thêm lỗi email vào mảng lỗi
                     this.errorProperties.push('email')
                     // Hiện Popup cảnh báo trùng mã
                     this.isShowEmployeeCodeWarning = true
-                    return true
                   }
                 })
               } else if (err.response.data.misaCode === 650) {
@@ -552,10 +539,14 @@ export default {
      * Hàm đóng Popup thông báo lỗi
      */
     closePopupError () {
+      // Đóng thông báo lỗi
       this.isShowPopupError = false
-      const firstErrorInput = this.errorProperties[0]
-      if (firstErrorInput !== 'departmentId') {
-        this.$refs[firstErrorInput].focus()
+      if (this.errorProperties.includes('employeeCode')) {
+        this.$refs.employeeCode.focus()
+      } else if (this.errorProperties.includes('employeeName')) {
+        this.$refs.employeeName.focus()
+      } else if (this.errorProperties.includes('identityNumber')) {
+        this.$refs.identityNumber.focus()
       }
     },
     /**
@@ -644,40 +635,30 @@ export default {
         // Kiểm tra có trường nào bị lỗi hay không
         if (this.errorProperties.length > 0) {
           // Lặp qua mảng chứa lỗi và gán thông báo lỗi để hiển thị
-          this.errorProperties.every(element => {
-            if (element === 'employeeCode') {
-              if (!this.employee.employeeCode) {
-                this.errorMessage = Message.employeeCodeEmpty
-                this.isShowPopupError = true
-              } else {
-                this.isShowEmployeeCodeWarning = true
-              }
-              return false
-            }
-            if (element === 'employeeName') {
+          if (this.errorProperties.includes('employeeCode')) {
+            if (!this.employee.employeeCode) {
+              this.errorMessage = Message.employeeCodeEmpty
               this.isShowPopupError = true
-              this.errorMessage = Message.employeeNameEmpty
-              return false
-            }
-            if (element === 'departmentId') {
-              this.isShowPopupError = true
-              if (!this.departmentSearch) {
-                this.errorMessage = Message.departmentEmpty
-              } else {
-                this.errorMessage = Message.departmentNotExist
-              }
-              return false
-            }
-            if (element === 'email') {
-              this.errorMessage = Message.emailInvalid
+            } else {
               this.isShowEmployeeCodeWarning = true
-              return false
             }
-            if (element === 'identityNumber') {
-              this.errorMessage = Message.identityNumberInvalid
-              this.isShowPopupError = true
+          } else if (this.errorProperties.includes('employeeName')) {
+            this.isShowPopupError = true
+            this.errorMessage = Message.employeeNameEmpty
+          } else if (this.errorProperties.includes('departmentId')) {
+            this.isShowPopupError = true
+            if (!this.departmentSearch) {
+              this.errorMessage = Message.departmentEmpty
+            } else {
+              this.errorMessage = Message.departmentNotExist
             }
-          })
+          } else if (this.errorProperties.includes('identityNumber')) {
+            this.errorMessage = Message.identityNumberInvalid
+            this.isShowPopupError = true
+          } else if (this.errorProperties.includes('email')) {
+            this.errorMessage = Message.emailInvalid
+            this.isShowEmployeeCodeWarning = true
+          }
         } else {
           // Lưu nhân viên
           HTTP.put(`employees/${this.employee.employeeId}`, this.employee)
@@ -699,15 +680,12 @@ export default {
                     this.errorProperties.push('employeeCode')
                     // Hiện Popup thông báo trùng mã nhân viên
                     this.isShowEmployeeCodeWarning = true
-                    return true
-                  }
-                  if (element.propertyName === 'email') {
+                  } else if (element.propertyName === 'email') {
                     this.errorMessage = Message.emailInvalid
                     // Thêm lỗi email vào mảng lỗi
                     this.errorProperties.push('email')
                     // Hiện Popup cảnh báo trùng mã
                     this.isShowEmployeeCodeWarning = true
-                    return true
                   }
                 })
               } else if (err.response.data.misaCode === 650) {
