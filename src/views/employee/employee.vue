@@ -115,7 +115,7 @@
           </tr>
         </thead>
         <!-- Nội dung của bảng -->
-        <tbody>
+        <tbody ref="bodyTable">
           <tr class="ms-tr-viewer" @click="selectedRow" v-on:dblclick="counter += 1, showEditForm(employee.employeeId)" v-for="employee in employees" :key="employee.employeeId">
             <td class="space-left ms-td-viewer"></td>
             <td
@@ -324,6 +324,7 @@ export default {
       if (event.target.parentNode.classList.contains('row-selected')) {
         // Xóa class
         event.target.parentNode.classList.remove('row-selected')
+        this.$refs.bodyTable.classList.remove('row-selected')
       } else {
         // Lấy ra tất cả element các hàng
         var rows = this.$el.querySelectorAll('.ms-tr-viewer')
@@ -333,6 +334,7 @@ export default {
         })
         // Thêm class row-selected cho dòng được chọn
         event.target.parentNode.classList.add('row-selected')
+        this.$refs.bodyTable.classList.remove('row-selected')
       }
     },
     /**
