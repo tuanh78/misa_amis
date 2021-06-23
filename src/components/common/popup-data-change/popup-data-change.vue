@@ -45,7 +45,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopup () {
-      this.$emit('closePopup')
+      try {
+        this.$emit('closePopup')
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm đóng cả Popup cả Form
@@ -53,7 +57,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closeForm () {
-      this.$emit('closeForm')
+      try {
+        this.$emit('closeForm')
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm xóa nhân viên
@@ -61,7 +69,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     saveData () {
-      this.$emit('saveData')
+      try {
+        this.$emit('saveData')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

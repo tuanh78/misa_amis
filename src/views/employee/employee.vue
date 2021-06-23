@@ -269,31 +269,35 @@ export default {
     ToolTip
   },
   created () {
-    // Lấy nhân viên theo điều kiện
-    this.GetEmployeesPaging()
-    /**
-     * Lấy số lượng nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 15/6/2021
-     */
+    try {
+      // Lấy nhân viên theo điều kiện
+      this.GetEmployeesPaging()
+      /**
+       * Lấy số lượng nhân viên
+       * CreatedBy: PTANH
+       * CreatedDate: 15/6/2021
+       */
 
-    /**
-     * Xử lý sự kiện khi người dùng scroll chuột
-     * CreatedBy: PTANH
-     * CreatedDate: 17/6/2021
-     */
-    // this.handleDebouncedScroll = debounce(this.handleScroll, 100)
-    // window.addEventListener('scroll', this.handleDebouncedScroll)
-    HTTP.get('employees/numbers-record')
-      .then((result) => {
-        // Lưu lại tổng số lượng bản ghi
-        this.totalEmployees = result.data
-        // Tổng số trang
-        this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-      }).catch((err) => {
-        // Log lỗi
-        console.log(err)
-      })
+      /**
+       * Xử lý sự kiện khi người dùng scroll chuột
+       * CreatedBy: PTANH
+       * CreatedDate: 17/6/2021
+       */
+      // this.handleDebouncedScroll = debounce(this.handleScroll, 100)
+      // window.addEventListener('scroll', this.handleDebouncedScroll)
+      HTTP.get('employees/numbers-record')
+        .then((result) => {
+          // Lưu lại tổng số lượng bản ghi
+          this.totalEmployees = result.data
+          // Tổng số trang
+          this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+        }).catch((err) => {
+          // Log lỗi
+          console.log(err)
+        })
+    } catch (error) {
+      console.log(error)
+    }
   },
   // beforeDestroy () {
   //   window.removeEventListener('scroll', this.handleDebouncedScroll)
@@ -305,11 +309,15 @@ export default {
      * CreatedDate: 15/06/2021
      */
     employees (newValue, oldValue) {
-      // Nếu không có nhân viên hiển thị không có nhân viên ngược lại không hiển thị
-      if (this.employees.length === 0) {
-        this.isShowNoContent = true
-      } else {
-        this.isShowNoContent = false
+      try {
+        // Nếu không có nhân viên hiển thị không có nhân viên ngược lại không hiển thị
+        if (this.employees.length === 0) {
+          this.isShowNoContent = true
+        } else {
+          this.isShowNoContent = false
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   },
@@ -320,21 +328,25 @@ export default {
      * CreatedDate: 15/06/2021
      */
     selectedRow (event) {
-      // Kiểm tra hàng hiện tại đã được chọn hay chưa
-      if (event.target.parentNode.classList.contains('row-selected')) {
-        // Xóa class
-        event.target.parentNode.classList.remove('row-selected')
-        this.$refs.bodyTable.classList.remove('row-selected')
-      } else {
-        // Lấy ra tất cả element các hàng
-        var rows = this.$el.querySelectorAll('.ms-tr-viewer')
-        rows.forEach((row) => {
-          // Xóa các element có class row-selected
-          row.classList.remove('row-selected')
-        })
-        // Thêm class row-selected cho dòng được chọn
-        event.target.parentNode.classList.add('row-selected')
-        this.$refs.bodyTable.classList.remove('row-selected')
+      try {
+        // Kiểm tra hàng hiện tại đã được chọn hay chưa
+        if (event.target.parentNode.classList.contains('row-selected')) {
+          // Xóa class
+          event.target.parentNode.classList.remove('row-selected')
+          this.$refs.bodyTable.classList.remove('row-selected')
+        } else {
+          // Lấy ra tất cả element các hàng
+          var rows = this.$el.querySelectorAll('.ms-tr-viewer')
+          rows.forEach((row) => {
+            // Xóa các element có class row-selected
+            row.classList.remove('row-selected')
+          })
+          // Thêm class row-selected cho dòng được chọn
+          event.target.parentNode.classList.add('row-selected')
+          this.$refs.bodyTable.classList.remove('row-selected')
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     /**
@@ -343,27 +355,31 @@ export default {
      * CreatedDate: 15/06/2021
      */
     GetEmployeesPaging () {
-      // Lấy nhân viên theo điều kiện
-      HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
-        .then(response => {
-          this.employees = response.data
-          if (response.status === 200) {
-            this.employees.map(employee => {
-              // Kiểm tra ngày sinh có rỗng hay không
-              if (employee.dateOfBirth) {
-                // Format lại ngày sinh
-                employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
-              }
-              return employee
-            })
-          }
-          // Tắt reload
-          this.isShowReload = false
-        })
-        .catch(e => {
-          // Log lỗi
-          this.errors.push(e)
-        })
+      try {
+        // Lấy nhân viên theo điều kiện
+        HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
+          .then(response => {
+            this.employees = response.data
+            if (response.status === 200) {
+              this.employees.map(employee => {
+                // Kiểm tra ngày sinh có rỗng hay không
+                if (employee.dateOfBirth) {
+                  // Format lại ngày sinh
+                  employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
+                }
+                return employee
+              })
+            }
+            // Tắt reload
+            this.isShowReload = false
+          })
+          .catch(e => {
+            // Log lỗi
+            this.errors.push(e)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm đóng Popup thêm nhân viên
@@ -371,7 +387,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopupAddEmployee () {
-      this.isShowAddEmployee = false
+      try {
+        this.isShowAddEmployee = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm theo dõi vị trí của chuột khi click
@@ -379,10 +399,14 @@ export default {
      * CreatedDate: 15/06/2021
      */
     resetMousePosition (employee, event) {
-      this.screenX = event.screenX
-      this.screenY = event.screenY
-      this.isShowMoreOption = !this.isShowMoreOption
-      this.employee = employee
+      try {
+        this.screenX = event.screenX
+        this.screenY = event.screenY
+        this.isShowMoreOption = !this.isShowMoreOption
+        this.employee = employee
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm ẩn tùy chọn chức năng
@@ -390,7 +414,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     onClickOutside () {
-      this.isShowMoreOption = false
+      try {
+        this.isShowMoreOption = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm hiển thị Popup sửa khách hàng và bind dữ liệu vào Popup
@@ -398,15 +426,19 @@ export default {
      * CreatedDate: 15/06/2021
      */
     showEditForm (employeeId) {
-      HTTP.get(`employees/${employeeId}`)
-        .then((result) => {
-          this.employee = result.data
-          // Hiển thị Popup sửa nhân viên
-          this.isShowEditEmployee = true
-        }).catch((err) => {
-          // Log lỗi
-          console.log(err)
-        })
+      try {
+        HTTP.get(`employees/${employeeId}`)
+          .then((result) => {
+            this.employee = result.data
+            // Hiển thị Popup sửa nhân viên
+            this.isShowEditEmployee = true
+          }).catch((err) => {
+            // Log lỗi
+            console.log(err)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm đóng Popup sửa khách hàng
@@ -414,8 +446,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopupEditEmployee () {
-      // Đóng Popup sửa nhân viên
-      this.isShowEditEmployee = false
+      try {
+        // Đóng Popup sửa nhân viên
+        this.isShowEditEmployee = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm lưu nhân viên thành công
@@ -423,12 +459,16 @@ export default {
      * CreatedDate: 15/06/2021
      */
     saveEmployeeSuccess () {
-      // Đóng Popup thêm nhân viên
-      this.isShowAddEmployee = false
-      // Đóng Popup sửa nhân viên
-      this.isShowEditEmployee = false
-      // Load lại trang
-      this.reloadPage()
+      try {
+        // Đóng Popup thêm nhân viên
+        this.isShowAddEmployee = false
+        // Đóng Popup sửa nhân viên
+        this.isShowEditEmployee = false
+        // Load lại trang
+        this.reloadPage()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm load lại trang
@@ -436,8 +476,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     reloadPage () {
-      this.isShowReload = true
-      this.GetEmployeesPaging()
+      try {
+        this.isShowReload = true
+        this.GetEmployeesPaging()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm xóa nhân viên
@@ -445,40 +489,48 @@ export default {
      * CreatedDate: 15/06/2021
      */
     deleteEmployee () {
-      HTTP.delete(`employees/${this.employee.employeeId}`)
-        .then((result) => {
-          this.isShowPopupDelete = false
-          // Lấy số lượng bản ghi theo điều kiện
-          HTTP.get(`employees/numbers-record?filter=${this.filter}`)
-            .then((result) => {
-              this.totalEmployees = result.data
-              // Tính tổng số lượng trang
-              this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-              // Load lại trang
-              this.reloadPage()
-            }).catch((err) => {
-              // Log lỗi
-              console.log(err)
-            })
-        }).catch((err) => {
-          // Log lỗi
-          console.log(err)
-        })
+      try {
+        HTTP.delete(`employees/${this.employee.employeeId}`)
+          .then((result) => {
+            this.isShowPopupDelete = false
+            // Lấy số lượng bản ghi theo điều kiện
+            HTTP.get(`employees/numbers-record?filter=${this.filter}`)
+              .then((result) => {
+                this.totalEmployees = result.data
+                // Tính tổng số lượng trang
+                this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+                // Load lại trang
+                this.reloadPage()
+              }).catch((err) => {
+                // Log lỗi
+                console.log(err)
+              })
+          }).catch((err) => {
+            // Log lỗi
+            console.log(err)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm hiển thị Popup thêm nhân viên và lấy mã nhân viên mới nhất chưa có trong csdl
      */
     showAddForm () {
-      HTTP.get('employees/new-code')
-        .then((result) => {
-          // Lưu lại mã khách hàng mới
-          this.latestEmployeeCode = result.data
-          // Hiển thị Popup thêm nhân viên
-          this.isShowAddEmployee = true
-        }).catch((err) => {
-          // Log lỗi
-          console.log(err)
-        })
+      try {
+        HTTP.get('employees/new-code')
+          .then((result) => {
+            // Lưu lại mã khách hàng mới
+            this.latestEmployeeCode = result.data
+            // Hiển thị Popup thêm nhân viên
+            this.isShowAddEmployee = true
+          }).catch((err) => {
+            // Log lỗi
+            console.log(err)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm hiển thị Popup cảnh báo xóa nhân viên
@@ -486,10 +538,14 @@ export default {
      * CreatedDate: 15/06/2021
      */
     showPopupDelete () {
-      // Hiển thị Popup cảnh báo xóa
-      this.isShowPopupDelete = true
-      // Thông báo xóa
-      this.messageDelete = `Bạn có thực sự muốn xóa Nhân viên <${this.employee.employeeCode}> không?`
+      try {
+        // Hiển thị Popup cảnh báo xóa
+        this.isShowPopupDelete = true
+        // Thông báo xóa
+        this.messageDelete = `Bạn có thực sự muốn xóa Nhân viên <${this.employee.employeeCode}> không?`
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm đóng Popup cảnh báo xóa nhân viên
@@ -497,8 +553,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopupDelete () {
-      // Đóng Popup thông báo xóa
-      this.isShowPopupDelete = false
+      try {
+        // Đóng Popup thông báo xóa
+        this.isShowPopupDelete = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm tìm kiếm nhân viên
@@ -506,38 +566,42 @@ export default {
      * CreatedDate: 15/06/2021
      */
     searchEmployee: debounce(function () {
-      // Lấy danh sách nhân viên theo điều kiện
-      HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
-        .then(response => {
-          this.employees = response.data
-          // Số lượng nhân viên
-          this.totalEmployees = this.employees.length
-          // Tính số lượng trang
-          this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-          // Lấy số lượng nhân viên
-          HTTP.get(`employees/numbers-record?filter=${this.filter}`)
-            .then((result) => {
-              this.totalEmployees = result.data
-              // Tính tổng số lượng nhân viên
-              this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-            }).catch((err) => {
-              // Log lỗi
-              console.log(err)
-            })
-          // Kiểm tra có nhân viên nào không
-          if (this.employees.length || this.employees !== '') {
-            this.employees.map(employee => {
-              if (employee.dateOfBirth) {
-                // Format lại định dạng dữ liệu của ngày sinh
-                employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
-              }
-              return employee
-            })
-          }
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+      try {
+        // Lấy danh sách nhân viên theo điều kiện
+        HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
+          .then(response => {
+            this.employees = response.data
+            // Số lượng nhân viên
+            this.totalEmployees = this.employees.length
+            // Tính số lượng trang
+            this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+            // Lấy số lượng nhân viên
+            HTTP.get(`employees/numbers-record?filter=${this.filter}`)
+              .then((result) => {
+                this.totalEmployees = result.data
+                // Tính tổng số lượng nhân viên
+                this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+              }).catch((err) => {
+                // Log lỗi
+                console.log(err)
+              })
+            // Kiểm tra có nhân viên nào không
+            if (this.employees.length || this.employees !== '') {
+              this.employees.map(employee => {
+                if (employee.dateOfBirth) {
+                  // Format lại định dạng dữ liệu của ngày sinh
+                  employee.dateOfBirth = moment(employee.dateOfBirth).format(CONSTANTS.DATE_FORMAT)
+                }
+                return employee
+              })
+            }
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     }, 500),
     /**
      * Hàm gán lại số trang và load lại trang
@@ -545,9 +609,13 @@ export default {
      * CreatedDate: 15/06/2021
      */
     loadPage (pageNum) {
-      this.pageIndex = pageNum
-      // Load lại trang
-      this.reloadPage()
+      try {
+        this.pageIndex = pageNum
+        // Load lại trang
+        this.reloadPage()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm thay đổi số lượng bản ghi trên một trang
@@ -555,14 +623,18 @@ export default {
      * CreatedDate: 15/06/2021
      */
     changeNumberRecords (pageSize, index) {
-      // Gán vị trí số lượng bản ghi được chọn
-      this.indexOptionSelected = index
-      // Gán số lượng bản ghi trên một trang
-      this.pageSize = pageSize
-      // Tính số lượng trang
-      this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-      // Load lại trang
-      this.reloadPage()
+      try {
+        // Gán vị trí số lượng bản ghi được chọn
+        this.indexOptionSelected = index
+        // Gán số lượng bản ghi trên một trang
+        this.pageSize = pageSize
+        // Tính số lượng trang
+        this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+        // Load lại trang
+        this.reloadPage()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm đóng dropdown số lượng bản ghi trên trang
@@ -570,10 +642,14 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closeOptionsNumberRecords () {
-      // Đóng danh sách số lượng bản ghi trên trang
-      this.isShowOptionsNumberRecords = false
-      // Tắt active ô số lượng bản ghi
-      this.isActiveTotalRecord = false
+      try {
+        // Đóng danh sách số lượng bản ghi trên trang
+        this.isShowOptionsNumberRecords = false
+        // Tắt active ô số lượng bản ghi
+        this.isActiveTotalRecord = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm ẩn hiện dropdown số lượng bản ghi trên trang
@@ -581,14 +657,18 @@ export default {
      * CreatedDate: 15/06/2021
      */
     toggleDropDownOption () {
-      // Focus vào ô số lượng bản ghi
-      this.$refs.inputNumberRecord.focus()
-      // Toggle danh sách số lượng bản ghi
-      this.isShowOptionsNumberRecords = !this.isShowOptionsNumberRecords
-      // Lấy vị trí theo trục X của ô hiển thị số lượng bản ghi
-      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
-      // Lấy vị trí theo trục Y của ô hiển thị số lượng bản ghi
-      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+      try {
+        // Focus vào ô số lượng bản ghi
+        this.$refs.inputNumberRecord.focus()
+        // Toggle danh sách số lượng bản ghi
+        this.isShowOptionsNumberRecords = !this.isShowOptionsNumberRecords
+        // Lấy vị trí theo trục X của ô hiển thị số lượng bản ghi
+        this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+        // Lấy vị trí theo trục Y của ô hiển thị số lượng bản ghi
+        this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm di chuyển lựa chọn xuống dưới của sô lượng bản ghi trên một trang
@@ -596,21 +676,25 @@ export default {
      * CreatedDate: 15/06/2021
      */
     moveDownOption () {
-      // Hiển thị danh sách số lượng bản ghi
-      this.isShowOptionsNumberRecords = true
-      // Tăng vị trí chọn bản ghi lên 1
-      this.indexOptionSelected = this.indexOptionSelected + 1
-      // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
-      if (this.indexOptionSelected === this.numberRecords.length) {
-        // Gán lại vị trí được chọn về 0
-        this.indexOptionSelected = 0
+      try {
+        // Hiển thị danh sách số lượng bản ghi
+        this.isShowOptionsNumberRecords = true
+        // Tăng vị trí chọn bản ghi lên 1
+        this.indexOptionSelected = this.indexOptionSelected + 1
+        // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
+        if (this.indexOptionSelected === this.numberRecords.length) {
+          // Gán lại vị trí được chọn về 0
+          this.indexOptionSelected = 0
+        }
+        // Gán số lượng bản ghi trên trang
+        this.pageSize = this.numberRecords[this.indexOptionSelected]
+        // Vị trí danh sách theo trục X
+        this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+        // Vị trí danh sách theo trục Y
+        this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+      } catch (error) {
+        console.log(error)
       }
-      // Gán số lượng bản ghi trên trang
-      this.pageSize = this.numberRecords[this.indexOptionSelected]
-      // Vị trí danh sách theo trục X
-      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
-      // Vị trí danh sách theo trục Y
-      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
     },
     /**
      * Hàm di chuyển lựa chọn xuống lên của sô lượng bản ghi trên một trang
@@ -618,21 +702,25 @@ export default {
      * CreatedDate: 15/06/2021
      */
     moveUpOption () {
-      // Hiển thị danh sách số lượng bản ghi trên trang
-      this.isShowOptionsNumberRecords = true
-      // Giảm vị trí chọn bản ghi đi 1
-      this.indexOptionSelected = this.indexOptionSelected - 1
-      // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
-      if (this.indexOptionSelected < 0) {
-        // Gán vị trí chọn bản ghi về cuối
-        this.indexOptionSelected = this.numberRecords.length - 1
+      try {
+        // Hiển thị danh sách số lượng bản ghi trên trang
+        this.isShowOptionsNumberRecords = true
+        // Giảm vị trí chọn bản ghi đi 1
+        this.indexOptionSelected = this.indexOptionSelected - 1
+        // Kiểm tra xem vị trí bản ghi đã vượt quá vị trí hợp lệ hay chưa
+        if (this.indexOptionSelected < 0) {
+          // Gán vị trí chọn bản ghi về cuối
+          this.indexOptionSelected = this.numberRecords.length - 1
+        }
+        // Gán số lượng bản ghi trên trang
+        this.pageSize = this.numberRecords[this.indexOptionSelected]
+        // Vị trí của danh sách bản ghi theo trục X
+        this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
+        // Vị trí của danh sách bản ghi theo trục Y
+        this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
+      } catch (error) {
+        console.log(error)
       }
-      // Gán số lượng bản ghi trên trang
-      this.pageSize = this.numberRecords[this.indexOptionSelected]
-      // Vị trí của danh sách bản ghi theo trục X
-      this.screenX = this.$refs.numberRecords.getBoundingClientRect().left
-      // Vị trí của danh sách bản ghi theo trục Y
-      this.screenY = this.$refs.numberRecords.getBoundingClientRect().top
     },
 
     /**
@@ -641,12 +729,16 @@ export default {
      * CreatedDate: 15/06/2021
      */
     reloadPageWithPageSize () {
-      // Tính số lượng trang
-      this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
-      // Đóng danh sách số lượng bản ghi trên trang
-      this.isShowOptionsNumberRecords = false
-      // Load lại trang
-      this.reloadPage()
+      try {
+        // Tính số lượng trang
+        this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
+        // Đóng danh sách số lượng bản ghi trên trang
+        this.isShowOptionsNumberRecords = false
+        // Load lại trang
+        this.reloadPage()
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     /**
@@ -655,15 +747,19 @@ export default {
      * CreatedDate: 15/06/2021
      */
     exportFileExcel () {
-      // Gọi API
-      HTTP.get('employees/export', {
-        responseType: 'blob'
-      })
-        .then((result) => {
-          FileDownload(result.data, 'DanhSachNhanVien.xlsx')
-        }).catch((err) => {
-          console.log(err)
+      try {
+        // Gọi API
+        HTTP.get('employees/export', {
+          responseType: 'blob'
         })
+          .then((result) => {
+            FileDownload(result.data, 'DanhSachNhanVien.xlsx')
+          }).catch((err) => {
+            console.log(err)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     /**
@@ -672,8 +768,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     saveEmployeeSuccessAndAdd () {
-      // Load lại trang
-      this.reloadPage()
+      try {
+        // Load lại trang
+        this.reloadPage()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm chọn tất cả nhân viên
@@ -681,13 +781,17 @@ export default {
      * CreatedDate: 15/06/2021
      */
     selectedAllEmployees () {
-      // Kiểm tra xem tất cả nhân viên được chọn hay chưa
-      if (!this.isSelectedAll) {
-        this.employees.forEach(item => {
-          this.employeesSelected.push(item.employeeId)
-        })
-      } else {
-        this.employeesSelected = []
+      try {
+        // Kiểm tra xem tất cả nhân viên được chọn hay chưa
+        if (!this.isSelectedAll) {
+          this.employees.forEach(item => {
+            this.employeesSelected.push(item.employeeId)
+          })
+        } else {
+          this.employeesSelected = []
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     /**
@@ -696,17 +800,21 @@ export default {
      * CreatedDate: 17/06/2021
      */
     handleScroll (event) {
-      var st = event.target.scrollTop
-      if (st > this.lastScrollTop) {
-        // downscroll code
-        this.employeeTopValue = -100
-      } else {
-      // upscroll code
-        if (this.employeeTopValue !== 0) {
-          this.employeeTopValue = 0
+      try {
+        var st = event.target.scrollTop
+        if (st > this.lastScrollTop) {
+          // downscroll code
+          this.employeeTopValue = -100
+        } else {
+        // upscroll code
+          if (this.employeeTopValue !== 0) {
+            this.employeeTopValue = 0
+          }
         }
+        this.lastScrollTop = st <= 0 ? 0 : st
+      } catch (error) {
+        console.log(error)
       }
-      this.lastScrollTop = st <= 0 ? 0 : st
     }
   }
 }

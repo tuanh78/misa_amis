@@ -86,30 +86,34 @@ Vue.use(vClickOutside)
 var debounce = require('lodash.debounce')
 export default {
   created () {
-    // Lấy danh sách phòng ban
-    HTTP.get('departments')
-      .then((result) => {
-        // Lưu lại danh sách phòng ban vào biến
-        this.departments = result.data
-        // Tạo ra một mảng danh sách phòng ban khác để xử lý
-        this.fakeDepartments = [...this.departments]
-        // Kiểm tra xem đã chọn phòng ban chưa
-        if (!this.departmentId) {
-          // Phòng ban đầu tiên được chọn
-          this.indexOptionSelected = 0
-        } else {
-          // Tìm vị trí của phòng ban được chọn
-          this.indexOptionSelected = this.fakeDepartments.findIndex((item) => {
-            return item.departmentId === this.departmentId
-          })
-        }
-      })
-      .catch((err) => {
-        // Log ra khi gặp lỗi
-        console.log(err)
-      })
-    // Lắng nghe sự kiện thay đổi giá trị phòng ban
-    EventBus.$on('resetDepartmentSearch', this.resetDepartmentSearch)
+    try {
+      // Lấy danh sách phòng ban
+      HTTP.get('departments')
+        .then((result) => {
+          // Lưu lại danh sách phòng ban vào biến
+          this.departments = result.data
+          // Tạo ra một mảng danh sách phòng ban khác để xử lý
+          this.fakeDepartments = [...this.departments]
+          // Kiểm tra xem đã chọn phòng ban chưa
+          if (!this.departmentId) {
+            // Phòng ban đầu tiên được chọn
+            this.indexOptionSelected = 0
+          } else {
+            // Tìm vị trí của phòng ban được chọn
+            this.indexOptionSelected = this.fakeDepartments.findIndex((item) => {
+              return item.departmentId === this.departmentId
+            })
+          }
+        })
+        .catch((err) => {
+          // Log ra khi gặp lỗi
+          console.log(err)
+        })
+      // Lắng nghe sự kiện thay đổi giá trị phòng ban
+      EventBus.$on('resetDepartmentSearch', this.resetDepartmentSearch)
+    } catch (error) {
+      console.log(error)
+    }
   },
   data () {
     return {
@@ -153,8 +157,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     hiddenDropdownOption () {
-      this.departmentInputActive = false
-      this.isShowDepartmentList = false
+      try {
+        this.departmentInputActive = false
+        this.isShowDepartmentList = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm lọc danh sách phòng ban
@@ -162,40 +170,44 @@ export default {
      * CreatedDate: 15/06/2021
      */
     filterDepartment: debounce(function () {
-      // Kiểm tra giá trị tìm kiếm có rỗng hay không
-      if (this.departmentSearch === '') {
-        // Mảng phòng ban xử lý bằng mảng phòng ban ban đầu
-        this.fakeDepartments = [...this.departments]
-        // Gán phòng ban được chọn là phòng ban đầu tiên
-        // this.departmentSeleted = this.fakeDepartments[0].departmentId
-        // Vị trí phòng ban được chọn là 0
-        this.indexOptionSelected = 0
-      } else {
-        // Lọc những giá trị cần tìm kiếm
-        this.fakeDepartments = this.departments.filter((item) => {
-          return item.departmentName.toLowerCase().indexOf(this.departmentSearch.toLowerCase()) !== -1
-        })
-        // Kiểm tra mảng department có phần tử nào hay không
-        if (this.fakeDepartments.length > 0) {
-          // Chọn phần tử đầu tiên
+      try {
+        // Kiểm tra giá trị tìm kiếm có rỗng hay không
+        if (this.departmentSearch === '') {
+          // Mảng phòng ban xử lý bằng mảng phòng ban ban đầu
+          this.fakeDepartments = [...this.departments]
+          // Gán phòng ban được chọn là phòng ban đầu tiên
           // this.departmentSeleted = this.fakeDepartments[0].departmentId
-          // Vị trí phần tử đầu tiên được chọn
+          // Vị trí phòng ban được chọn là 0
           this.indexOptionSelected = 0
+        } else {
+          // Lọc những giá trị cần tìm kiếm
+          this.fakeDepartments = this.departments.filter((item) => {
+            return item.departmentName.toLowerCase().indexOf(this.departmentSearch.toLowerCase()) !== -1
+          })
+          // Kiểm tra mảng department có phần tử nào hay không
+          if (this.fakeDepartments.length > 0) {
+            // Chọn phần tử đầu tiên
+            // this.departmentSeleted = this.fakeDepartments[0].departmentId
+            // Vị trí phần tử đầu tiên được chọn
+            this.indexOptionSelected = 0
+          }
         }
-      }
-      // Kiểm tra giá trị tìm kiếm rỗng hoặc mảng fakeDepartment có phần tử hay không
-      if (!this.departmentSearch || !this.fakeDepartments.length) {
-        // Kiểm tra xem lỗi đã tồn tại chưa
-        if (!this.errorProperties.includes('departmentId')) {
-          // Thêm lỗi
-          this.$emit('addErrorDepartment')
+        // Kiểm tra giá trị tìm kiếm rỗng hoặc mảng fakeDepartment có phần tử hay không
+        if (!this.departmentSearch || !this.fakeDepartments.length) {
+          // Kiểm tra xem lỗi đã tồn tại chưa
+          if (!this.errorProperties.includes('departmentId')) {
+            // Thêm lỗi
+            this.$emit('addErrorDepartment')
+          }
+        } else {
+          // Xóa lỗi
+          this.$emit('removeErrorDepartment')
         }
-      } else {
-        // Xóa lỗi
-        this.$emit('removeErrorDepartment')
+        // Tắt loading
+        this.isShowLoading = false
+      } catch (error) {
+        console.log(error)
       }
-      // Tắt loading
-      this.isShowLoading = false
     }, 500),
     /**
      * Hàm thực hiện giá trị tìm kiếm thay đổi
@@ -203,10 +215,14 @@ export default {
      * CreatedDate: 15/06/2021
      */
     inputChangedValue () {
-      // Hiện Loading
-      this.isShowLoading = true
-      // Hiện danh sách
-      this.isShowDepartmentList = true
+      try {
+        // Hiện Loading
+        this.isShowLoading = true
+        // Hiện danh sách
+        this.isShowDepartmentList = true
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm di chuyển lựa chọn phòng ban xuống dưới
@@ -214,41 +230,45 @@ export default {
      * CreatedDate: 15/06/2021
      */
     moveDownOption () {
-      // Kiểm tra đã chọn phòng ban nào chưa
-      if (!this.departmentSeleted) {
-        // Chọn phòng ban đầu tiên
-        this.departmentSeleted = this.fakeDepartments[0].departmentId
-      }
-      // Hiển thị danh sách phòng ban
-      this.isShowDepartmentList = true
-      // Lấy các tất cả element option-item
-      const options = [...this.$el.querySelectorAll('.option-item')]
-      options.forEach((option, index) => {
-        // Kiểm tra element đã được chọn chưa
-        if (
-          option.classList.contains('selected-option') &&
-          this.indexOptionSelected < this.fakeDepartments.length
-        ) {
-          // Tăng giá trị vị trí được chọn lên 1
-          this.indexOptionSelected = index + 1
-          // Kiểm tra vị trí được chọn đã bằng length của mảng danh sách chưa
-          if (this.indexOptionSelected === this.fakeDepartments.length) {
-            // Gán vị trí được chọn về phần tử đầu
-            this.indexOptionSelected = 0
-            // Gán giá trị được chọn là phòng ban đầu
-            this.departmentSeleted = this.fakeDepartments[0].departmentId
-            // Lấy tên phòng ban đầu được chọn
-            this.departmentSearch = options[0].innerText
+      try {
+        // Kiểm tra đã chọn phòng ban nào chưa
+        if (!this.departmentSeleted) {
+          // Chọn phòng ban đầu tiên
+          this.departmentSeleted = this.fakeDepartments[0].departmentId
+        }
+        // Hiển thị danh sách phòng ban
+        this.isShowDepartmentList = true
+        // Lấy các tất cả element option-item
+        const options = [...this.$el.querySelectorAll('.option-item')]
+        options.forEach((option, index) => {
+          // Kiểm tra element đã được chọn chưa
+          if (
+            option.classList.contains('selected-option') &&
+            this.indexOptionSelected < this.fakeDepartments.length
+          ) {
+            // Tăng giá trị vị trí được chọn lên 1
+            this.indexOptionSelected = index + 1
+            // Kiểm tra vị trí được chọn đã bằng length của mảng danh sách chưa
+            if (this.indexOptionSelected === this.fakeDepartments.length) {
+              // Gán vị trí được chọn về phần tử đầu
+              this.indexOptionSelected = 0
+              // Gán giá trị được chọn là phòng ban đầu
+              this.departmentSeleted = this.fakeDepartments[0].departmentId
+              // Lấy tên phòng ban đầu được chọn
+              this.departmentSearch = options[0].innerText
+              return true
+            }
+            // Lấy giá trị được chọn tiếp theo
+            this.departmentSeleted =
+              this.fakeDepartments[this.indexOptionSelected].departmentId
+            // Lấy tên phòng ban được chọn
+            this.departmentSearch = options[this.indexOptionSelected].innerText
             return true
           }
-          // Lấy giá trị được chọn tiếp theo
-          this.departmentSeleted =
-            this.fakeDepartments[this.indexOptionSelected].departmentId
-          // Lấy tên phòng ban được chọn
-          this.departmentSearch = options[this.indexOptionSelected].innerText
-          return true
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm di chuyển lựa chọn phòng ban lên trên
@@ -256,42 +276,46 @@ export default {
      * CreatedDate: 15/06/2021
      */
     moveUpOption () {
-      // Kiểm tra có phòng ban nào được chọn chưa
-      if (!this.departmentSeleted) {
-        // Gán giá trị được chọn là phòng ban đầu
-        this.departmentSeleted = this.fakeDepartments[0].departmentId
-      }
-      // Hiển thị danh sách phòng ban
-      this.isShowDepartmentList = true
-      // Lấy list element phòng ban
-      const options = [...this.$el.querySelectorAll('.option-item')]
-      options.forEach((option, index) => {
-        if (
-          // Kiểm tra option phòng ban đã được chọn hay chưa
-          option.classList.contains('selected-option') &&
-          this.indexOptionSelected >= 0
-        ) {
-          // Vị trí phòng ban được chọn - 1
-          this.indexOptionSelected = index - 1
-          // Kiểm tra vị trí được chọn nằm ngoài vị trí cho phép chưa
-          if (this.indexOptionSelected === -1) {
-            // Vị trí được chọn là vị trí cuối
-            this.indexOptionSelected = options.length - 1
-            // Gán giá trị phòng ban được chọn là phòng ban cuối
+      try {
+        // Kiểm tra có phòng ban nào được chọn chưa
+        if (!this.departmentSeleted) {
+          // Gán giá trị được chọn là phòng ban đầu
+          this.departmentSeleted = this.fakeDepartments[0].departmentId
+        }
+        // Hiển thị danh sách phòng ban
+        this.isShowDepartmentList = true
+        // Lấy list element phòng ban
+        const options = [...this.$el.querySelectorAll('.option-item')]
+        options.forEach((option, index) => {
+          if (
+            // Kiểm tra option phòng ban đã được chọn hay chưa
+            option.classList.contains('selected-option') &&
+            this.indexOptionSelected >= 0
+          ) {
+            // Vị trí phòng ban được chọn - 1
+            this.indexOptionSelected = index - 1
+            // Kiểm tra vị trí được chọn nằm ngoài vị trí cho phép chưa
+            if (this.indexOptionSelected === -1) {
+              // Vị trí được chọn là vị trí cuối
+              this.indexOptionSelected = options.length - 1
+              // Gán giá trị phòng ban được chọn là phòng ban cuối
+              this.departmentSeleted =
+                this.fakeDepartments[this.indexOptionSelected].departmentId
+              // Gán tên phòng ban được chọn là tên phòng ban cuối
+              this.departmentSearch = options[this.indexOptionSelected].innerText
+              return true
+            }
+            // Gán giá trị phòng ban được chọn là phòng ban trước đó
             this.departmentSeleted =
               this.fakeDepartments[this.indexOptionSelected].departmentId
-            // Gán tên phòng ban được chọn là tên phòng ban cuối
+            // Vị trí được chọn là vị trí trước vị trí hiện tại
             this.departmentSearch = options[this.indexOptionSelected].innerText
             return true
           }
-          // Gán giá trị phòng ban được chọn là phòng ban trước đó
-          this.departmentSeleted =
-            this.fakeDepartments[this.indexOptionSelected].departmentId
-          // Vị trí được chọn là vị trí trước vị trí hiện tại
-          this.departmentSearch = options[this.indexOptionSelected].innerText
-          return true
-        }
-      })
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm chọn phòng bạn khi click chuột
@@ -299,14 +323,18 @@ export default {
      * CreatedDate: 15/06/2021
      */
     selectedDepartment (index, department) {
-      // Gán vị trí phòng ban được chọn
-      this.indexOptionSelected = index
-      // Gán giá trị phòng ban được chọn
-      this.departmentSeleted = department.departmentId
-      // Gán tên phòng ban được chọn
-      this.departmentSearch = department.departmentName
-      // Ẩn danh sách phòng ban
-      this.isShowDepartmentList = false
+      try {
+        // Gán vị trí phòng ban được chọn
+        this.indexOptionSelected = index
+        // Gán giá trị phòng ban được chọn
+        this.departmentSeleted = department.departmentId
+        // Gán tên phòng ban được chọn
+        this.departmentSearch = department.departmentName
+        // Ẩn danh sách phòng ban
+        this.isShowDepartmentList = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Reset lại phòng ban được chọn
@@ -314,10 +342,14 @@ export default {
      * CreatedDate: 15/06/2021
      */
     resetDepartmentSelected () {
-      // Toggle danh sách phòng ban
-      this.isShowDepartmentList = !this.isShowDepartmentList
-      // Gán tên của phòng ban được chọn
-      this.departmentSearch = this.fakeDepartments[this.indexOptionSelected].departmentName
+      try {
+        // Toggle danh sách phòng ban
+        this.isShowDepartmentList = !this.isShowDepartmentList
+        // Gán tên của phòng ban được chọn
+        this.departmentSearch = this.fakeDepartments[this.indexOptionSelected].departmentName
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Thay đổi lại giá trị phòng ban được chọn khi tìm kiếm rỗng
@@ -325,15 +357,19 @@ export default {
      * CreatedDate: 15/06/2021
      */
     changeValueOption () {
-      // Kiểm tra tên phòng ban tìm kiếm có rỗng không
-      if (!this.departmentSearch) {
-        // Gán vị trí được chọn là vị trí đầu tiên
-        this.indexOptionSelected = 0
+      try {
+        // Kiểm tra tên phòng ban tìm kiếm có rỗng không
+        if (!this.departmentSearch) {
+          // Gán vị trí được chọn là vị trí đầu tiên
+          this.indexOptionSelected = 0
+        }
+        // Active phòng ban được chọn
+        this.departmentInputActive = true
+        // Hiển thị danh sách
+        this.isShowDepartmentList = true
+      } catch (error) {
+        console.log(error)
       }
-      // Active phòng ban được chọn
-      this.departmentInputActive = true
-      // Hiển thị danh sách
-      this.isShowDepartmentList = true
     },
     /**
      * Hàm active phòng ban được chọn
@@ -349,8 +385,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     resetDepartmentSearch () {
-      this.departmentSearch = ''
-      this.departmentSeleted = ''
+      try {
+        this.departmentSearch = ''
+        this.departmentSeleted = ''
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm xử lý khi chuyển sang ô input tiếp theo
@@ -358,7 +398,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     moveToNextInput () {
-      this.departmentInputActive = false
+      try {
+        this.departmentInputActive = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm hiển thị danh sách phòng ban
@@ -366,8 +410,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     showDepartmentList () {
-      this.isShowDepartmentList = !this.isShowDepartmentList
-      this.$refs.departmentName.focus()
+      try {
+        this.isShowDepartmentList = !this.isShowDepartmentList
+        this.$refs.departmentName.focus()
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Focus vào ô input
@@ -381,14 +429,22 @@ export default {
   watch: {
     // Theo dõi biến lưu giá trị Id phòng ban được chọn
     departmentSeleted (newValue, oldValue) {
-      this.$emit('updateDepartment', newValue)
+      try {
+        this.$emit('updateDepartment', newValue)
+      } catch (error) {
+        console.log(error)
+      }
     },
     departmentSearch (newValue, oldValue) {
-      // Danh sách rỗng thì thêm lỗi ngược lại cập nhật tên phòng ban tìm kiếm
-      if (this.fakeDepartments.length) {
-        this.$emit('removeErrorDepartment')
+      try {
+        // Danh sách rỗng thì thêm lỗi ngược lại cập nhật tên phòng ban tìm kiếm
+        if (this.fakeDepartments.length) {
+          this.$emit('removeErrorDepartment')
+        }
+        this.$emit('updateDepartmentSearch', newValue)
+      } catch (error) {
+        console.log(error)
       }
-      this.$emit('updateDepartmentSearch', newValue)
     }
   }
 }

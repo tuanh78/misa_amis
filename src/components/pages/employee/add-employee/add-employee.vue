@@ -360,11 +360,19 @@ export default {
     }
   },
   created () {
-    this.fakeEmployee = { ...this.employee }
+    try {
+      this.fakeEmployee = { ...this.employee }
+    } catch (error) {
+      console.log(error)
+    }
   },
   mounted () {
-    // Focus vào ô mã nhân viên khi hiện Popup
-    this.$refs.employeeCode.focus()
+    try {
+      // Focus vào ô mã nhân viên khi hiện Popup
+      this.$refs.employeeCode.focus()
+    } catch (error) {
+      console.log(error)
+    }
   },
   components: {
     VDatepicker,

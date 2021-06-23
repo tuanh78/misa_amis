@@ -182,7 +182,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     showLogo () {
-      this.$emit('showLogo')
+      try {
+        this.$emit('showLogo')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

@@ -35,7 +35,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     showPopupDelete () {
-      this.$emit('showPopupDelete')
+      try {
+        this.$emit('showPopupDelete')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

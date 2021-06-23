@@ -28,7 +28,11 @@ export default {
   methods: {
     // Hàm Load trang mới
     clickCallback (pageNum) {
-      this.$emit('loadPage', pageNum)
+      try {
+        this.$emit('loadPage', pageNum)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

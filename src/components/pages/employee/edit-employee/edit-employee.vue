@@ -330,12 +330,20 @@ export default {
     }
   },
   created () {
-    // Lưu giá trị ban đầu của biến employee
-    this.fakeEmployee = { ...this.employee }
+    try {
+      // Lưu giá trị ban đầu của biến employee
+      this.fakeEmployee = { ...this.employee }
+    } catch (error) {
+      console.log(error)
+    }
   },
   mounted () {
-    // Focus vào ô mã nhân viên khi Popup hiển thị
-    this.$refs.employeeCode.focus()
+    try {
+      // Focus vào ô mã nhân viên khi Popup hiển thị
+      this.$refs.employeeCode.focus()
+    } catch (error) {
+      console.log(error)
+    }
   },
   props: {
     // Nhân viên cần sửa

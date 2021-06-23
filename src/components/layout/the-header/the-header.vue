@@ -73,7 +73,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     hiddenLogo () {
-      this.$emit('hiddenLogo')
+      try {
+        this.$emit('hiddenLogo')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

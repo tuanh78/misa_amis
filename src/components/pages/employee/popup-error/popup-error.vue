@@ -34,7 +34,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopupError () {
-      this.$emit('closePopupError')
+      try {
+        this.$emit('closePopupError')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

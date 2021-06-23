@@ -28,11 +28,19 @@ export default {
   methods: {
     // Hàm ẩn Logo
     hiddenLogo () {
-      this.isShowLogo = false
+      try {
+        this.isShowLogo = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     // Hàm hiện Logo
     showLogo () {
-      this.isShowLogo = true
+      try {
+        this.isShowLogo = true
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

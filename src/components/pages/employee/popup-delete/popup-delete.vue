@@ -38,7 +38,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     closePopup () {
-      this.$emit('closePopup')
+      try {
+        this.$emit('closePopup')
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm xóa nhân viên
@@ -46,7 +50,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     deleteEmployee () {
-      this.$emit('deleteEmployee')
+      try {
+        this.$emit('deleteEmployee')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

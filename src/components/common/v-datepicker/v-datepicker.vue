@@ -48,9 +48,13 @@ export default {
     }
   },
   created () {
-    this.date = this.dateOfBirth
-    // Lắng nghe sự kiện reset giá trị ngày
-    EventBus.$on('resetDataDatePicker', this.resetData)
+    try {
+      this.date = this.dateOfBirth
+      // Lắng nghe sự kiện reset giá trị ngày
+      EventBus.$on('resetDataDatePicker', this.resetData)
+    } catch (error) {
+      console.log(error)
+    }
   },
   destroyed () {
     // Hủy lắng nghe sự kiện
@@ -63,8 +67,12 @@ export default {
      * CreatedDate: 15/06/2021
      */
     isFutureDate (date) {
-      const currentDate = new Date()
-      return date > currentDate
+      try {
+        const currentDate = new Date()
+        return date > currentDate
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm thay đổi focus input
@@ -72,7 +80,11 @@ export default {
      * CreatedDate: 15/06/2021
      */
     changeBorderColor () {
-      this.focusInput = false
+      try {
+        this.focusInput = false
+      } catch (error) {
+        console.log(error)
+      }
     },
     /**
      * Hàm reset lại dữ liệu
@@ -80,13 +92,21 @@ export default {
      * CreatedDate: 15/06/2021
      */
     resetData () {
-      this.date = ''
+      try {
+        this.date = ''
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   watch: {
     // Theo dõi biến date và cập nhật giá trị
     date (newValue, oldValue) {
-      this.$emit('updateValue', newValue)
+      try {
+        this.$emit('updateValue', newValue)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
