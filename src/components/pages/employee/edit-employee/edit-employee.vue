@@ -313,7 +313,6 @@ import PopupError from '../popup-error/popup-error.vue'
 import EventBus from '../../../../event-bus/event-bus'
 import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
 import Message from '../../../../message/message'
-import moment from 'moment'
 export default {
   data () {
     return {
@@ -344,23 +343,23 @@ export default {
       type: Object,
       default () {
         return {
-          employeeCode: null, // Mã nhân viên
-          employeeName: null, // Tên nhân viên
-          dateOfBirth: moment().format('YYYY-MM-DD'), // Ngày sinh
+          employeeCode: '', // Mã nhân viên
+          employeeName: '', // Tên nhân viên
+          dateOfBirth: '', // Ngày sinh
           gender: 0, // Giới tính
-          departmentId: null, // Id phòng ban
-          identityNumber: null, // Số CMT
-          identityDate: moment().format('YYYY-MM-DD'), // Ngày cấp
-          identityPlace: null, // Nơi cấp
-          employeePosition: null, // Chức vụ
-          address: null, // Địa chỉ
-          bankAccountNumber: null, // Tài khoản ngân hàng
-          bankName: null, // Tên ngân hàng
-          bankBranchName: null, // Chi nhánh ngân hàng
-          bankProvinceName: null, // Tỉnh
-          phoneNumber: null, // Số điện thoại
-          telephoneNumber: null, // Số điện thoại cố định
-          email: null // Email
+          departmentId: '', // Id phòng ban
+          identityNumber: '', // Số CMT
+          identityDate: '', // Ngày cấp
+          identityPlace: '', // Nơi cấp
+          employeePosition: '', // Chức vụ
+          address: '', // Địa chỉ
+          bankAccountNumber: '', // Tài khoản ngân hàng
+          bankName: '', // Tên ngân hàng
+          bankBranchName: '', // Chi nhánh ngân hàng
+          bankProvinceName: '', // Tỉnh
+          phoneNumber: '', // Số điện thoại
+          telephoneNumber: '', // Số điện thoại cố định
+          email: '' // Email
         }
       }
     }

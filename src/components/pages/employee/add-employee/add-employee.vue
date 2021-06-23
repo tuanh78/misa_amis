@@ -318,22 +318,22 @@ export default {
       // Biến lưu trữ giá trị của nhân viên
       employee: {
         employeeCode: this.latestEmployeeCode, // Mã khách hàng
-        employeeName: null, // Tên khách hàng
-        dateOfBirth: null, // Ngày sinh
+        employeeName: '', // Tên khách hàng
+        dateOfBirth: '', // Ngày sinh
         gender: 0, // Giới tính
-        departmentId: null, // Id của phòng ban
-        identityNumber: null, // Số CMT
-        identityDate: null, // Ngày cấp
-        identityPlace: null, // Nơi cấp
-        employeePosition: null, // Chức danh
-        address: null, // Địa chỉ
-        bankAccountNumber: null, // Tài khoản NH
-        bankName: null, // Tên ngân hàng
-        bankBranchName: null, // Chi Nhánh
-        bankProvinceName: null, // Tỉnh
-        phoneNumber: null, // Số điện thoại
-        telephoneNumber: null, // Số điện thoại cố định
-        email: null // Email
+        departmentId: '', // Id của phòng ban
+        identityNumber: '', // Số CMT
+        identityDate: '', // Ngày cấp
+        identityPlace: '', // Nơi cấp
+        employeePosition: '', // Chức danh
+        address: '', // Địa chỉ
+        bankAccountNumber: '', // Tài khoản NH
+        bankName: '', // Tên ngân hàng
+        bankBranchName: '', // Chi Nhánh
+        bankProvinceName: '', // Tỉnh
+        phoneNumber: '', // Số điện thoại
+        telephoneNumber: '', // Số điện thoại cố định
+        email: '' // Email
       },
       isShowEmployeeCodeWarning: false, // Biến hiển thị cảnh báo mã khách hàng đã tồn tại
       errorProperties: [], // Biến danh sách các trường bị lỗi
@@ -779,22 +779,22 @@ export default {
       // Đặt lại giá trị cho biết employee
       this.employee = {
         employeeCode: this.latestEmployeeCode,
-        employeeName: null,
-        dateOfBirth: null,
+        employeeName: '',
+        dateOfBirth: '',
         gender: 0,
-        departmentId: null,
-        identityNumber: null,
-        identityDate: null,
-        identityPlace: null,
-        employeePosition: null,
-        address: null,
-        bankAccountNumber: null,
-        bankName: null,
-        bankBranchName: null,
-        bankProvinceName: null,
-        phoneNumber: null,
-        telephoneNumber: null,
-        email: null
+        departmentId: '',
+        identityNumber: '',
+        identityDate: '',
+        identityPlace: '',
+        employeePosition: '',
+        address: '',
+        bankAccountNumber: '',
+        bankName: '',
+        bankBranchName: '',
+        bankProvinceName: '',
+        phoneNumber: '',
+        telephoneNumber: '',
+        email: ''
       }
       // Đặt lại tên phòng ban tìm kiếm
       this.departmentSearch = ''
