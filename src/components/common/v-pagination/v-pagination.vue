@@ -18,6 +18,7 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Tổng số lượng trang
     totalPages: {
@@ -25,7 +26,11 @@ export default {
       default: 1
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Load trang mới
     // Hàm Load trang mới
     clickCallback (pageNum) {
       try {
@@ -34,7 +39,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 1
   }
+  // #endregion
 }
 </script>
 

@@ -25,13 +25,18 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Thông báo xóa
     messageDelete: {
       type: String
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Đóng Popup
     /**
      * Hàm đóng Popup
      * CreatedBy: PTANH
@@ -44,6 +49,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Xóa nhân viên
     /**
      * Hàm xóa nhân viên
      * CreatedBy: PTANH
@@ -57,6 +65,8 @@ export default {
       }
     }
   }
+  // #endregion 2
+  // #endregion
 }
 </script>
 

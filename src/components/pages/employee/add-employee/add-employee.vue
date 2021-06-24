@@ -313,6 +313,7 @@ import EventBus from '../../../../event-bus/event-bus'
 import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
 import Message from '../../../../message/message'
 export default {
+  // #region Declare
   data () {
     return {
       // Biến lưu trữ giá trị của nhân viên
@@ -382,7 +383,13 @@ export default {
     ToolTip,
     PopupDataChange
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region I: Các hàm xử lý sự kiện người dùng
+
+    // #region 1: Ẩn Popup thêm nhân viên
     /**
      * Hàm ẩn Popup thêm nhân viên
      * CreatedBy: PTANH
@@ -395,6 +402,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Cập nhật ngày sinh
     /**
      * Hàm cập nhật ngày sinh
      * CreatedBy: PTANH
@@ -407,6 +417,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 2
+
+    // #region 3: Cập nhật ngày cấp CMND
     /**
      * Hàm cập nhật ngày cấp
      * CreatedBy: PTANH
@@ -419,6 +432,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 3
+
+    // #region 4: Cập nhật phòng ban
     /**
      * Hàm cập nhật phòng ban
      * CreatedBy: PTANH
@@ -431,6 +447,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion
+
+    // #region 5: Lưu nhân viên
     /**
      * Hàm lưu nhân viên
      * CreatedBy: PTANH
@@ -455,6 +474,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 5
+
+    // #region 6: Đóng Popup cảnh báo
     /**
      * Hàm đóng Popup cảnh báo trùng mã nhân viên
      * CreatedBy: PTANH
@@ -472,6 +494,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 6
+
+    // #region 7: Kiểm tra giá trị mã nhân viên
     /**
      * Hàm kiểm tra giá trị của mã nhân viên
      * CreatedBy: PTANH
@@ -494,6 +519,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 7
+
+    // #region 8: Kiểm tra giá trị tên nhân viên
     /**
      * Hàm kiểm tra giá trị của tên nhân viên
      * CreatedBy: PTANH
@@ -516,6 +544,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 8
+
+    // #region 9: Đóng Popup thông báo lỗi
     /**
      * Hàm đóng Popup thông báo lỗi
      * CreatedBy: PTANH
@@ -540,6 +571,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 9
+
+    // #region 10: Thêm phòng ban vào danh sách lỗi
     /**
      * Hàm thêm phòng ban vào danh sách lỗi
      * CreatedBy: PTANH
@@ -555,6 +589,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 10
+
+    // #region 11: Xóa phòng ban khỏi danh sách lỗi
     /**
      * Hàm xóa phòng ban khỏi danh sách lỗi
      * CreatedBy: PTANH
@@ -571,6 +608,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 11
+
+    // #region 12: Cập nhật giá trị tìm kiếm của department
     /**
      * Hàm cập nhật giá trị department search
      * CreatedBy: PTANH
@@ -584,6 +624,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 12
+
+    // #region 13: Lấy tọa độ chuột khi di chuyển
     /**
      * Hàm lấy tọa độ của chuột khi di chuyển
      * CreatedBy: PTANH
@@ -599,6 +642,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 13
+
+    // #region 14: Kiểm tra sự thay đổi của dữ liệu trước khi đóng
     /**
      * Hàm kiểm tra sự thay đổi của dữ liệu trước khi đóng
      * CreatedBy: PTANH
@@ -620,6 +666,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 14
+
+    // #region 15: Đóng Popup thông báo thay đổi dữ liệu
     /**
      * Hàm đóng Popup thông báo thay đổi dữ liệu
      * CreatedBy: PTANH
@@ -633,6 +682,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 15
+
+    // #region 16: Lưu dữ liệu khi dữ liệu thay đổi
     /**
      * Hàm lưu dữ liệu khi dữ liệu thay đổi
      * CreatedBy: PTANH
@@ -648,6 +700,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 16
+
+    // #region 17: Lưu và tạo mới
     /**
      * Hàm lưu và tạo
      */
@@ -672,6 +727,74 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 17
+
+    // #region 18: Xóa lỗi Email
+    /**
+     * Xóa lỗi Email
+     * CreatedBy: PTANH
+     * CreatedDate: 17/06/2021
+     */
+    removeEmailError () {
+      try {
+        if (this.errorProperties.includes('email') !== -1) {
+          const index = this.errorProperties.indexOf('email')
+          if (index > -1) {
+            this.errorProperties.splice(index, 1)
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // #endregion 18
+
+    // #region 19: Kiểm tra giá trị số CMND
+    /**
+     * Hàm kiểm tra giá trị của số CMND
+     * CreatedBy: PTANH
+     * CreatedDate: 18/06/2021
+     */
+    checkIdentityNumber () {
+      try {
+        // Kiểm tra người dùng nhập có phải số không
+        const isNumber = this.isNumeric(this.employee.identityNumber)
+        // Kiểm tra có lỗi mã CMND trong danh sách lỗi chưa
+        const index = this.errorProperties.indexOf('identityNumber')
+        if (!isNumber && index === -1) {
+          // Thêm lỗi
+          this.errorProperties.push('identityNumber')
+        }
+        if ((isNumber && index > -1) || !this.employee.identityNumber) {
+          // Xóa lỗi
+          this.errorProperties.splice(index, 1)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // #endregion 19
+
+    // #region 20: Tab đến ô mã nhân viên
+    /**
+     * Hàm di chuyển đến ô input mã nhân viên
+     * CreatedBy: PTANH
+     * CreatedDate: 22/06/2021
+     */
+    moveToEmployeeCode () {
+      try {
+        this.$refs.employeeCode.focus()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // #endregion 20
+
+    // #endregion I
+
+    // #region II: Các hàm khác
+
+    // #region 1: Đặt lại dữ liệu về ban đầu
     /**
      * Hàm đặt lại dữ liệu của Popup add
      * CreatedBy: PTANH
@@ -721,68 +844,9 @@ export default {
           console.log(err)
         })
     },
-    /**
-     * Xóa lỗi Email
-     * CreatedBy: PTANH
-     * CreatedDate: 17/06/2021
-     */
-    removeEmailError () {
-      try {
-        if (this.errorProperties.includes('email') !== -1) {
-          const index = this.errorProperties.indexOf('email')
-          if (index > -1) {
-            this.errorProperties.splice(index, 1)
-          }
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    /**
-     * Hàm kiểm tra một chuỗi có phải là một số hợp lệ hay không
-     * CreatedBy: PTANH
-     * CreatedDate: 18/06/2021
-     */
-    isNumeric (str) {
-      if (typeof str !== 'string') return false // Kiểm tra str có phải chuỗi không
-      return !isNaN(str) &&
-         !isNaN(parseFloat(str))
-    },
-    /**
-     * Hàm kiểm tra giá trị của số CMND
-     * CreatedBy: PTANH
-     * CreatedDate: 18/06/2021
-     */
-    checkIdentityNumber () {
-      try {
-        // Kiểm tra người dùng nhập có phải số không
-        const isNumber = this.isNumeric(this.employee.identityNumber)
-        // Kiểm tra có lỗi mã CMND trong danh sách lỗi chưa
-        const index = this.errorProperties.indexOf('identityNumber')
-        if (!isNumber && index === -1) {
-          // Thêm lỗi
-          this.errorProperties.push('identityNumber')
-        }
-        if ((isNumber && index > -1) || !this.employee.identityNumber) {
-          // Xóa lỗi
-          this.errorProperties.splice(index, 1)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    /**
-     * Hàm di chuyển đến ô input mã nhân viên
-     * CreatedBy: PTANH
-     * CreatedDate: 22/06/2021
-     */
-    moveToEmployeeCode () {
-      try {
-        this.$refs.employeeCode.focus()
-      } catch (error) {
-        console.log(error)
-      }
-    },
+    // #endregion 1
+
+    // #region 2: Kiểm tra giá trị email
     /**
      * Hàm kiểm tra giá trị của email
      * CreatedBy: PTANH
@@ -792,6 +856,9 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(String(email).toLowerCase())
     },
+    // #endregion 2
+
+    // #region 3: Validate dữ liệu
     /**
      * Hàm validate dữ liệu
      * CreatedBy: PTANH
@@ -820,7 +887,9 @@ export default {
       var result = this.showPopupError()
       return result
     },
+    // #endregion 3
 
+    // #region 4: Hiển thị thông báo lỗi
     /**
      * Hàm hiển thị thông báo lỗi
      * CreatedBy: PTANH
@@ -856,7 +925,9 @@ export default {
       }
       return true
     },
+    // #endregion 4
 
+    // #region 5: Bắt các lỗi từ server
     /**
      * Validate dữ liệu từ server
      * CreatedBy: PTANH
@@ -896,8 +967,26 @@ export default {
           }
         })
       }
+    },
+    // #endregion 5
+
+    // #region 6: Kiểm tra chuỗi có phải số không
+    /**
+     * Hàm kiểm tra một chuỗi có phải là một số hợp lệ hay không
+     * CreatedBy: PTANH
+     * CreatedDate: 18/06/2021
+     */
+    isNumeric (str) {
+      if (typeof str !== 'string') return false // Kiểm tra str có phải chuỗi không
+      return !isNaN(str) &&
+         !isNaN(parseFloat(str))
     }
+    // #endregion 6
+
+    // #endregion
   }
+
+  // #endregion
 }
 </script>
 

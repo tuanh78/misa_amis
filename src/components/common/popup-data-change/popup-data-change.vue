@@ -32,13 +32,18 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Thông báo
     message: {
       type: String
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Đóng Popup
     /**
      * Hàm đóng Popup
      * CreatedBy: PTANH
@@ -51,6 +56,8 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+    // #region 2: Đóng Popup và Form
     /**
      * Hàm đóng cả Popup cả Form
      * CreatedBy: PTANH
@@ -63,8 +70,10 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 2
+    // #region 3: Xóa nhân viên
     /**
-     * Hàm xóa nhân viên
+     * Hàm lưu nhân viên
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
@@ -75,7 +84,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 3
   }
+  // #endregion
 }
 </script>
 

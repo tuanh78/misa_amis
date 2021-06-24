@@ -85,6 +85,7 @@ import vClickOutside from 'v-click-outside'
 Vue.use(vClickOutside)
 var debounce = require('lodash.debounce')
 export default {
+  // #region Declare
   created () {
     try {
       // Lấy danh sách phòng ban
@@ -150,7 +151,13 @@ export default {
   components: {
     ToolTip
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region I: Các hàm xử lý sự kiện người dùng
+
+    // #region 1: Ẩn danh sách phòng ban
     /**
      * Hàm ẩn danh sách phòng ban
      * CreatedBy: PTANH
@@ -164,6 +171,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Lọc danh sách phòng ban
     /**
      * Hàm lọc danh sách phòng ban
      * CreatedBy: PTANH
@@ -209,6 +219,9 @@ export default {
         console.log(error)
       }
     }, 500),
+    // #endregion 2
+
+    // #region 3: Giá trị tìm kiếm thay đổi
     /**
      * Hàm thực hiện giá trị tìm kiếm thay đổi
      * CreatedBy: PTANH
@@ -224,6 +237,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion
+
+    // #region 4: Di chuyển lựa chọn xuống dưới
     /**
      * Hàm di chuyển lựa chọn phòng ban xuống dưới
      * CreatedBy: PTANH
@@ -270,6 +286,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 4
+
+    // #region 5: Di chuyển lựa chọn lên trên
     /**
      * Hàm di chuyển lựa chọn phòng ban lên trên
      * CreatedBy: PTANH
@@ -317,6 +336,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 5
+
+    // #region 6: Chọn phòng ban
     /**
      * Hàm chọn phòng bạn khi click chuột
      * CreatedBy: PTANH
@@ -336,6 +358,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 6
+
+    // #region 7: Reset lại phòng ban được chọn
     /**
      * Reset lại phòng ban được chọn
      * CreatedBy: PTANH
@@ -351,6 +376,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 7
+
+    // #region 8: Xử lý khi tìm kiếm trống
     /**
      * Thay đổi lại giá trị phòng ban được chọn khi tìm kiếm rỗng
      * CreatedBy: PTANH
@@ -371,6 +399,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 8
+
+    // #region 9: Active phòng ban được chọn
     /**
      * Hàm active phòng ban được chọn
      * CreatedBy: PTANH
@@ -379,6 +410,9 @@ export default {
     activeInputDepartment () {
       this.departmentInputActive = true
     },
+    // #endregion 9
+
+    // #region 10: Reset lại giá trị tìm kiếm
     /**
      * Hàm reset lại giá trị tìm kiếm
      * CreatedBy: PTANH
@@ -392,6 +426,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 10
+
+    // #region 11: Di chuyển sang ô input tiếp theo
     /**
      * Hàm xử lý khi chuyển sang ô input tiếp theo
      * CreatedBy: PTANH
@@ -404,6 +441,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 11
+
+    // #region 12: Hiển thị danh sách phòng ban
     /**
      * Hàm hiển thị danh sách phòng ban
      * CreatedBy: PTANH
@@ -417,6 +457,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 12
+
+    // #region 13: Focus vào ô input
     /**
      * Focus vào ô input
      * CreatedBy: PTANH
@@ -425,7 +468,11 @@ export default {
     focusDepartmentInput () {
       this.$refs.departmentName.focus()
     }
+    // #endregion 13
   },
+  // #endregion I
+
+  // #region II: Theo dõi biến
   watch: {
     // Theo dõi biến lưu giá trị Id phòng ban được chọn
     departmentSeleted (newValue, oldValue) {
@@ -447,6 +494,9 @@ export default {
       }
     }
   }
+  // #endregion II
+
+  // #endregion
 }
 </script>
 

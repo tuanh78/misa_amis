@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Thông báo lỗi
     errorMessage: {
@@ -27,7 +28,11 @@ export default {
       default: 'Mã không được để trống.'
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Đóng Popup
     /**
      * Hàm đóng Popup lỗi
      * CreatedBy: PTANH
@@ -40,7 +45,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 1
   }
+  // #endregion
 }
 </script>
 

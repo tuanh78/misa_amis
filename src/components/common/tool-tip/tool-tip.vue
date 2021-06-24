@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Thông báo
     message: {
@@ -13,6 +14,7 @@ export default {
       default: ''
     }
   }
+  // #endregion
 }
 </script>
 

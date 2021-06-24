@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Vị trí chuột ở trục X
     screenX: {
@@ -28,7 +29,11 @@ export default {
       default: 0
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Hiển thị thông báo xóa
     /**
      * Hàm hiển thị thông báo xóa
      * CreatedBy: PTANH
@@ -41,7 +46,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion
   }
+  // #endregion
 }
 </script>
 

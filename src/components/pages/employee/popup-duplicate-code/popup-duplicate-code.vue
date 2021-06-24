@@ -22,13 +22,18 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Thông báo lỗi
     errorMessage: {
       type: String
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Đóng Popup
     /**
      * Hàm đóng Popup
      * CreatedBy: PTANH
@@ -41,7 +46,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 1
   }
+  // #endregion
 }
 </script>
 

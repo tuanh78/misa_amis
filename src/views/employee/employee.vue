@@ -229,6 +229,7 @@ Vue.use(vClickOutside)
 var moment = require('moment') // require
 const FileDownload = require('js-file-download')
 export default {
+  // #region Declare
   data () {
     return {
       isShowAddEmployee: false, // Biến hiển thị Popup thêm nhân viên
@@ -321,7 +322,13 @@ export default {
       }
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region I: Các hàm xử lý sự kiện người dùng
+
+    // #region 1: Chọn dòng trong bảng
     /**
      * Hàm xử lý chọn dòng trong bảng
      * CreatedBy: PTANH
@@ -349,6 +356,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Lấy danh sách nhân viên theo phân trang và filter
     /**
      * Hàm lấy danh sách nhân viên theo pageIndex, pageSize, filter
      * CreatedBy: PTANH
@@ -381,6 +391,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 2
+
+    // #region 3: Đóng Popup thêm nhân viên
     /**
      * Hàm đóng Popup thêm nhân viên
      * CreatedBy: PTANH
@@ -393,6 +406,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 3
+
+    // #region 4: Theo dõi vị trí của chuột khi click
     /**
      * Hàm theo dõi vị trí của chuột khi click
      * CreatedBy: PTANH
@@ -408,6 +424,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 4
+
+    // #region 5: Ẩn tùy chọn chức năng
     /**
      * Hàm ẩn tùy chọn chức năng
      * CreatedBy: PTANH
@@ -420,6 +439,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 5
+
+    // #region 6: Hiển thị Popup sửa
     /**
      * Hàm hiển thị Popup sửa khách hàng và bind dữ liệu vào Popup
      * CreatedBy: PTANH
@@ -440,6 +462,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 6
+
+    // #region 7: Đóng Popup sửa khách hàng
     /**
      * Hàm đóng Popup sửa khách hàng
      * CreatedBy: PTANH
@@ -453,6 +478,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 7
+
+    // #region 8: Lưu nhân viên thành công
     /**
      * Hàm lưu nhân viên thành công
      * CreatedBy: PTANH
@@ -470,6 +498,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 8
+
+    // #region 9: Load lại trang
     /**
      * Hàm load lại trang
      * CreatedBy: PTANH
@@ -483,6 +514,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 9
+
+    // #region 10: Xóa nhân viên
     /**
      * Hàm xóa nhân viên
      * CreatedBy: PTANH
@@ -513,6 +547,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 10
+
+    // #region 11: Hiển thị Popup thêm nhân viên
     /**
      * Hàm hiển thị Popup thêm nhân viên và lấy mã nhân viên mới nhất chưa có trong csdl
      */
@@ -532,6 +569,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 11
+
+    // #region 12: Hiển thị Popup cảnh báo xóa
     /**
      * Hàm hiển thị Popup cảnh báo xóa nhân viên
      * CreatedBy: PTANH
@@ -547,6 +587,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 12
+
+    // #region 13: Đóng Popup cảnh báo xóa
     /**
      * Hàm đóng Popup cảnh báo xóa nhân viên
      * CreatedBy: PTANH
@@ -560,6 +603,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 13
+
+    // #region 14: Xử lý tìm kiếm
     /**
      * Hàm tìm kiếm nhân viên
      * CreatedBy: PTANH
@@ -603,6 +649,9 @@ export default {
         console.log(error)
       }
     }, 500),
+    // #endregion 14
+
+    // #region 15: Load lại trang
     /**
      * Hàm gán lại số trang và load lại trang
      * CreatedBy: PTANH
@@ -617,6 +666,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 15
+
+    // #region 16: Thay đổi số lượng bản ghi trên một trang
     /**
      * Hàm thay đổi số lượng bản ghi trên một trang
      * CreatedBy: PTANH
@@ -636,6 +688,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 16
+
+    // #region 17: Đóng dropdown số lượng bản ghi
     /**
      * Hàm đóng dropdown số lượng bản ghi trên trang
      * CreatedBy: PTANH
@@ -651,6 +706,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 17
+
+    // #region 18: Toggle dropdown số lượng bản ghi
     /**
      * Hàm ẩn hiện dropdown số lượng bản ghi trên trang
      * CreatedBy: PTANH
@@ -670,6 +728,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 18
+
+    // #region 19: Xử lý di chuyển lựa chọn số lượng bản ghi xuống dưới
     /**
      * Hàm di chuyển lựa chọn xuống dưới của sô lượng bản ghi trên một trang
      * CreatedBy: PTANH
@@ -696,6 +757,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 19
+
+    // #region 20: Xử lý di chuyển lựa chọn số lượng bản ghi lên trên
     /**
      * Hàm di chuyển lựa chọn xuống lên của sô lượng bản ghi trên một trang
      * CreatedBy: PTANH
@@ -722,7 +786,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 20
 
+    // #region 21: Load lại trang với page size mới
     /**
      * Hàm Load lại trang với kích thước trang mới
      * CreatedBy: PTANH
@@ -740,7 +806,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 21
 
+    // #region 22: Xuất dữ liệu ra file excel
     /**
      * Hàm xuất dữ liệu ra file excel
      * CreatedBy: PTANH
@@ -761,7 +829,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 22
 
+    // #region 23: Sau khi lưu và thêm
     /**
      * Hàm sau khi lưu nhân viên và thêm
      * CreatedBy: PTANH
@@ -775,6 +845,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 23
+
+    // #region 24: Chọn tất cả nhân viên
     /**
      * Hàm chọn tất cả nhân viên
      * CreatedBy: PTANH
@@ -794,6 +867,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 24
+
+    // #region 25: Xử lý sự kiện scroll
     /**
      * Hàm xử lý sự kiện scroll
      * CreatedBy: PTANH
@@ -816,7 +892,12 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 25
+
+    // #endregion I
   }
+
+  // #endregion
 }
 </script>
 

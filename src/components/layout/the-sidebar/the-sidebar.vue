@@ -168,6 +168,7 @@
 
 <script>
 export default {
+  // #region Declare
   props: {
     // Biến hiển thị Logo
     isShowLogo: {
@@ -175,7 +176,11 @@ export default {
       default: true
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Hiện Logo
     /**
      * Hàm hiển thị Logo
      * CreatedBy: PTANH
@@ -188,7 +193,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 1
   }
+  // #endregion
 }
 </script>
 

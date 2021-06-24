@@ -58,6 +58,7 @@
 <script>
 import ToolTip from '../../common/tool-tip/tool-tip.vue'
 export default {
+  // #region Declare
   components: { ToolTip },
   props: {
     // Biến hiển thị icon đóng mở sidebar
@@ -66,7 +67,11 @@ export default {
       default: true
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Ẩn logo
     /**
      * Hàm ẩn Logo
      * CreatedBy: PTANH
@@ -79,7 +84,10 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 1
   }
+
+  // #endregion
 }
 </script>
 

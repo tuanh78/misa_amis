@@ -18,6 +18,7 @@ import CONSTANTS from '../../../constants/constants'
 import EventBus from '../../../event-bus/event-bus'
 import moment from 'moment'
 export default {
+  // #region Declare
   components: { DatePick },
   data: () => ({
     date: '', // Biến lưu giá trị của ngày được chọn
@@ -60,7 +61,11 @@ export default {
     // Hủy lắng nghe sự kiện
     EventBus.$off('resetDataDatePicker', this.resetData)
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Giới hạn ngày lớn hơn ngày hiện tại
     /**
      * Hàm kiểm tra ngày chọn có lớn hơn ngày hiện tại không
      * CreatedBy: PTANH
@@ -74,6 +79,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Xử lý khi focus input
     /**
      * Hàm thay đổi focus input
      * CreatedBy: PTANH
@@ -86,6 +94,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 2
+
+    // #region 3: Reset lại dữ liệu
     /**
      * Hàm reset lại dữ liệu
      * CreatedBy: PTANH
@@ -99,6 +110,10 @@ export default {
       }
     }
   },
+  // #endregion 3
+  // #endregion
+
+  // #region Theo dõi biến
   watch: {
     // Theo dõi biến date và cập nhật giá trị
     date (newValue, oldValue) {
@@ -109,6 +124,7 @@ export default {
       }
     }
   }
+  // #endregion
 }
 </script>
 
