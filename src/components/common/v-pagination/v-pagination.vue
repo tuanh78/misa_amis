@@ -12,6 +12,7 @@
     next-link-class="next-link"
     active-class="active-page"
     disabled-class="disabled-btn"
+    :force-page="pageIndex"
     >
   </paginate>
 </template>
@@ -22,6 +23,10 @@ export default {
   props: {
     // Tổng số lượng trang
     totalPages: {
+      type: Number,
+      default: 1
+    },
+    pageIndex: {
       type: Number,
       default: 1
     }

@@ -205,7 +205,7 @@
             </ul>
           </div>
         <!-- Component phân trang -->
-        <v-pagination :totalPages="totalPages" @loadPage="loadPage"></v-pagination>
+        <v-pagination :totalPages="totalPages" @loadPage="loadPage" :pageIndex="pageIndex"></v-pagination>
       </div>
     </div>
     <!-- Form thêm nhân viên -->
@@ -333,6 +333,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    pageSize (newValue, oldValue) {
+      this.pageIndex = 1
     }
   },
   // #endregion
@@ -627,6 +630,7 @@ export default {
      */
     searchEmployee: debounce(function () {
       try {
+        this.pageIndex = 1
         // Lấy danh sách nhân viên theo điều kiện
         HTTP.get(`employees/paging?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&filter=${this.filter}`)
           .then(response => {
@@ -694,6 +698,8 @@ export default {
         this.indexOptionSelected = index
         // Gán số lượng bản ghi trên một trang
         this.pageSize = pageSize
+        // Trở về trang đầu
+        this.pageIndex = 1
         // Tính số lượng trang
         this.totalPages = Math.ceil(this.totalEmployees / this.pageSize)
         // Load lại trang
