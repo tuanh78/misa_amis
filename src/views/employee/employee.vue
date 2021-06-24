@@ -1,14 +1,16 @@
 <template>
   <div class="employee" @scroll="handleScroll" ref="employee">
-    <!-- Loading -->
+    <!-- #region Loading -->
     <div class="loading" v-if="isShowReload">
     </div>
+    <!-- #endregion -->
+
+    <!-- #region Top -->
     <div class="employee-top" :style="{top: employeeTopValue + '%'}">
       <div class="employee-top-atop">
         <div class="employee-top-left">
           <div class="title-text">Nhân viên</div>
         </div>
-
         <div class="employee-top-right">
           <!-- Button thêm nhân viên -->
           <div class="btn-add">
@@ -24,16 +26,19 @@
       </div>
       <div class="right-padding"></div>
     </div>
-    <!-- Nhóm chức năng -->
+    <!-- #endregion -->
+
+    <!-- #region Nhóm chức năng -->
     <div class="tools">
       <div class="group-tools">
-        <!-- Tìm kiếm -->
+        <!-- #region Tìm kiếm -->
         <div class="search-ctn">
           <div class="search">
             <input type="text" v-model="filter" @input="searchEmployee" placeholder="Tìm theo mã, tên nhân viên" />
             <div class="icon-common-medium icon-search"></div>
           </div>
         </div>
+        <!-- #endregion -->
 
         <div class="group-tools-right">
           <!-- Button load lại dữ liệu -->
@@ -49,8 +54,10 @@
         </div>
       </div>
     </div>
+    <!-- #endregion -->
+
+    <!-- #region Bảng danh sách nhân viên -->
     <div class="list-employee">
-      <!-- Bảng danh sách nhân viên -->
       <table class="table">
         <!-- Tiêu đề của cột -->
         <thead>
@@ -116,7 +123,7 @@
         </thead>
         <!-- Nội dung của bảng -->
         <tbody ref="bodyTable">
-          <tr class="ms-tr-viewer" @click="selectedRow" v-on:dblclick="counter += 1, showEditForm(employee.employeeId)" v-for="employee in employees" :key="employee.employeeId">
+          <tr class="ms-tr-viewer" @click="selectedRow(employee, $event)" @keydown.delete="showPopupDelete" tabindex="0" v-on:dblclick="counter += 1, showEditForm(employee.employeeId)" v-for="employee in employees" :key="employee.employeeId">
             <td class="space-left ms-td-viewer"></td>
             <td
               class="ms-th-viewer ms-muli-checkall employee-checkbox ms-th-viewer-custom ms-td-viewer"
@@ -165,6 +172,9 @@
         </tbody>
       </table>
     </div>
+    <!-- #endregion -->
+
+    <!-- #region Các phần tử còn lại của trang -->
     <!-- Phần thông báo không có dữ liệu -->
     <div v-if="isShowNoContent" class="no-data">
       <img src="../../assets/img/bg_report_nodata.76e50bd8.svg" class="no-data-img"/>
@@ -210,10 +220,12 @@
     <edit-employee v-if="isShowEditEmployee" :employeeEdit="employee" @closePopupEditEmployee="closePopupEditEmployee" @saveEmployeeSuccess="saveEmployeeSuccess" @saveEmployeeSuccessAndAdd="saveEmployeeSuccessAndAdd"></edit-employee>
     <!-- Popup cảnh báo xóa -->
     <popup-delete v-if="isShowPopupDelete" :messageDelete="messageDelete" @deleteEmployee="deleteEmployee" @closePopup="closePopupDelete"></popup-delete>
+    <!-- #endregion -->
   </div>
 </template>
 
 <script>
+// #region Declare library
 import VPagination from '../../components/common/v-pagination/v-pagination.vue'
 import AddEmployee from '../../components/pages/employee/add-employee/add-employee'
 import EditEmployee from '../../components/pages/employee/edit-employee/edit-employee.vue'
@@ -228,6 +240,7 @@ var debounce = require('lodash.debounce')
 Vue.use(vClickOutside)
 var moment = require('moment') // require
 const FileDownload = require('js-file-download')
+// #endregion
 export default {
   // #region Declare
   data () {
@@ -334,8 +347,9 @@ export default {
      * CreatedBy: PTANH
      * CreatedDate: 15/06/2021
      */
-    selectedRow (event) {
+    selectedRow (employee, event) {
       try {
+        this.employee = employee
         // Kiểm tra hàng hiện tại đã được chọn hay chưa
         if (event.target.parentNode.classList.contains('row-selected')) {
           // Xóa class

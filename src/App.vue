@@ -11,10 +11,13 @@
 </template>
 
 <script>
+// #region Declare Library
 import TheHeader from './components/layout/the-header/the-header.vue'
 import TheSidebar from './components/layout/the-sidebar/the-sidebar'
 import TheContent from './components/layout/the-content/the-content'
+// #endregion
 export default {
+  // #region Declare
   components: {
     TheSidebar,
     TheHeader,
@@ -25,7 +28,11 @@ export default {
       isShowLogo: true // Biến để hiển thị Logo hay không
     }
   },
+  // #endregion
+
+  // #region Methods
   methods: {
+    // #region 1: Ẩn logo
     // Hàm ẩn Logo
     hiddenLogo () {
       try {
@@ -34,6 +41,9 @@ export default {
         console.log(error)
       }
     },
+    // #endregion 1
+
+    // #region 2: Hiện Logo
     // Hàm hiện Logo
     showLogo () {
       try {
@@ -42,7 +52,9 @@ export default {
         console.log(error)
       }
     }
+    // #endregion 2
   }
+  // #endregion
 }
 </script>
 

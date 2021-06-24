@@ -77,6 +77,7 @@
 </template>
 
 <script>
+// #region Declare Library
 import { HTTP } from '../../../axios/http-common'
 import ToolTip from '../tool-tip/tool-tip.vue'
 import EventBus from '../../../event-bus/event-bus'
@@ -84,6 +85,7 @@ import Vue from 'vue'
 import vClickOutside from 'v-click-outside'
 Vue.use(vClickOutside)
 var debounce = require('lodash.debounce')
+// #endregion
 export default {
   // #region Declare
   created () {

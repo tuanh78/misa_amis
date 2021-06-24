@@ -1,6 +1,7 @@
 <template>
   <div class="sidebar">
     <div>
+      <!-- #region Logo -->
       <div v-if="isShowLogo" class="sidebar-logo-ctn">
         <a href="#" class="sidebar-option"></a>
         <a href="#" class="sidebar-logo"></a>
@@ -8,7 +9,9 @@
       <div v-else class="sidebar-three-stripes" @click="showLogo">
         <div class="icon-common-large icon-three-stripes"></div>
       </div>
+      <!-- #endregion -->
     </div>
+    <!-- #region Menu -->
     <div class="list-menu">
       <ul>
         <li>
@@ -163,6 +166,7 @@
         </li>
       </ul>
     </div>
+    <!-- #endregion -->
   </div>
 </template>
 

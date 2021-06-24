@@ -4,6 +4,7 @@
     <div class="loading" v-if="isShowLoading">
     </div>
     <div class="form-ctn">
+      <!-- #region header -->
       <div class="popup-header">
         <div class="popup-header-left">
           <div class="popup-header-title">Thông tin nhân viên</div>
@@ -98,7 +99,9 @@
           </div>
         </div>
       </div>
+      <!-- #endregion -->
 
+      <!-- #region Nội dung chính -->
       <div class="form-content">
         <div class="top-content">
           <div class="top-left-content">
@@ -280,7 +283,9 @@
           </div>
         </div>
       </div>
+      <!-- #endregion -->
 
+      <!-- #region footer -->
       <div class="footer-container">
         <div class="divide"></div>
         <div class="popup-footer">
@@ -293,16 +298,20 @@
           </div>
         </div>
       </div>
+      <!-- #endregion -->
     </div>
 
+    <!-- #region Các thành phần khác -->
     <div class="mask"></div>
     <popup-duplicate-code :errorMessage="errorMessage" v-if="isShowEmployeeCodeWarning" @closePopup="closePopupWarning"></popup-duplicate-code>
     <popup-error v-if="isShowPopupError" :errorMessage="errorMessage" @closePopupError="closePopupError"></popup-error>
     <popup-data-change v-if="isShowPopupDataChange" :message="messageDataChange" @closePopup="closePopupDataChange" @closeForm="closePopupAddEmployee" @saveData="saveData"></popup-data-change>
+    <!-- #endregion -->
   </div>
 </template>
 
 <script>
+// #region Declare Library
 import VDatepicker from '../../../common/v-datepicker/v-datepicker'
 import VAutocomplete from '../../../common/v-autocomplete/v-autocomplete.vue'
 import PopupDuplicateCode from '../../../pages/employee/popup-duplicate-code/popup-duplicate-code.vue'
@@ -312,6 +321,7 @@ import PopupError from '../popup-error/popup-error.vue'
 import EventBus from '../../../../event-bus/event-bus'
 import PopupDataChange from '../../../common/popup-data-change/popup-data-change.vue'
 import Message from '../../../../message/message'
+// #endregion
 export default {
   // #region Declare
   data () {

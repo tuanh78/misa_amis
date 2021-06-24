@@ -12,11 +12,13 @@
 </template>
 
 <script>
+// #region Declare Library
 import DatePick from 'vue-date-pick'
 import 'vue-date-pick/dist/vueDatePick.css'
 import CONSTANTS from '../../../constants/constants'
 import EventBus from '../../../event-bus/event-bus'
 import moment from 'moment'
+// #endregion
 export default {
   // #region Declare
   components: { DatePick },

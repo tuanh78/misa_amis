@@ -57,6 +57,7 @@ export default {
       }
     },
     // #endregion 1
+
     // #region 2: Đóng Popup và Form
     /**
      * Hàm đóng cả Popup cả Form
@@ -71,6 +72,7 @@ export default {
       }
     },
     // #endregion 2
+
     // #region 3: Xóa nhân viên
     /**
      * Hàm lưu nhân viên
